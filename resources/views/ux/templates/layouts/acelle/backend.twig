@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}{% endblock %} - Acelle Funnel</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% block css %}
+        {% include ux('layouts/_css') %}
+    {% endblock %}
+
+    <script>
+        var CSRF_TOKEN = "{{ csrf_token() }}";
+    </script>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a class="navbar-brand text-semibold text-italic logo-link logo-acelle" href="">
+            {% if setting('site_logo_small') %}
+                <img class="wide-logo-img" src="{{ setting('site_logo_small') }}" alt="">
+            {% else %}
+                <img class="wide-logo-img" src="{{ url('/assets/image/acelle-logo-dark.png') }}" alt="">
+            {% endif %}
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item text-small text-semibold">
+                    <a class="nav-link " href="{{ action('Admin\\HomeController@index') }}">
+                        <i class="icon-home"></i> {{ trans('messages.dashboard') }}
+                    </a>
+                </li>
+                {% if auth_user().can("read", instant('Acelle\\Model\\Customer')) or
+                    auth_admin().can("read", instant('Acelle\\Model\\Subscription'))
+                %}
+                    <li class="nav-item text-small dropdown text-semibold">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ trans('messages.customer') }}
+                        </a>
+                        <div class="dropdown-menu has-border dropdown-menu-left" aria-labelledby="dropdown01">
+                            {% if auth_user().can("read", instant('Acelle\\Model\\Customer')) %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\CustomerController@index') }}">
+                                    {{ trans('messages.customers') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_admin().can("read", instant('Acelle\\Model\\Subscription')) %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\SubscriptionController@index') }}">
+                                    {{ trans('messages.subscriptions') }}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endif %}
+                {% if auth_user().can("read", instant('Acelle\\Model\\Plan')) or
+                    auth_user().can("read", instant('Acelle\\Model\\Currency')) or
+                    auth_user().can("read", instant('Acelle\\Model\\PaymentMethod'))
+                %}
+                    <li class="nav-item text-small dropdown text-semibold">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ trans('messages.plan') }}
+                        </a>
+                        <div class="dropdown-menu has-border dropdown-menu-left" aria-labelledby="dropdown02">
+                            {% if auth_user().can("read", instant('Acelle\\Model\\Plan')) %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\PlanController@index') }}">
+                                    {{ trans('messages.plans') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_user().can("read", instant('Acelle\\Model\\Currency')) %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\CurrencyController@index') }}">
+                                    {{ trans('messages.currencies') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_user().can("read", instant('Acelle\\Model\\PaymentMethod')) %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\PaymentMethodController@index') }}">
+                                    {{ trans('messages.payment_methods') }}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endif %}
+                {% if auth_user().can("read", instant('Acelle\\Model\\Admin')) or
+                    auth_user().can("read", instant('Acelle\\Model\\AdminGroup'))
+                %}
+                    <li class="nav-item text-small dropdown text-semibold">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ trans('messages.admin') }}
+                        </a>
+                        <div class="dropdown-menu has-border dropdown-menu-left" aria-labelledby="dropdown03">
+                            {% if auth_user().can("read", instant('Acelle\\Model\\Admin')) %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\PlanController@index') }}">
+                                    {{ trans('messages.admins') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_user().can("read", instant('Acelle\\Model\\AdminGroup')) %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\CurrencyController@index') }}">
+                                    {{ trans('messages.admin_groups') }}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endif %}
+                {% if auth_admin().can("read", instant('Acelle\\Model\\SendingDomain')) or
+                    auth_admin().can("read", instant('Acelle\\Model\\SendingServer')) or
+                    auth_user().can("read", instant('Acelle\\Model\\BounceHandler')) or
+                    auth_user().can("read", instant('Acelle\\Model\\FeedbackLoopHandler')) or
+                    auth_admin().can("read", instant('Acelle\\Model\\EmailVerificationServer')) or
+                    auth_admin().can("read", instant('Acelle\\Model\\SendingServer'))
+                %}
+                    <li class="nav-item text-small dropdown text-semibold">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ trans('messages.sending') }}
+                        </a>
+                        <div class="dropdown-menu has-border dropdown-menu-left" aria-labelledby="dropdown03">
+                            {% if auth_admin().can("read", instant('Acelle\\Model\\SendingDomain')) %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\SendingDomainController@index') }}">
+                                    {{ trans('messages.sending_domains') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_admin().can("read", instant('Acelle\\Model\\SendingServer')) %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\SendingServerController@index') }}">
+                                    {{ trans('messages.sending_servers') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_user().can("read", instant('Acelle\\Model\\BounceHandler')) %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\BounceHandlerController@index') }}">
+                                    {{ trans('messages.bounce_handlers') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_user().can("read", instant('Acelle\\Model\\FeedbackLoopHandler')) %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\FeedbackLoopHandlerController@index') }}">
+                                    {{ trans('messages.feedback_loop_handlers') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_admin().can("read", instant('Acelle\\Model\\EmailVerificationServer')) %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\EmailVerificationServerController@index') }}">
+                                    {{ trans('messages.sending_servers') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_admin().can("read", instant('Acelle\\Model\\SubAccount')) %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\SubAccountController@index') }}">
+                                    {{ trans('messages.sub_accounts') }}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endif %}
+                <li class="nav-item text-small dropdown text-semibold">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ trans('messages.setting') }}
+                    </a>
+                    <div class="dropdown-menu has-border dropdown-menu-left" aria-labelledby="dropdown03">
+                        {% if
+							auth_admin().getPermission("setting_general") != 'no' or
+							auth_admin().getPermission("setting_sending") != 'no' or
+							auth_admin().getPermission("setting_system_urls") != 'no' or
+							auth_admin().getPermission("setting_background_job") != 'no'
+						%}
+                            <a class="dropdown-item text-semibold" href="{{ action('Admin\\SettingController@index') }}">
+                                {{ trans('messages.all_settings') }}
+                            </a>
+                        {% endif %}
+                        {% if auth_admin().can("read", instant('Acelle\\Model\\Template')) %}
+                            <a class="dropdown-item text-semibold" href="{{ action('Admin\\TemplateController@index') }}">
+                                {{ trans('messages.template_gallery') }}
+                            </a>
+                        {% endif %}
+                        {% if auth_user().can("update", instant('Acelle\\Model\\Layout')) %}
+                            <a class="dropdown-item text-semibold" href="{{ action('Admin\\LayoutController@index') }}">
+                                {{ trans('messages.page_form_layout') }}
+                            </a>
+                        {% endif %}
+                        {% if auth_user().can("read", instant('Acelle\\Model\\Language')) %}
+                            <a class="dropdown-item text-semibold" href="{{ action('Admin\\LanguageController@index') }}">
+                                {{ trans('messages.language') }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </li>
+                {% if auth_admin().getPermission("report_blacklist") != 'no' or
+                    auth_admin().getPermission("report_tracking_log") != 'no' or
+					auth_admin().getPermission("report_bounce_log") != 'no' or
+					auth_admin().getPermission("report_feedback_log") != 'no' or
+					auth_admin().getPermission("report_open_log") != 'no' or
+					auth_admin().getPermission("report_click_log") != 'no' or
+					auth_admin().getPermission("report_unsubscribe_log") != 'no'
+                %}
+                    <li class="nav-item text-small dropdown text-semibold">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ trans('messages.report') }}
+                        </a>
+                        <div class="dropdown-menu has-border dropdown-menu-left" aria-labelledby="dropdown03">
+                            {% if auth_admin().getPermission("report_blacklist") != 'no' %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\BlacklistController@index') }}">
+                                    {{ trans('messages.blacklist') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_admin().getPermission("report_tracking_log") != 'no' %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\TrackingLogController@index') }}">
+                                    {{ trans('messages.tracking_log') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_admin().getPermission("report_bounce_log") != 'no' %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\BounceLogController@index') }}">
+                                    {{ trans('messages.bounce_log') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_admin().getPermission("report_feedback_log") != 'no' %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\FeedbackLogController@index') }}">
+                                    {{ trans('messages.feedback_log') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_admin().getPermission("report_open_log") != 'no' %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\OpenLogController@index') }}">
+                                    {{ trans('messages.open_log') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_admin().getPermission("report_click_log") != 'no' %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\ClickLogController@index') }}">
+                                    {{ trans('messages.click_log') }}
+                                </a>
+                            {% endif %}
+                            {% if auth_admin().getPermission("report_unsubscribe_log") != 'no' %}
+                                <a class="dropdown-item text-semibold" href="{{ action('Admin\\UnsubscribeLogController@index') }}">
+                                    {{ trans('messages.unsubscribe_log') }}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown text-small text-semibold{% if 'automations' in page %} active{% endif %} ">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="media media-small inline-block mr-10">
+                            <img src="{{ action('CustomerController@avatar', auth_customer().uid) }}" />
+                        </span>
+                        {{ auth_customer().displayName() }}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-feestyle" aria-labelledby="dropdown01">
+                        {% if auth_user().can("customer_access", auth_user()) %}
+                            <a class="dropdown-item text-semibold" href="{{ action("HomeController@index") }}">
+                                {{ trans('messages.customer_view') }}
+                            </a>
+                            <div class="dropdown-divider"></div>
+						{% endif %}
+                        <a class="dropdown-item text-semibold" href="{{ action("Admin\\AccountController@profile") }}">
+                            {{ trans('messages.account') }}
+                        </a>
+                        <a class="dropdown-item text-semibold" href="{{ action("Admin\\AccountController@api") }}">
+                            {{ trans('messages.api') }}
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-semibold" href="{{ url("/logout") }}" link-method="GET">
+                            {{ trans('messages.logout') }}
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="content">
+            {% if block('page_header') %}
+                <div class="page-header flex">
+                    <h1 class="text-semibold mr-auto">{% block page_header %}{% endblock %}</h1>
+                    {% block page_actions %}{% endblock %}
+                </div>
+            {% endif %}
+
+            {% include ux('layouts/_page_alerts') %}
+
+            {% if block('sidebar') %}
+                <div class="row">
+                    <div class="col-md-2">
+                        {% block sidebar %}{% endblock %}
+                    </div>
+                    <div class="col-md-10">
+            {% endif %}
+                        {% block content %}{% endblock %}
+            {% if block('sidebar') %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+    </div><!-- /.container -->
+
+    {% block js %}
+        {% include ux('layouts/_js') %}
+        {% include ux('layouts/_page_notifies') %}
+    {% endblock %}
+  </body>
+</html>

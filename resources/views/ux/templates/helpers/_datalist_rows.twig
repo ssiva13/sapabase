@@ -1,0 +1,15 @@
+{% if style == 'gallery' %}
+    <hr class="mt-lvl4">
+    <ul class="fnl-gallery">
+        {% for row in rows %}
+            {% include ux('helpers/_datalist_row_gallery.twig') with row %}
+        {% endfor %}
+    </ul>
+    <hr>
+{% else %}
+    <ul>
+        {% for row in rows %}
+            {% include ux('helpers/_datalist_row.twig') with row %}
+        {% endfor %}
+    </ul>
+{% endif %}

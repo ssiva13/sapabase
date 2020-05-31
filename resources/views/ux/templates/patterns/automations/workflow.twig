@@ -1,0 +1,256 @@
+{% extends "patterns/layouts/wizard.twig" %}
+
+{% block title %}Automation - Workflow{% endblock %}
+
+{% set page_header = true %}
+{% block page_header %}
+    <h2 class="mb-0">My First Automation</h2>
+{% endblock %}
+
+{% block page_actions %}
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item text-small text-semibold">
+            <a class="nav-link" href="#">Send a Test Email</a>
+        </li>
+        <li class="nav-item dropdown text-small text-semibold">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Save and Exit
+            </a>
+            <div class="dropdown-menu has-border dropdown-menu-right" aria-labelledby="dropdown01">
+                <a class="dropdown-item text-semibold" href="#">Campaigns</a>
+                <a class="dropdown-item text-semibold" href="#">Lists</a>
+            </div>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <div class="row-box row-mlr--30 flex">
+        <div class="col-box">
+            <div class="label-group-style-1">
+                <label>
+                    Trigger
+                    <span class="dot-sep">·</span>
+                    <a href="/index.php?page=automations/trigger.modal" class="text-normal ajax-modal">Edit Trigger</a>
+                </label>
+                <i class="ion-android-calendar"></i> List Added Date
+            </div>
+        </div>
+        <div class="col-box">
+            <div class="label-group-style-1">
+                <label>
+                    Lists/Segments
+                    <span class="dot-sep">·</span>
+                    <a href="/index.php?page=automations/recipients.modal" class="text-normal ajax-modal">Edit Recipients</a>
+                </label>
+                <ul class="lists_segments_list">
+                    <li><span class="dot-sep">·</span>List 4 ( 20 subscribers )</li>
+                    <li><span class="dot-sep">·</span>Secondary list #22 ( 120 subscribers )</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="workflow">
+        <div class="timeline-rows">
+            <ul>
+                <li>
+                    <div class="timeline-row">
+                        <div class="timeline-container">
+                            <div class="label-icon"><i class="ion-edit"></i></div>
+                            <div class="timeline"></div>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="email-trigger">
+                                <span> <span class="text-semibold">Trigger:</span> <span data-action="trigger">1 day after subscribers join your list</span> - <a href="javascript:;" data-action="open-view" data-view-id="trigger" data-email-id="1632089" data-email="Welcome">Edit trigger</a> </span>
+                            </div>
+                            <div class="email">
+                                <div class="flex">
+                                    <div class="content flex full-width">
+                                        <div class="thumb">
+                                            <a href="#" class="thumb-container thumb-email">
+                                                <img src="https://api.url2png.com/v6/P52656AFFB484B/0fd37fedcbca8408e1483a5e998660bc/png/?thumbnail_max_height=300&thumbnail_max_width=400&url=https%3A%2F%2Fapp.clickfunnels.com%2Ffor_domain%2Flouisitvn.clickfunnels.com%2Fproduct-features%3Fupdated_at%3De5a6ca52f456b7e941d419efd5835a80v2%26track%3D0%26preview%3Dtrue&viewport=1024x768">
+                                            </a>
+                                        </div>
+                                        <div class="info">
+                                            <div class="flex">
+                                                <h4 class="mb-0">Welcome email</h4>
+                                                <span class="text-dim2 h4-desc"><strong>Edited </strong> 5 hours ago by you</span>
+                                            </div>
+                                            <ul class="inline-infos pd-0">
+                                                <li>
+                                                    <span class="text-semibold">Schedule: </span>Every day, all day
+                                                    <span>
+                                                        <span class="dot-sep">·</span>
+                                                        <a href="javascript:;">Edit schedule</a>
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span class="text-semibold">Type: </span>Regular
+                                                </li>
+                                                <li>
+                                                    <span class="text-semibold">Action: </span>Unsubscribe from list
+                                                    <span>
+                                                        <span class="dot-sep">·</span>
+                                                        <a href="javascript:;">Edit action</a>
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="actions flex">
+                                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                            <button type="button" class="btn btn-default">Design Email</button>
+                                            <div class="btn-group" role="group">
+                                                <button id="btnGroupDrop1" type="button" class="btn btn-default dropdown-toggle dropdown-toggle-only p-11" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+                                                    <a class="dropdown-item" href="#">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="timeline-row">
+                        <div class="timeline-container">
+                            <div class="label-icon"><i class="ion-edit"></i></div>
+                            <div class="timeline"></div>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="email-trigger">
+                                <span> <span class="text-semibold">Trigger:</span> <span data-action="trigger">1 day after subscribers join your list</span> - <a href="javascript:;" data-action="open-view" data-view-id="trigger" data-email-id="1632089" data-email="Welcome">Edit trigger</a> </span>
+                            </div>
+                            <div class="emails">
+                                <div class="email">
+                                    <div class="flex">
+                                        <div class="content flex full-width">
+                                            <div class="thumb">
+                                                <a href="#" class="thumb-container thumb-email">
+                                                </a>
+                                            </div>
+                                            <div class="info">
+                                                <div class="flex">
+                                                    <h4 class="mb-0">Welcome email</h4>
+                                                    <span class="text-dim2 h4-desc"><strong>Edited </strong> 5 hours ago by you</span>
+                                                </div>
+                                                <ul class="inline-infos pd-0">
+                                                    <li>
+                                                        <span class="text-semibold">Schedule: </span>Every day, all day
+                                                        <span>
+                                                            <span class="dot-sep">·</span>
+                                                            <a href="javascript:;">Edit schedule</a>
+                                                        </span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="text-semibold">Type: </span>Regular
+                                                    </li>
+                                                    <li>
+                                                        <span class="text-semibold">Action: </span>None
+                                                        <span>
+                                                            <span class="dot-sep">·</span>
+                                                            <a href="javascript:;">Edit action</a>
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="actions flex">
+                                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                                <button type="button" class="btn btn-default">Design Email</button>
+                                                <div class="btn-group" role="group">
+                                                    <button id="btnGroupDrop1" type="button" class="btn btn-default dropdown-toggle dropdown-toggle-only p-11" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+                                                        <a class="dropdown-item" href="#">Delete</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="email">
+                                    <div class="flex">
+                                        <div class="content flex full-width">
+                                            <div class="thumb">
+                                                <a href="#" class="thumb-container thumb-sms">
+                                                </a>
+                                            </div>
+                                            <div class="info">
+                                                <div class="flex">
+                                                    <h4 class="mb-0">Remaind SMS</h4>
+                                                    <span class="text-dim2 h4-desc"><strong>Edited </strong> 50 minutes ago by you</span>
+                                                </div>
+                                                <ul class="inline-infos pd-0">
+                                                    <li>
+                                                        <span class="text-semibold">Schedule: </span>Every day, all day
+                                                        <span>
+                                                            <span class="dot-sep">·</span>
+                                                            <a href="javascript:;">Edit schedule</a>
+                                                        </span>
+                                                    </li>
+                                                    <li>
+                                                        <span class="text-semibold">Type: </span>SMS
+                                                    </li>
+                                                    <li>
+                                                        <span class="text-semibold">Action: </span>None
+                                                        <span>
+                                                            <span class="dot-sep">·</span>
+                                                            <a href="javascript:;">Edit action</a>
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="actions flex">
+                                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                                <button type="button" class="btn btn-default">Design SMS</button>
+                                                <div class="btn-group" role="group">
+                                                    <button id="btnGroupDrop1" type="button" class="btn btn-default dropdown-toggle dropdown-toggle-only p-11" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+                                                        <a class="dropdown-item" href="#">Delete</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-lg btn-primary bg-grey plr-50 mr-10">Add Email</button>
+            <button class="btn btn-lg btn-primary bg-grey plr-50">Add SMS</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% set footer = true %}
+{% block footer %}
+    <div class="steps text-center">
+        <ul class="inline-breadscrumb text-semibold">
+            <li>
+                <a href="" class="">Recipients</a>
+            </li>
+            <li>
+                <a href="" class="">Trigger</a>
+            </li>
+            <li>
+                <a href="" class="active">Emails</a>
+            </li>
+            <li>
+                <a href="">Confirm</a>
+            </li>
+        </ul>
+    </div>
+    <div class="right-actions">
+        <button class="btn btn-primary bg-grey plr-50">Next <i class="ion-chevron-right ml-8"></i></button>
+    </div>
+{% endblock %}

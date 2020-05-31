@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}{% endblock %} - Acelle Funnel</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% block css %}
+        {% include ux('layouts/_css') %}
+    {% endblock %}
+
+    <script>
+        var CSRF_TOKEN = "{{ csrf_token() }}";
+    </script>
+  </head>
+  <body class="">
+    <div class="container{{ block('sidebar') ? ' has-sidebar' : '' }}">
+        {% if block('sidebar') %}
+            <div class="sidebar">
+                <a class="ml-lvl3 mb-lvl4 text-semibold text-italic logo-link" href="">
+                    <img class="logo-img" src="{{ url('/assets/image/funnel-logo.png') }}"
+                    <!--Acelle-UX-->
+                </a>
+
+                <h3 class="sidebar-title">{{ funnel.name }}</h3>
+
+                {% block sidebar %}{% endblock %}
+            </div>
+        {% endif %}
+
+
+        <div class="content">
+            <nav class="">
+                <div class="page-actions">
+                    {% block page_actions %}{% endblock %}
+                </div>
+                <!--<div class="page-search">
+                    <i class="ion-ios-search-strong"></i>
+                    <input type="text" class="form-control page-search" placeholder="Type for search" />
+                </div>-->
+                <h1 class="">{% block page_title %}{% endblock %}</h1>
+            </nav>
+
+            {% include ux('layouts/_page_alerts') %}
+            {% block content %}{% endblock %}
+        </div>
+
+    </div><!-- /.container -->
+
+    {% block js %}
+        {% include ux('layouts/_js') %}
+        {% include ux('layouts/_page_notifies') %}
+    {% endblock %}
+  </body>
+</html>

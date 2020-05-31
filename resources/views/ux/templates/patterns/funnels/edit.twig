@@ -1,0 +1,81 @@
+{% extends "patterns/layouts/base.twig" %}
+
+{% block title %}Data list{% endblock %}
+
+{% block page_header %}
+    <h1 class="text-semibold mr-auto">Sell my books</h1>
+{% endblock %}
+
+{% block content %}
+    <ul class="nav nav-top-page">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Steps
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Stat</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/index.php?page=contacts/list">Contacts</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Settings
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+        </li>
+    </ul>
+    <div class="row">
+        <div class="col-md-3 sidebar_dark">
+            {% include 'patterns/funnels/_steps.twig' with {
+                'step': '1'
+            } %}
+        </div>
+        <div class="col-md-9">
+            <div class="sub-section">
+                <div class="sub-section-header flex">
+                    <h3 class="mr-auto">Products Features</h3>
+                    <ul class="nav justify-content-end">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#"><i class="icon ion-android-apps"></i> Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="icon ion-calendar"></i> Automation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="icon ion-android-checkmark-circle"></i> Publishing</a>
+                        </li>
+                    </ul>
+                </div>
+                {% include 'helpers/_datalist.twig' with {
+                    'url': '/index.php?page=funnels/_edit_pages'
+                } %}
+                <div class="alert alert-secondary mt-lvl5 text-center pd-lvl4">
+                    <!--<i class="ion-arrow-swap icon-xxl text-dim-lvl3"></i>-->
+                    <h4 class="text-bold text-lvl4">Start Split Test</h4>
+                    <p>Optimize your lead and sales generation with split tests.</p>
+                    <button type="button" class="btn btn-secondary btn-icon-left btn-lg"><i class="ion-plus-round"></i> Create Variation </button>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <button type="button" class="btn btn-default btn-icon-left mr-lvl1"><i class="ion-ios-copy"></i> Clone Funnel Step </button>
+                <button type="button" class="btn btn-danger btn-icon-left"><i class="ion-trash-b"></i> Delete Funnel Step </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

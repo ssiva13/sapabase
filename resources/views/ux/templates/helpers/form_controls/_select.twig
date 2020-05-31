@@ -1,0 +1,5 @@
+<select name="{{ name }}" class="form-control" id="exampleFormControlSelect1">
+    {% for option in options %}
+        <option{{ (value == option['value']) ? ' selected' : '' }} value="{{ option['value'] }}">{{ option['text'] }}</option>
+    {% endfor %}
+</select>

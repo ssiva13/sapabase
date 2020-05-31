@@ -1,0 +1,24 @@
+<li>
+    <a href="" class="fnl-gallery-thumb-link">
+        <img
+            class="fnl-gallery-thumb-img"
+            src="{{ thumb }}"
+        />
+    </a>
+    <div class="fnl-gallery-header">
+        <a href="">
+            {{ title }}
+        </a>
+        <p class="text-dim">{{ desc }}</p>
+        {% if actions %}
+            <hr>
+            <div class="gallery-item-actions mt-lvl2 text-center">
+                {% for action in actions %}
+                    {% include ux('helpers/_link.twig') with action|merge({
+                        class: "btn btn-small btn-secondary datalist-row-action-#{action['type']}"
+                    }) %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</li>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}{% endblock %} - Acelle Funnel</title>
+
+        {% block css %}
+            {% include ux('layouts/_css') %}
+            
+            <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="{{ asset('assets/css/rangeslider.css') }}">
+
+            <link rel="stylesheet" href="{{ asset('assets/css/self_builder.css') }}">
+        {% endblock %}
+    </head>
+    <body>
+
+        <div class="self_builder">
+            <div class="builder-header">
+                <div class="builder-header-content">
+                    {% if block('header_title') %}
+                        <div class="header-title">{% block header_title %}{% endblock %}</div>
+                    {% endif %}
+                    <div class="builder-header-actions">
+                        <a href="{{ action('FunnelController@steps', page.funnel.uid) }}"
+                          class="btn btn-secondary editor-save"
+                          data-message="{{ trans('messages.page.content_updated', {name: page.name}) }}"
+                        >
+                            Save
+                        </a>
+                        <a href="{{ action('FunnelController@steps', page.funnel.uid) }}" class="btn btn-secondary editor-save-close">Save & Close</a>
+                        <a href="{{ action('FunnelController@steps', page.funnel.uid) }}" class="btn editor-cancel">Cancel</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="self-builder-container">
+                <iframe class="self-builder-frame" src="{% block content_src %}{% endblock %}"></iframe>
+            </div>
+
+            <div class="element-options">
+                <div class="element-header flex">
+                    <h5 class="element-title">Options</h5>
+                    <div class="actions">                        
+                    </div>
+                </div>
+                <div class="element-settings">
+                    <div class="setting-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="setting-label">Auto width</label>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <!-- Rounded switch -->
+                                <label class="switch">
+                                  <input type="checkbox">
+                                  <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="range-slider">
+                                    <input class="range-slider__range" type="range" value="20" min="0" max="100">
+                                    <span class="range-slider__value">20</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="setting-label">Dynamic Range</label>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <!-- Rounded switch -->
+                                <label class="switch">
+                                  <input type="checkbox" checked>
+                                  <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="setting-label">Image name: <strong>shoe.png</strong></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-left">
+                                <button class="btn btn-xs btn-primary">Change Image</button>
+                                <button class="btn btn-secondary btn-icon-left">Change Image</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="setting-label">Align</label>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <span href="" class="text-dim"><i class="lnr lnr-text-align-left icon-big"></i></span>
+                                <span href="" class="text-dim-lvl3"><i class="lnr lnr-text-align-center icon-big"></i></span>
+                                <span href="" class="text-dim-lvl3"><i class="lnr lnr-text-align-right icon-big"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="setting-label">Hide on mobile</label>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <!-- Rounded switch -->
+                                <label class="switch">
+                                  <input type="checkbox">
+                                  <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-group-head">
+                        ACTION
+                    </div>
+                    <div class="setting-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="setting-label">Image link</label>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <select class="select form-control text-small">
+                                    <option>Open web page</option>
+                                    <option>Send email</option>
+                                    <option>Make call</option>
+                                    <option>Send SMS</option>  
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mt-lvl1">
+                                <input class="form-control" placeholder="URL">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-group-head">
+                        BLOCK OPTIONS
+                    </div>
+                    <div class="setting-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="setting-label">Padding</label>
+                            </div>
+                            <div class="col-md-6 text-right flex">
+                                <label class="setting-label">More options</label>
+                                <!-- Rounded switch -->
+                                <label class="switch">
+                                  <input type="checkbox">
+                                  <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% block js %}
+            {% include ux('layouts/_js') %}
+            {% include ux('layouts/_page_notifies') %}
+            
+            <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+            <script src="{{ asset('assets/js/rangeslider.js') }}"></script> 
+
+            <script src="{{ asset('assets/js/self_builder.js') }}"></script>            
+            
+            
+        {% endblock %}
+    </body>
+</html>

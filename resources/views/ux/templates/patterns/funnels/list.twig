@@ -1,0 +1,68 @@
+{% extends "patterns/layouts/base.twig" %}
+
+{% block title %}Data list{% endblock %}
+
+{% block page_header %}
+    <h1 class="text-semibold mr-auto">Funnels</h1>
+{% endblock %}
+
+{% block page_actions %}
+    <button type="button" class="btn btn-secondary btn-icon-left"><i class="ion-plus-round"></i> Add new Funnel </button>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="menu">
+                <li>
+                    <a href="" class="current">
+                        <i class="ion-navicon-round"></i>
+                        All
+                    </a>
+                    <a href="">
+                        <i class="ion-ios-star"></i>
+                        Favorites
+                    </a>
+                    <a href="">
+                        <i class="ion-calendar"></i>
+                        Recent
+                    </a>
+                    <a href="">
+                        <i class="ion-android-archive"></i>
+                        Archived
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <ul class="menu">
+                <li>
+                    <a href="" class="current">
+                        <i class="ion-android-add-circle"></i>
+                        Create Group
+                    </a>
+                    <a href="">
+                        <i class="ion-android-folder-open"></i>
+                        Special
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-10">
+            {% include ux('helpers/_datalist.twig') with {
+                'url': '/index.php?page=funnels/_list',
+                'sort': {
+                    'name': 'sort-by',
+                    'value': 'created_at',
+                    'options': [
+                        {'text': 'Custom order', 'value': 'custom'},
+                        {'text': 'Name', 'value': 'name'},
+                        {'text': 'Date created', 'value': 'created_at'}
+                    ]
+                },
+                'actions': [
+                    {'text': 'Delete', 'url': 'custom'},
+                ]
+            } %}
+        </div>
+    </div>
+{% endblock %}

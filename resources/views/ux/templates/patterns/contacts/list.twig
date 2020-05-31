@@ -1,0 +1,167 @@
+{% extends "patterns/layouts/base.twig" %}
+
+{% block title %}Data list{% endblock %}
+
+{% block page_header %}
+    <h1 class="text-semibold mr-auto">Sell my books</h1>
+{% endblock %}
+
+{% block content %}
+    <ul class="nav nav-top-page">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Steps
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Stat</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="/index.php?page=contacts/list">Contacts</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Settings
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+        </li>
+    </ul>
+
+    <!--<div class="row">
+        <div class="col-md-3">
+            {% include 'patterns/funnels/_steps.twig' %}
+        </div>
+        <div class="col-md-9">
+            <div class="sub-section">
+                <h3 class="mr-auto mb-lvl3">Contacts</h3>
+                {% include 'helpers/_datalist.twig' with {
+                    'url': '/index.php?page=contacts/_list',
+                    'sort': {
+                        'name': 'sort-by',
+                        'value': 'created_at',
+                        'options': [
+                            {'text': 'Custom order', 'value': 'custom'},
+                            {'text': 'Name', 'value': 'name'},
+                            {'text': 'Date created', 'value': 'created_at'}
+                        ]
+                    },
+                    'actions': [
+                        {'text': 'Delete', 'url': 'custom'},
+                    ],
+                    'keyword': {
+                        'name': 'keyword',
+                    },
+                    'filters': [
+                        {
+                            'type': 'dataselect',
+                            'name': 'time',
+                            'label': 'Contacts for',
+                            'options': [
+                                {'text': 'Last 7 days', 'value': 'last_7_days'},
+                                {'text': 'Last 30 days', 'value': 'last_30_days'},
+                                {'text': 'Last 2 months', 'value': 'last_2_months'},
+                                {'text': 'This year', 'value': 'this_year'},
+                                {'text': 'All time', 'value': 'all_time'},
+                            ]
+                        }
+                    ]
+                } %}
+            </div>
+        </div>
+    </div>-->
+    <div class="flex mb-lvl2">
+        <div class="mr-auto">
+            <h2 class="mr-auto">Contacts</h2>
+        </div>
+        <div class="">
+            <button type="button" class="btn btn-secondary btn-icon-left"><i class="ion-plus-round"></i> Add new Contact </button>
+        </div>
+    </div>
+    <div class="row">
+        <!--<div class="col-md-2">
+            <ul class="menu">
+                <li>
+                    <a href="" class="current">
+                        <i class="ion-navicon-round"></i>
+                        All
+                    </a>
+                    <a href="">
+                        <i class="ion-ios-star"></i>
+                        Favorites
+                    </a>
+                    <a href="">
+                        <i class="ion-calendar"></i>
+                        Recent
+                    </a>
+                    <a href="">
+                        <i class="ion-android-archive"></i>
+                        Archived
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <ul class="menu">
+                <li>
+                    <a href="" class="current">
+                        <i class="ion-android-add-circle"></i>
+                        Create Group
+                    </a>
+                    <a href="">
+                        <i class="ion-android-folder-open"></i>
+                        Special
+                    </a>
+                </li>
+            </ul>
+        </div>-->
+        <div class="col-md-12">
+            <div class="sub-section">
+                {% include 'helpers/_datalist.twig' with {
+                    'url': '/index.php?page=contacts/_list',
+                    'sort': {
+                        'name': 'sort-by',
+                        'value': 'created_at',
+                        'options': [
+                            {'text': 'Custom order', 'value': 'custom'},
+                            {'text': 'Name', 'value': 'name'},
+                            {'text': 'Date created', 'value': 'created_at'}
+                        ]
+                    },
+                    'actions': [
+                        {'text': 'Delete', 'url': 'custom'},
+                    ],
+                    'keyword': {
+                        'name': 'keyword',
+                        'placeholder': 'Search for contacts',
+                    },
+                    'filters': [
+                        {
+                            'type': 'dataselect',
+                            'name': 'time',
+                            'label': 'Contacts for',
+                            'options': [
+                                {'text': 'Last 7 days', 'value': 'last_7_days'},
+                                {'text': 'Last 30 days', 'value': 'last_30_days'},
+                                {'text': 'Last 2 months', 'value': 'last_2_months'},
+                                {'text': 'This year', 'value': 'this_year'},
+                                {'text': 'All time', 'value': 'all_time'},
+                            ]
+                        }
+                    ]
+                } %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

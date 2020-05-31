@@ -1,0 +1,70 @@
+<div class="datalist"
+    data-url="{{ url }}"
+>
+    {% if actions or sort %}
+        <div class="datalist-filter">
+            <div class="flex">
+                <div class="filter-left mr-auto">
+                    {% if actions %}
+                        <label class="custom-control custom-checkbox check-all-box">
+                            <input type="checkbox" class="custom-control-input check-all">
+                            <span class="custom-control-indicator"></span>
+                        </label>
+                    {% endif %}
+                    {% if actions %}
+                        <div class="actions-box btn-group mr-10" role="group" style="display: none">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Action
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                {% for action in actions %}
+                                    <a class="dropdown-item datalist-action datalist-list-action-{{ action['type'] }}" href="{{ action['url'] }}"
+                                        {% if action['method'] %} data-method="{{ action['method'] }}"{% endif %}
+                                        {% if action['confirm'] %} data-confirm="{{ action['confirm'] }}"{% endif %}
+                                        {% if action['confirm_url'] %} data-confirm-url="{{ action['confirm_url'] }}"{% endif %}
+                                    >{{ action['text'] }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if sort %}
+                        <label class="text-small text-semibold text-dim text-normal">Sort by</label>
+                        {% include ux('helpers/form_controls/_dataselect.twig') with {
+                            name: sort['name'],
+                            value: sort['value'],
+                            options: sort['options']
+                        } %}
+                        <input name="sort_direction" value="asc" type="hidden" />
+                        <button class="btn btn-default ml-10 sort-direction-but"><i class="ion-chevron-up"></i></button>
+                    {% endif %}
+                    {% if filters %}
+                        <span class="filter-item ml-lvl2">
+                            {% for filter in filters %}
+                                <label class="text-small text-semibold">{{ filter['label'] }}</label>
+                                {% include ux("helpers/form_controls/_#{filter['type']}.twig") with {
+                                    name: filter['name'],
+                                    value: filter['value'],
+                                    options: filter['options']
+                                } %}
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="filter-right">
+                    {% if keyword %}
+                        <span class="keyword-box">
+                            <input
+                                placeholder="{{ keyword['placeholder'] }}"\
+                                class="form-control keyword-input"
+                                name="{{ keyword['name'] ? keyword['name'] : 'keyword' }}"
+                            />
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="datalist-container">
+
+    </div>
+</div>

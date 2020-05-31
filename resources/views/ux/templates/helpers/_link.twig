@@ -1,0 +1,8 @@
+<a class="{{ class }}" href="{{ url }}"
+    {% if method %} data-method="{{ method }}"{% endif %}
+    {% if link_method %} link-method="{{ link_method }}"{% endif %}
+    {% if confirm %} data-confirm="{{ confirm }}"{% endif %}
+    {% if confirm_url %} data-confirm-url="{{ confirm_url }}"{% endif %}
+>
+    {{ text }}
+</a>

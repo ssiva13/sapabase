@@ -1,0 +1,96 @@
+{% extends "patterns/layouts/base.twig" %}
+
+{% block title %}Forms{% endblock %}
+
+{% block page_header %}
+    <h1 class="text-semibold">Funnel Forms</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="sub-section">
+        <h3>Form details</h3>
+        <form>
+            <div class="row">
+                <div class="col-md-6">
+                    {% include ux('helpers/form_controls/control.twig') with {
+                        type: 'text',
+                        name: 'text_field',
+                        label: 'Text field',
+                    } %}
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Select box</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Date field</label>
+                        <div class="input-group icon-right">
+                            <input type="" class="form-control datepicker">
+                            <span class="input-group-addon"><i class="ion-android-calendar"></i></span>
+                        </div>
+                        <div class="field-help text-muted">
+                            <span>Your subscribers will see this, so make it something appropriate.</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Example textarea</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description has_desc">
+                                Single checkbox
+                                <div class="desc">Subscribe notifications as they happen</div>
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <label class="head">Checkbox group</label>
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description has_desc">
+                                    Daily summary
+                                    <div class="desc">Subscribe notifications as they happen</div>
+                                </span>
+                            </label>
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description has_desc">
+                                    One-by-One
+                                    <div class="desc">Subscribe notifications as they happen</div>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group custom-controls-stacked">
+                        <div class="radio-group">
+                            <label class="head">Radio group</label>
+                            <label class="custom-control custom-radio">
+                              <input id="radioStacked3" name="radio-stacked" type="radio" class="custom-control-input">
+                              <span class="custom-control-indicator"></span>
+                              <span class="custom-control-description">Toggle this custom radio</span>
+                            </label>
+                            <label class="custom-control custom-radio">
+                              <input id="radioStacked4" name="radio-stacked" type="radio" class="custom-control-input">
+                              <span class="custom-control-indicator"></span>
+                              <span class="custom-control-description">Or toggle this other custom radio</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

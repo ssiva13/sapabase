@@ -1,0 +1,11 @@
+<div class="custom-controls-stacked">
+    <div class="radio-group">
+        {% for option in options %}
+            <label class="custom-control custom-radio">
+              <input id=""{{ (value == option['value']) ? ' checked' : '' }} name="{{ name }}" value="{{ option['value'] }}" type="radio" class="custom-control-input">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">{{ option['text'] }}</span>
+            </label>
+        {% endfor %}
+    </div>
+</div>

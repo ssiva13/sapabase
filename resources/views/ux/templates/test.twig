@@ -1,0 +1,24 @@
+{% extends "ux/templates/layouts/base.twig" %}
+
+{% block title %}Data list{% endblock %}
+
+{% block page_header %}
+    <h1 class="text-semibold">Data list - Basic</h1>
+{% endblock %}
+
+{% block content %}
+    {% include 'ux/templates/helpers/_datalist.twig' with {
+        'sort': {
+            'name': 'sort-by',
+            'value': 'created_at',
+            'options': [
+                {'text': 'Custom order', 'value': 'custom'},
+                {'text': 'Name', 'value': 'name'},
+                {'text': 'Date created', 'value': 'created_at'}
+            ]
+        },
+        'actions': [
+            {'text': 'Delete', 'url': 'custom'},
+        ]
+    } %}
+{% endblock %}

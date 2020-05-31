@@ -1,0 +1,7 @@
+{% extends "patterns/layouts/modal.twig" %}
+
+{% block title %}Edit Recipients{% endblock %}
+
+{% block content %}
+    {% include ['ux/templates/helpers/_select.twig', 'patterns/automations/_recipients.twig'] %}
+{% endblock %}

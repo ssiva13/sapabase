@@ -1,0 +1,9 @@
+{% for msg in ['danger', 'warning', 'success', 'info', 'error', 'warning'] %}
+    {% if session_get("alert-#{msg}") %}
+        <script>
+            $(function() {
+                notify('{{ session_get("alert-#{msg}")|raw }}', '{{ msg }}');
+            });
+        </script>
+    {% endif %}
+{% endfor %}

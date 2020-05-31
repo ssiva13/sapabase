@@ -1,0 +1,138 @@
+{% extends "patterns/layouts/wizard.twig" %}
+
+{% block title %}Data list{% endblock %}
+
+{% block body_class %}pb-lvl6{% endblock %}
+
+{% set page_header = true %}
+{% block page_header %}
+    <h2 class="mb-0 pl-lvl2">My First Funnel</h1>
+{% endblock %}
+
+{% block page_actions %}
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item text-small text-semibold">
+            <a class="nav-link" href="#"><i class="icon ion-android-clipboard"></i> Copy URL</a>
+        </li>
+        <li class="nav-item text-small text-semibold">
+            <a class="nav-link" href="#"><i class="icon ion-ios-world-outline"></i> Visit Funnel URL</a>
+        </li>
+        <li class="nav-item text-small text-semibold">
+            <a class="nav-link" href="#"><i class="icon ion-help-circled"></i> Help</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <div class="pl-lvl3 pr-lvl3">
+        <ul class="nav nav-top-page">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    Steps
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Stat</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contacts</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    Settings
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                </div>
+            </li>
+        </ul>
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="menu menu-steps">
+                    <li>
+                        <a href="" class="current">
+                            <i class="ion-pricetags"></i>
+                            <label class="">
+                                Products Features
+                            </label>
+                            <div class="desc text-dim">
+                                Products Features
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" class="">
+                            <i class="ion-email"></i>
+                            <label class="">
+                                Option-In
+                            </label>
+                            <div class="desc text-dim">
+                                Option-In
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <i class="ion-checkmark-round"></i>
+                            <label>
+                                Thank You
+                            </label>
+                            <div class="desc text-dim">
+                                Thank You
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <hr>
+                <div class="text-center mt-lvl3">
+                    <button type="button" class="btn btn-default btn-icon-left text-semibold">
+                        <i class="ion-plus-round"></i> ADD NEW STEP
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="sub-section">
+                    <div class="sub-section-header flex">
+                        <h3 class="mr-auto">Products Features</h3>
+                        <ul class="nav justify-content-end">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#"><i class="icon ion-android-apps"></i> Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><i class="icon ion-calendar"></i> Automation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><i class="icon ion-android-checkmark-circle"></i> Publishing</a>
+                            </li>
+                        </ul>
+                    </div>
+                    {% include 'helpers/_datalist.twig' with {
+                        'url': '/index.php?page=funnels/_edit_pages'
+                    } %}
+                    <div class="alert alert-secondary mt-lvl5 text-center pd-lvl4">
+                        <!--<i class="ion-arrow-swap icon-xxl text-dim-lvl3"></i>-->
+                        <h4 class="text-bold text-lvl4">Start Split Test</h4>
+                        <p>Optimize your lead and sales generation with split tests.</p>
+                        <button type="button" class="btn btn-secondary btn-icon-left btn-lg"><i class="ion-plus-round"></i> Create Variation </button>
+                    </div>
+                </div>
+                <hr>
+                <div class="text-center">
+                    <button type="button" class="btn btn-default btn-icon-left mr-lvl1"><i class="ion-ios-copy"></i> Clone Funnel Step </button>
+                    <button type="button" class="btn btn-danger btn-icon-left"><i class="ion-trash-b"></i> Delete Funnel Step </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "patterns/layouts/modal.twig" %}
+
+{% block title %}Edit Recipients{% endblock %}
+
+{% block content %}
+    {% include ['ux/templates/helpers/_select.twig', 'helpers/_select.twig'] with {
+        'name': '',
+        'value': '',
+        'options': [
+            {'text': 'Choose a list', 'value': ''},
+            {'text': 'VIP list 88', 'value': '1', 'desc': '100 subscribers'},
+            {'text': 'Normal list 1970', 'value': '2', 'desc': '23 subscribers'}
+        ]
+    } %}
+{% endblock %}

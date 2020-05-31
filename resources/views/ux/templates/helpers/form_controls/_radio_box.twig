@@ -1,0 +1,12 @@
+<ul class="option-grid mt-lvl2">
+    {% for option in options %}
+        <li>
+            <input{{ option['value'] == value ? ' checked' : '' }} class="option-grid-input" type="radio" name="{{ name }}" value="{{ option['value'] }}" />
+            <div class="box text-center">
+                <i class="{{ option['icon'] }} image"></i>
+                <div class="text-semibold mb-lvl1">{{ option['text'] }}</div>
+                <div class="option-grid-desc text-dim text-small text-semibold">{{ option['desc'] }}</div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>

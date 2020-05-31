@@ -1,0 +1,32 @@
+{% extends "patterns/layouts/base.twig" %}
+
+{% block page_header %}
+    <h1 class="text-semibold mr-auto text-center">Before you import, some important information</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <img src="/assets/image/popup-image.PNG">
+            <p class="align-center">Don't forget that by clicking "Agree and upload", you're agreeing to our terms and conditions and the laws surrounding permission marketing. We only allow 100% opt-in permission-based data to be imported and sent to from your account. Please remember to give this a read before uploading your data!</p>
+            <button type="button" class="btn btn-primary m-12 mt-0">Agree to the terms and conditions</button>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="/assets/image/email-illo.svg">
+                    <div><a href="/index.php?page=import/upload-form">Upload a file</a></div>
+                </div>
+                <div class="col-md-6">
+                    <img src="/assets/image/ad-illo.svg">
+                    <div><a href="">Sync a datasource</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

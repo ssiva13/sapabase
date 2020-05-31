@@ -1,0 +1,54 @@
+<li>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-5">
+                    {% if checkbox %}
+                        {% include ux('helpers/_datalist_row_checkbox.twig') with {
+                            id: checkbox['id']
+                        } %}
+                    {% endif %}
+                    <h4 class="text-semibold">
+                        <a href="{{ main_col['url'] }}">{{ main_col['text'] }}</a>
+                    </h4>
+                    <p class="text-dim">{{ main_col['desc'] }}</p>
+                </div>
+                <div class="col-md-7">
+                    {% for col in cols %}
+                        <div class="col-data pull-left {{ col['class'] }}">
+                            <h4 class="text-semibold">
+                                {{ col['text'] }}
+                                {% if col['text_hover'] %}
+                                    <span class="datalist-line-hover text-dim2 ml-lvl1 text-normal">
+                                        {{ col['text_hover'] }}
+                                    </span>
+                                {% endif %}
+                            </h4>
+                            <p class="text-dim">{{ col['desc'] }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 text-right datalist-line-hover flex" style="flex-direction: row-reverse">
+            {% if group_actions %}
+                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <a class="btn btn-default" href="{{ group_actions['main_action']['url'] }}">
+                        {{ group_actions['main_action']['text'] }}
+                    </a>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-default dropdown-toggle dropdown-toggle-only p-11" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+                            {% for action in group_actions['more_actions'] %}
+                                {% include ux('helpers/_link.twig') with action|merge({
+                                    class: "dropdown-item datalist-row-action-#{action['type']}"
+                                }) %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</li>

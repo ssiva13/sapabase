@@ -1,0 +1,16 @@
+<!-- file-upload-filename input [CUT FROM HERE]-->
+<div class="input-group file-upload">
+    <input type="text" class="form-control file-upload-filename" disabled="disabled">
+    <span class="input-group-btn">
+        <!-- file-upload-clear button -->
+        <button type="button" class="btn btn-default file-upload-clear" style="display:none;">
+            <span class="glyphicon glyphicon-remove"></span> {{ trans('messages.file_upload.clear') }}
+        </button>
+        <!-- file-upload-input -->
+        <div class="btn btn-default file-upload-input">
+            <span class="glyphicon glyphicon-folder-open"></span>
+            <span class="file-upload-input-title" change-label="{{ trans('messages.file_upload.change') }}">{{ trans('messages.file_upload.browse') }}</span>
+            <input type="file" name="{{ name }}" value="{{ value }}" accept="image/png, image/jpeg, image/gif"/> <!-- rename it -->
+        </div>
+    </span>
+</div><!-- /input-group file-upload [TO HERE]-->

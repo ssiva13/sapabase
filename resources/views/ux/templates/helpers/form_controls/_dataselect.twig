@@ -1,0 +1,33 @@
+<div class="dataselect">
+    <input type="hidden" name="{{ name }}" value="" />
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default dropdown-toggle selected-holder" data-toggle="dropdown">
+        </button>
+        <div class="dropdown-menu dropdown-menu-left" aria-labelledby="btnGroupDrop1">
+            {% if blank %}
+                <a class="dropdown-item dataselect-item"
+                    href="javascript:void(0)"
+                    data-value=""
+                    data-text="{{ blank }}"
+                >
+                    {{ blank }}
+                </a>
+            {% endif %}
+            {% for option in options %}
+                <a class="dropdown-item dataselect-item{{ (value == option['value']) ? ' selected' : '' }} {% if option['icon'] %} has-icon{% endif %}"
+                    href="javascript:void(0)"
+                    data-value="{{ option['value'] }}"
+                    data-text="{{ option['text'] }}"
+                >
+                    {% if option['icon'] %}
+                        <i class="{{ option['icon'] }}"></i>
+                    {% endif %}
+                    {{ option['text'] }}
+                    {% if option['desc'] %}
+                        <div class="dataselect-desc text-normal text-dim">{{ option['desc'] }}</div>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>

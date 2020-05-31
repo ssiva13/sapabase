@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="{{ asset('assets/css/self_builder_frame.css') }}">
+    </head>
+    <body>
+        <div class="self-builder-content">
+            {% block content %}{% endblock %}
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="{{ asset('assets/lib/tinymce/js/tinymce/tinymce.min.js') }}"></script>
+        <script src="{{ asset('assets/js/self_builder_frame.js') }}"></script>
+    </body>
+</html>

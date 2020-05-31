@@ -1,0 +1,15 @@
+<div class="ajax-modal-header flex bg-gray">
+    <div class="title text-semibold">{% block header %}{% endblock %}</div>
+    <div class="actions">
+        <a class="ajax-modal-close" href="">Cancel</a>
+        {% block actions %}{% endblock %}
+    </div>
+</div>
+<div class="ajax-modal-body">
+    {% if block('title') %}
+        <h1 class="mb-lvl6">
+            {% block title %}{% endblock %}
+        </h1>
+    {% endif %}
+    {% block content %}{% endblock %}
+</div>

@@ -1,0 +1,23 @@
+<div class="form-group{{ errors.has(name) ? ' has-error' : '' }}">
+    {% if label %} <label for="exampleInputEmail1">{{ label }}</label>{% endif %}
+    <div class="control-container">
+        {% include ux("helpers/form_controls/_#{type}.twig") %}
+
+        {% if right_holder %}
+            <div class="right-holder">
+                {{ right_holder }}
+            </div>
+        {% endif %}
+
+        {% if errors.has(name) %}
+            <span class="help-block error-block text-danger">
+                {{ errors.first(name) }}
+            </span>
+        {% endif %}
+        {% if help %}
+            <div class="field-help">
+                {{ help }}
+            </div>
+        {% endif %}
+    </div>
+</div>

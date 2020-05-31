@@ -1,0 +1,54 @@
+{% extends "patterns/layouts/base.twig" %}
+
+{% block title %}Data list{% endblock %}
+
+{% block page_header %}
+    <h1 class="text-semibold">Data list</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="sub-section">
+        <h3>Media</h3>
+        {% include 'helpers/_datalist.twig' with {
+            'url': '/index.php?page=_datalist_media',
+            'sort': {
+                'name': 'sort-by',
+                'value': 'created_at',
+                'options': [
+                    {'text': 'Custom order', 'value': 'custom'},
+                    {'text': 'Name', 'value': 'name'},
+                    {'text': 'Date created', 'value': 'created_at'}
+                ]
+            },
+            'actions': [
+                {'text': 'Delete', 'url': 'custom'},
+            ]
+        } %}
+    </div>
+    <div class="sub-section">
+        <h3>Basic</h3>
+        {% include 'helpers/_datalist.twig' with {
+            'url': '/index.php?page=_datalist_basic',
+            'sort': {
+                'name': 'sort-by',
+                'value': 'created_at',
+                'options': [
+                    {'text': 'Custom order', 'value': 'custom'},
+                    {'text': 'Name', 'value': 'name'},
+                    {'text': 'Date created', 'value': 'created_at'}
+                ]
+            },
+            'actions': [
+                {'text': 'Delete', 'url': 'custom'},
+            ]
+        } %}
+    </div>
+    <div class="sub-section">
+        <h3>Simple list</h3>
+        <table>
+            <tr>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}

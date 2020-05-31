@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}{% endblock %} - Acelle UX</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% block css %}
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet">
+
+        <link rel="stylesheet" href="{{ asset('assets/lib/ionicons/css/ionicons.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/lib/datepicker/css/bootstrap-datepicker3.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/lib/loaders/loaders.css') }}">
+
+        <link rel="stylesheet" href="{{ asset('assets/css/general.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+    {% endblock %}
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a class="navbar-brand text-semibold text-italic" href="#">Acelle-UX</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item text-small text-semibold{% if page == 'index' %} active{% endif %}">
+                    <a class="nav-link" href="/index.php">Home</a>
+                </li>
+                <li class="nav-item dropdown text-small text-semibold{% if page == 'datalist' %} active{% endif %} ">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Content appearance
+                    </a>
+                    <div class="dropdown-menu has-border" aria-labelledby="dropdown01">
+                        <a class="dropdown-item text-semibold{% if page == 'datalist' %} active{% endif %}" href="/index.php?page=datalist">Data list</a>
+                        <a class="dropdown-item text-semibold" href="/index.php?page=datalist">Panel</a>
+                    </div>
+                </li>
+                <li class="nav-item text-small text-semibold{% if page == 'forms' %} active{% endif %}">
+                    <a class="nav-link" href="/index.php?page=forms">Forms</a>
+                </li>
+                <li class="nav-item dropdown text-small text-semibold{% if 'automations' in page %} active{% endif %} ">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Automation
+                    </a>
+                    <div class="dropdown-menu has-border" aria-labelledby="dropdown01">
+                        <a class="dropdown-item text-semibold{% if page == 'automations/recipients' %} active{% endif %}" href="/index.php?page=automations/recipients">
+                          Recipients
+                        </a>
+                        <a class="dropdown-item text-semibold{% if page == 'automations/workflow' %} active{% endif %}" href="/index.php?page=automations/workflow">
+                          Workflow
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown text-small text-semibold{% if 'funnels' in page %} active{% endif %} ">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Click Funnels
+                    </a>
+                    <div class="dropdown-menu has-border" aria-labelledby="dropdown01">
+                        <a class="dropdown-item text-semibold{% if page == 'funnels/list' %} active{% endif %}" href="/index.php?page=funnels/list">
+                            List
+                        </a>
+                        <a class="dropdown-item text-semibold{% if page == 'funnels/edit' %} active{% endif %}" href="/index.php?page=funnels/edit">
+                            Edit
+                        </a>
+                        <a class="dropdown-item text-semibold{% if page == 'funnels/edit_full' %} active{% endif %}" href="/index.php?page=funnels/edit_full">
+                            Edit - Full Width
+                        </a>
+                        <a class="dropdown-item text-semibold{% if page == 'funnels/edit_full_dark_sidebar' %} active{% endif %}" href="/index.php?page=funnels/edit_full_dark_sidebar">
+                            Edit - Full Width (Dark)
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown text-small text-semibold{% if 'contacts' in page %} active{% endif %} ">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Contacts
+                    </a>
+                    <div class="dropdown-menu has-border" aria-labelledby="dropdown01">
+                        <a class="dropdown-item text-semibold{% if page == 'contacts/list' %} active{% endif %}" href="/index.php?page=contacts/list">
+                            List
+                        </a>
+                        <a class="dropdown-item text-semibold{% if page == 'contacts/edit' %} active{% endif %}" href="/index.php?page=contacts/edit">
+                            Edit
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown text-small text-semibold{% if 'import' in page %} active{% endif %} ">
+                    <a class="nav-link" href="/index.php?page=import/import">
+                        Import
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown text-small text-semibold{% if 'automations' in page %} active{% endif %} ">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="media media-small inline-block mr-10">
+                            <img src="/templates/patterns/assets/image/avatar.jpg" />
+                        </span>
+                        Lawe Pham
+                    </a>
+                    <div class="dropdown-menu has-border dropdown-menu-right" aria-labelledby="dropdown01">
+                        <a class="dropdown-item text-semibold{% if page == 'automations/recipients' %} active{% endif %}" href="/index.php?page=automations/recipients">
+                          Account Details
+                        </a>
+                        <a class="dropdown-item text-semibold{% if page == 'automations/workflow' %} active{% endif %}" href="/index.php?page=automations/workflow">
+                          Logout
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header flex">
+            {% block page_header %}{% endblock %}
+            {% block page_actions %}{% endblock %}
+        </div>
+
+        {% block content %}{% endblock %}
+
+    </div><!-- /.container -->
+
+    {% block js %}
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+        <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
+        <script src="{{ asset('assets/lib/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+
+        <script src="{{ asset('assets/js/dataselect.js') }}"></script>
+        <script src="{{ asset('assets/js/datalist.js') }}"></script>
+        <script src="{{ asset('assets/js/ajaxlink.js') }}"></script>
+        <script src="{{ asset('assets//js/app.js') }}"></script>
+    {% endblock %}
+  </body>
+</html>

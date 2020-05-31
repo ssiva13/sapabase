@@ -1,0 +1,18 @@
+{% if request['list_uid'] != '' %}
+    {% include ux('helpers/form_controls/control.twig') with {
+        type: 'radio',
+        name: 'list_cond',
+        value: 'entire_list',
+        label: '',
+        options: [
+            {'text': 'Entire list', 'value': 'entire_list'},
+            {'text': 'Saved or pre-built segment ', 'value': 'segment'},
+        ]
+    } %}
+
+    <div
+        class="ajax-condition-box"
+        data-control="[name='list_cond']"
+        data-url="/index.php?page=automations/_recipients_list_segment"
+    ></div>
+{% endif %}

@@ -1,0 +1,16 @@
+<div class="">
+    {% if label %}<label class="head">{{ label }}</label>{% endif %}
+    {% for option in options %}
+        <label class="custom-control custom-checkbox">
+            <input{{ (value == option['value']) ? ' checked' : '' }}
+                name="{{ name }}"
+                value="{{ option['value'] }}"
+                type="checkbox" class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description{% if desc_class %} {{ desc_class }}{% endif %}">
+                {{ option['text'] }}
+                <!--<div class="desc">Subscribe notifications as they happen</div>-->
+            </span>
+        </label>
+    {% endfor %}
+</div>

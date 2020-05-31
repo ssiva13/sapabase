@@ -1,0 +1,48 @@
+{% extends "patterns/layouts/base.twig" %}
+
+{% block title %}Import{% endblock %}
+
+{% block page_header %}
+    <h1 class="text-semibold mr-auto">Good Morning, Nghi!</h1>
+{% endblock %}
+
+{% block page_actions %}
+    <button type="button" class="btn btn-default m-12 mt-0" data-toggle="dropdown">Select A Data Source</button>
+    <button type="button" class="btn btn-secondary m-12 mt-0">Connect </button>
+{% endblock %}
+
+
+{% block content %}
+    <ul class="nav nav-top-page">
+        <li class="nav-item dropdown">
+            <a class="nav-link active">Overview</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Activity</a>
+        </li>
+    </ul>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="sub-section">
+                <div class="sub-section-header flex">
+                    <h3 class="mr-auto">Your contacts</h3>
+                </div>
+                <div class="alert alert-secondary mt-lvl5 text-center pd-lvl4">
+                    <div class="row">
+                        <div class="col-md-4 text-right">
+                            <img src="/assets/image/empty.png">
+                        </div>
+                        <div class="col-md-8 text-left">
+                            <h4 class="text-bold text-lvl4">You do not have any contact</h4>
+                            <p>Hit the import button below to import your contact from a TXT, CSV or Excel file.</p>
+                            <p>Max file size is 250MB</p>
+                            <a href="/index.php?page=import/import-popup"><button type="button" class="btn btn-secondary btn-icon-left btn-md m-12">Import </button></a>
+                            <a href="" class="link">Maybe later</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

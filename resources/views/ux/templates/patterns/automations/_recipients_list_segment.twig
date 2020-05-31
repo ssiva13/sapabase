@@ -1,0 +1,25 @@
+{% if request['list_cond'] == 'segment' %}
+    <p>Select a segment to focus your audience.</p>
+    <hr class="mb-lvl4" />
+    <h3>Pre-built segments</h3>
+    <p class="mb-lvl3">We created these target audiences from subscribers on your list. <a href="">Learn more about pre-built segments</a>.</p>
+    <ul class="option-grid">
+        <li>
+            <input checked class="option-grid-input" type="checkbox" name="" />
+            <div class="box text-center">
+                <label>New Subscribers</label>
+                <div class="option-grid-desc text-dim text-small text-semibold">Subscribers who have joined your list in the past 7 days.</div>
+            </div>
+        </li>
+        <li>
+            <input class="option-grid-input" type="checkbox" name="" />
+            <div class="box text-center">
+                <label>Active Subscribers</label>
+                <div class="option-grid-desc text-dim text-small text-semibold">Subscribers who have opened at least one of your last 5 campaigns.</div>
+            </div>
+        </li>
+    </ul>
+    
+{% elseif request['list_cond'] == 'entire_list' %}
+    <p><span class="text-semibold">0</span> recipients. Everyone in your list will receive this email.</p>
+{% endif %}
