@@ -15,4 +15,4 @@ Homestead.json
 .phpunit.result.cache
 .htaccess
 composer.lock
-.idea
+.idea/*

@@ -912,3 +912,5 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['not_installed', 'auth', 
     Route::get('admin/payment/gateways/edit/{name}', 'PaymentController@edit');
     Route::get('admin/payment/gateways/index', 'PaymentController@index');
 });
+
+Route::get('admin/twilio', 'Admin\TwilioIntegrationController@automatedNotification');
