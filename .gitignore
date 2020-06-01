@@ -6,7 +6,7 @@ yarn-error.log
 # Laravel 5 & Lumen specific
 public/storage
 public/hot
-
+tests
 storage/*.key
 .env
 Homestead.yaml
@@ -16,3 +16,4 @@ Homestead.json
 .htaccess
 composer.lock
 .idea/*
+live.env
