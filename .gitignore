@@ -17,5 +17,5 @@ Homestead.json
 composer.lock
 .idea/*
 .idea/
-.idea
+/.idea
 live.env
