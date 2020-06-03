@@ -18,6 +18,7 @@ composer.lock
 .idea/*
 .idea/
 /.idea
+/.idea/
 live.env
 .idea/symfony2.xml
 .idea/sapabase.iml
