@@ -16,4 +16,6 @@ Homestead.json
 .htaccess
 composer.lock
 .idea/*
+.idea/
+.idea
 live.env
