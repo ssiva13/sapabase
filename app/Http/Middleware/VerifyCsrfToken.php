@@ -19,5 +19,8 @@ class VerifyCsrfToken extends BaseVerifier
         'payments/paddle/card*/hook',
         'payments/payumoney-success/*',
         'payments/payumoney-fail/*',
+        'twilio/token',
+        '/twilio/support/call',
+        '/twilio/inbound-webhook/*',
     ];
 }

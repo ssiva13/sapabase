@@ -2,6 +2,7 @@
 
 namespace Acelle\Http\Middleware;
 
+use Carbon\Carbon;
 use Closure;
 
 class Backend
@@ -34,7 +35,7 @@ class Backend
         try {
             if (is_object($user->admin->language)) {
                 \App::setLocale($user->admin->language->code);
-                \Carbon\Carbon::setLocale($user->admin->language->code);
+                Carbon::setLocale($user->admin->language->code);
             }
         } catch (\Exception $e) {
         }

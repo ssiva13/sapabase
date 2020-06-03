@@ -2,6 +2,8 @@
 
 namespace Acelle\Http\Controllers;
 
+use Acelle\Library\Tool;
+use Acelle\Model\Setting;
 use Illuminate\Http\Request;
 use Acelle\Model\Notification as AppNotification;
 
@@ -469,17 +471,17 @@ class InstallController extends Controller
         // Re-generate remote job url
         if($request->re_generate_remote_job_url) {
             $remote_job_token = str_random(60);
-            \Acelle\Model\Setting::set('remote_job_token', $remote_job_token);
+            Setting::set('remote_job_token', $remote_job_token);
             echo action('Controller@remoteJob', ['remote_job_token' => $remote_job_token]);
             return;
         }
 
-        $respone = \Acelle\Library\Tool::cronjobUpdateController($request, $this);
-        if($respone == 'done' || $respone == 'remote') {
+        $response = Tool::cronjobUpdateController($request, $this);
+        if($response == 'done' || $response == 'remote') {
             return redirect()->action('InstallController@finishing');
         }
 
-        return view('install.cron_jobs', $respone);
+        return view('install.cron_jobs', $response);
     }
 
     public function finishing(Request $request)
@@ -723,7 +725,14 @@ class InstallController extends Controller
         $smtp = !empty($smtp) ? $smtp : [];
 
         $env_file = fopen(base_path('.env'), 'w') or die('Unable to open file!');
-        $config_string = 'APP_ENV=production
+
+        if(strpos($_SERVER['HTTP_HOST'], 'localhost') === false && strpos($_SERVER['HTTP_HOST'], '127.0.0.1') === false) {
+            $app_env = 'production';
+        } else {
+            $app_env = 'development';
+        }
+
+        $config_string = 'APP_ENV='.$app_env.'
 APP_DEBUG=true
 APP_KEY='.$app_key.'
 APP_URL='.url('/').'

@@ -1,10 +1,11 @@
 <?php
 
+use Acelle\Model\Customer;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTwilioClientNameInUsersTable extends Migration
+class AddTwilioClientNameInCustomersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +14,11 @@ class AddTwilioClientNameInUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('customers', function (Blueprint $table) {
             $table->string('twilio_client_name')->nullable()->default(null)->after('last_name');
         });
 
-        $allUsers = \App\Models\User::select('id', 'first_name', 'last_name')->get();
+        $allUsers = Customer::select('id', 'first_name', 'last_name')->get();
 
         foreach ($allUsers as $allUser)
         {
@@ -30,7 +31,7 @@ class AddTwilioClientNameInUsersTable extends Migration
 
             $name = str_replace(' ', '_', $name);
 
-            $checkIfNameAlreadyExists = \App\Models\User::where('twilio_client_name', $name)->count();
+            $checkIfNameAlreadyExists = Customer::where('twilio_client_name', $name)->count();
 
             if($checkIfNameAlreadyExists > 0)
             {
@@ -49,7 +50,7 @@ class AddTwilioClientNameInUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('customers', function (Blueprint $table) {
             $table->dropColumn(['twilio_client_name']);
         });
     }

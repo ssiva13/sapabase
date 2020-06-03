@@ -1,5 +1,6 @@
 <?php
 
+use Acelle\Model\TwilioNumber;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,7 +23,7 @@ class CreateTwilioNumbersTable extends Migration
         });
 
         // Create Twilio number
-        $newTwilioNumber = new \App\Models\TwilioNumber();
+        $newTwilioNumber = new TwilioNumber();
         $newTwilioNumber->save();
     }
 

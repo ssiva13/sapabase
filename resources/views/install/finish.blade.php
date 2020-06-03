@@ -20,7 +20,7 @@
         If you are having problems or suggestions, please visit <a class="text-semibold" href="http://acellemail.com" target="_blank">acellemail.com official website</a>.
         <br><br>
 
-        Thank you for chosing AcelleMail.
+        Thank you for choosing AcelleMail.
         <div class="clearfix"><!-- --></div>      
 <br />
 
