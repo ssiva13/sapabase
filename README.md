@@ -20,3 +20,6 @@ Add Twilio Config File  ```config/twilio.php```
 Configure webhooks urls in twilio account
 
 e.g. ```http://127.0.0.1:8000/admin/twilio```
+
+To control phone calls, your application needs to output TwiML. 
+It is important to set a TwiML response ```wgtgg```
