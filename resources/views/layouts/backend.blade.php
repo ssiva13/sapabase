@@ -358,7 +358,7 @@
 								<i class="icon-key position-left"></i> {{ trans('messages.api') }}
 							</a>
 						</li>
-						<li><a href="{{ url("/logout") }}"><i class="icon-switch2"></i> {{ trans('messages.logout') }}</a></li>
+						<li><a href="{{ url("/logout") }}"><i class="icon-switch2"></i> hjbjbj {{ trans('messages.logout') }}</a></li>
 					</ul>
 				</li>
 			</ul>
