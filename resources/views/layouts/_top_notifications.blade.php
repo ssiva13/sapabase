@@ -1,55 +1,69 @@
-<li class="dropdown">
-	<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="display: flex;
-    align-items: center;
-    height: 52px;">
-		<i class="lnr lnr-alarm top-notification-icon"></i> 
-		<span class="visible-xs-inline-block position-right">{{ trans('messages.activity_log') }}</span>
-		@if (Acelle\Model\Notification::count())
-			{{-- <span class="badge badge-danger top-notification-alert">!</span> --}}
-			<i class="material-icons-outlined tabs-warning-icon text-danger top-notification-alert">info</i>
+<div class="dropdown d-inline-block ml-1">
+	<button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
+			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+		<i class="lnr lnr-alarm top-notification-icon"></i>
+		<span class="visible-xs-inline-block position-center"></span>
+		@if (Auth::user()->admin->notifications()->count() > 0)
+			 <span class="badge badge-danger top-notification-alert">{{Auth::user()->admin->notifications()->count()}}</span>
 		@endif
-	</a>
-	
-	<div class="dropdown-menu dropdown-content width-350">
-		<div class="dropdown-content-heading">
-			{{ trans('messages.activity_log') }}						
+	</button>
+	<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0" aria-labelledby="page-header-notifications-dropdown">
+		<div class="p-2">
+			<div class="row align-items-center">
+				<div class="col text-center">
+					<h5 class="m-0"> {{ trans('messages.activity_log') }}</h5>
+				</div>
+			</div>
 		</div>
-
-		<ul class="media-list dropdown-content-body top-history top-notifications">
+		<div data-simplebar style="max-height: 230px;" >
 			@if (Auth::user()->admin->notifications()->count() == 0)
-				<li class="text-center text-muted2">
-					<span href="#">
-						<i class="lnr lnr-bubble"></i> {{ trans('messages.no_notifications') }}
-					</span>
-				</li>
+				<a href="" class="text-reset notification-item">
+					<div class="media">
+						<div class="avatar-xs mr-3">
+							<span class="avatar-title border-info rounded-circle ">
+								<i class="mdi mdi-message"></i>
+							</span>
+						</div>
+						<div class="media-body">
+							<div class="text-muted">
+								<p class="mb-1">{{ trans('messages.no_notifications') }}</p>
+							</div>
+						</div>
+					</div>
+				</a>
 			@endif
 			@foreach (Auth::user()->admin->notifications()->take(20)->get() as $notification)
-				<li class="media">
-					<div class="media-left">
-						@if ($notification->level == \Acelle\Model\Notification::LEVEL_WARNING)
-							<i class="lnr lnr-warning bg-warning"></i>
-						@elseif ( false &&$notification->level == \Acelle\Model\Notification::LEVEL_ERROR)
-							<i class="lnr lnr-cross bg-danger"></i>
-						@else
-							<i class="lnr lnr-menu bg-info"></i>
-						@endif
+				<a href="" class="text-reset notification-item">
+					<div class="media">
+						<div class="avatar-xs mr-3">
+							@if ($notification->level == \Acelle\Model\Notification::LEVEL_WARNING)
+								<span class="avatar-title border-warning rounded-circle ">
+									<i class="mdi mdi-message"></i>
+								</span>
+							@elseif ( false &&$notification->level == \Acelle\Model\Notification::LEVEL_ERROR)
+								<span class="avatar-title border-danger rounded-circle ">
+									<i class="mdi mdi-message"></i>
+								</span>
+							@else
+								<span class="avatar-title border-info rounded-circle ">
+									<i class="mdi mdi-message"></i>
+								</span>
+							@endif
+						</div>
+						<div class="media-body">
+							<h6 class="mt-0 mb-1">{{ $notification->title }} <span style="float: right"> {{ $notification->created_at->diffForHumans() }}</span></h6>
+							<div class="text-muted">
+								<p class="mb-1">{{ $notification->message }}</p>
+							</div>
+						</div>
 					</div>
-
-					<div class="media-body">
-						<a href="#" class="media-heading">
-							<span class="text-semibold">{{ $notification->title }}</span>
-							<span class="media-annotation pull-right">{{ $notification->created_at->diffForHumans() }}</span>
-						</a>
-
-						<span class="text-muted desc text-muted" title='{!! $notification->message !!}'>{{ $notification->message }}</span>
-					</div>
-				</li>
+				</a>
 			@endforeach
-			
-		</ul>
-		
-		<div class="dropdown-content-footer">
-			<a href="{{ action("Admin\NotificationController@index") }}" data-popup="tooltip" title="{{ trans('messages.all_notifications') }}"><i class="icon-menu display-block"></i></a>
+		</div>
+		<div class="p-2 border-top">
+			<a class="btn btn-sm btn-link font-size-14 btn-block text-center" href="{{ action("Admin\NotificationController@index") }}" title="{{ trans('messages.all_notifications') }}">
+				{{ trans('messages.all_notifications') }}
+			</a>
 		</div>
 	</div>
-</li>
+</div>

@@ -1,7 +1,8 @@
     <!-- Core JS files -->
 	<script type="text/javascript" src="{{ URL::asset('assets/js/plugins/loaders/pace.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::asset('assets/js/core/libraries/jquery.min.js') }}"></script>
-	<script type="text/javascript" src="{{ URL::asset('assets/js/core/libraries/bootstrap.min.js') }}"></script>
+{{--	<script type="text/javascript" src="{{ URL::asset('assets/js/core/libraries/bootstrap.min.js') }}"></script>--}}
+	<script type="text/javascript" src="{{ URL::asset('libs/bootstrap/bootstrap.min.js')}}"></script>
 	<script type="text/javascript" src="{{ URL::asset('assets/js/plugins/loaders/blockui.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::asset('assets/js/plugins/ui/nicescroll.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::asset('assets/js/plugins/ui/drilldown.js') }}"></script>
@@ -41,6 +42,17 @@
 	<script type="text/javascript" src="{{ URL::asset('assets/timepicker/jquery.timepicker.js') }}"></script>
 		
 	<script type="text/javascript" src="{{ URL::asset('assets/datepicker/dist/datepicker.min.js') }}"></script>
+
+	<script type="text/javascript" src="{{ URL::asset('libs/metismenu/metismenu.min.js')}}"></script>
+	<script type="text/javascript" src="{{ URL::asset('libs/simplebar/simplebar.min.js')}}"></script>
+	<script type="text/javascript" src="{{ URL::asset('libs/node-waves/node-waves.min.js')}}"></script>
+	<script type="text/javascript" src="{{ URL::asset('libs/jquery-sparkline/jquery-sparkline.min.js')}}"></script>
+
+
+
+	<script type="text/javascript" src="{{ URL::asset('js/admin/app.js')}}"></script>
+
+
 	
 	<!-- PNotify -->
 	<link href="{{ URL::asset('assets2/lib/pnotify-4.0.0/PNotifyBrightTheme.css') }}" rel="stylesheet" type="text/css">
@@ -51,13 +63,9 @@
 		PNotify.defaults.styling = 'bootstrap4';
 	</script>
 
-	@yield('page_script')
-
 	<!-- Dialog -->
 	<link href="{{ URL::asset('css/dialog.css') }}" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="{{ URL::asset('js/dialog.js') }}"></script>
-
-	
 	<script type="text/javascript" src="{{ URL::asset('js/autofill.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::asset('js/select-custom.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::asset('js/modal.js') }}"></script>
@@ -69,8 +77,9 @@
 	<script type="text/javascript" src="{{ URL::asset('assets2/js/box.js') }}"></script>
 	<!-- /theme JS files -->
 
+
 	@include('layouts._script_vars')
-	@include('layouts._menu_script')
+{{--	@include('layouts._menu_script')--}}
 
 	<!-- display flash message -->
 	@include('common.flash')

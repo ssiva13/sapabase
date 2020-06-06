@@ -21,12 +21,14 @@ class SettingController extends Controller
     {
         if ($request->user()->admin->getPermission('setting_general') == 'yes') {
             return redirect()->action('Admin\SettingController@general');
-        //} elseif ($request->user()->admin->getPermission('setting_sending') == 'yes') {
-        //   return redirect()->action('Admin\SettingController@sending');
+        } elseif ($request->user()->admin->getPermission('setting_sending') == 'yes') {
+           return redirect()->action('Admin\SettingController@sending');
         } elseif ($request->user()->admin->getPermission('setting_system_urls') == 'yes') {
             return redirect()->action('Admin\SettingController@urls');
         } elseif ($request->user()->admin->getPermission('setting_background_job') == 'yes') {
             return redirect()->action('Admin\SettingController@cronjob');
+        } elseif ($request->user()->admin->getPermission('setting_twilio_manager') == 'yes') {
+            return redirect()->action('Admin\TwilioIntegrationController@index');
         }
     }
 

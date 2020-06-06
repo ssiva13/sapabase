@@ -22,6 +22,7 @@
 
 namespace Acelle\Model;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Acelle\Library\Log as MailLog;
 

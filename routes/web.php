@@ -917,3 +917,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['not_installed', 'twilio'
     Route::get('admin/twilio/send', 'TwilioIntegrationController@automatedNotification');
     Route::get('admin/twilio/purchase', 'TwilioIntegrationController@purchaseNumber');
 });
+Route::group(['namespace' => 'Admin'], function () {
+    Route::get('/test', "HomeController@test");
+    Route::get('/twilio', "TwilioIntegrationController@index");
+});

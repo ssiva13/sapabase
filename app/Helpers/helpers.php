@@ -18,6 +18,8 @@
  * @link       http://acellemail.com
  */
 
+use Carbon\Carbon;
+
 /**
  * Get full table name by adding the DB prefix.
  *
@@ -742,5 +744,21 @@ function toTimeString($datetime)
  */
 function checkEmail($email) {
     return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+ }
+
+ function growthRate($table){
+     $today = Carbon::today();
+     $monthAgo1 =  $today->subMonth();
+     $monthAgo2 =  $monthAgo1->subMonth();
+
+     $pastmonth1 = \DB::table($table)->where('status', 'active')->whereDate('created_at', '<=', $today)->whereDate('created_at', '>',$monthAgo1)->count();
+     $pastmonth2 = \DB::table($table)->where('status', 'active')->whereDate('created_at', '<=', $monthAgo1)->whereDate('created_at', '>',$monthAgo2)->count();
+
+     if($pastmonth2 > 0){
+         return (($pastmonth1 - $pastmonth2)/ $pastmonth2) * 100;
+     }else{
+         return (($pastmonth1 - $pastmonth2)/ 1) * 100;
+     }
+    return strtolower($tablename);
  }
  

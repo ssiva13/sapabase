@@ -1909,15 +1909,15 @@ class Customer extends Model implements BillableUserInterface
 
             switch ($interval) {
                 case 'month':
-                    $endsAt = \Carbon\Carbon::now()->addMonth($intervalCount)->timestamp;
+                    $endsAt = Carbon::now()->addMonth($intervalCount)->timestamp;
                     break;
                 case 'day':
-                    $endsAt = \Carbon\Carbon::now()->addDay($intervalCount)->timestamp;
+                    $endsAt = Carbon::now()->addDay($intervalCount)->timestamp;
                 case 'week':
-                    $endsAt = \Carbon\Carbon::now()->addWeek($intervalCount)->timestamp;
+                    $endsAt = Carbon::now()->addWeek($intervalCount)->timestamp;
                     break;
                 case 'year':
-                    $endsAt = \Carbon\Carbon::now()->addYear($intervalCount)->timestamp;
+                    $endsAt = Carbon::now()->addYear($intervalCount)->timestamp;
                     break;
                 default:
                     $endsAt = null;

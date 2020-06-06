@@ -19,6 +19,11 @@
 			<a href="{{ action('Admin\SettingController@urls') }}">
 			<i class="icon-link"></i> {{ trans('messages.system_urls') }}</a></li>
 	@endif
+	@if (Auth::user()->admin->getPermission("setting_twilio_manager") == 'yes')
+		<li class="{{ $action == "cronjob" ? "active" : "" }} text-semibold">
+			<a href="{{ action('Admin\TwilioIntegrationController@index') }}">
+			<i class="icon-gear"></i> {{ trans('messages.twilio_settings') }}</a></li>
+	@endif
 	@if (Auth::user()->admin->getPermission("setting_background_job") == 'yes')
 		<li class="{{ $action == "cronjob" ? "active" : "" }} text-semibold">
 			<a href="{{ action('Admin\SettingController@cronjob') }}">

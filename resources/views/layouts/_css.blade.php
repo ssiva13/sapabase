@@ -7,7 +7,7 @@
 <link href="{{ URL::asset('assets/css/icons/icomoon/styles.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ URL::asset('assets/css/icons/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ URL::asset('assets/css/icons/fontawesome-free/css/fontawesome.min.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ URL::asset('assets/css/bootstrap.css') }}" rel="stylesheet" type="text/css">
+
 <link href="{{ URL::asset('assets/css/core.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ URL::asset('assets/css/components.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ URL::asset('assets/css/colors.css') }}" rel="stylesheet" type="text/css">
@@ -16,8 +16,21 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 
+@yield('headerCss')
+<link href="{{ URL::asset('css/admin/icons.min.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('css/admin/icons.css')}}" rel="stylesheet" type="text/css" />
+<!-- App Css light-->
+<link href="{{ URL::asset('css/admin/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('css/admin/app.css')}}" id="app-style" rel="stylesheet" type="text/css" />
+<!-- Bootstrap  light -->
+{{--<link href="{{ URL::asset('assets/css/bootstrap.css') }}" rel="stylesheet" type="text/css">--}}
+<link href="{{ URL::asset('css/admin/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('css/admin/bootstrap.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+
+
 <link href="{{ URL::asset('css/app.css') }}?v={{ app_version() }}" rel="stylesheet" type="text/css">
 <link href="{{ URL::asset('css/theme.css') }}" rel="stylesheet" type="text/css">
+
 <link rel="stylesheet" href="{{ URL::asset('assets/css/icons/linearicons/style.css') }}">
 <link rel="stylesheet" href="{{ URL::asset('assets/tooltipster/css/tooltipster.bundle.css') }}">
 <link rel="stylesheet" href="{{ URL::asset('assets/tooltipster/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css') }}">
@@ -30,5 +43,3 @@
 <link href="{{ URL::asset('css/popup.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ URL::asset('css/mc.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ URL::asset('css/loading.css') }}" rel="stylesheet" type="text/css">
-
-

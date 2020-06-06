@@ -30,17 +30,38 @@ class TwilioIntegrationController extends Controller
      */
     public function __construct()
     {
-        $this->config = config('twilio.credentials');
-        $this->account_sid = $this->config['twilio_sid'];
-        $this->auth_token = $this->config['twilio_auth_token'];
-        $this->twilio_number = $this->config['twilio_number'];
-
-        try {
-            $this->client = new Client($this->account_sid, $this->auth_token);
-        } catch (ConfigurationException $e) {
-        }
+//        $this->config = config('twilio.credentials');
+//        $this->account_sid = $this->config['twilio_sid'];
+//        $this->auth_token = $this->config['twilio_auth_token'];
+//        $this->twilio_number = $this->config['twilio_number'];
+//
+//        try {
+//            $this->client = new Client($this->account_sid, $this->auth_token);
+//        } catch (ConfigurationException $e) {
+//        }
 
         parent::__construct();
+    }
+
+    public function index(Request $request)
+    {
+        if (!$request->user()->admin->can('read', new \Acelle\Model\SendingServer())) {
+            return $this->notAuthorized();
+        }
+
+        // If admin can view all sending domains
+        if (!$request->user()->admin->can("readAll", new \Acelle\Model\SendingServer())) {
+            $request->merge(array("admin_id" => $request->user()->admin->id));
+        }
+
+        // exlude customer seding servers
+        $request->merge(array("no_customer" => true));
+
+        $items = \Acelle\Model\SendingServer::search($request);
+
+        return view('admin.sending_servers.index', [
+            'items' => $items,
+        ]);
     }
 
     /**
@@ -51,7 +72,6 @@ class TwilioIntegrationController extends Controller
      */
     public function automatedNotification(Request $request)
     {
-//        return $request;
         $response = null;
         try{
             switch ($request->type){

@@ -234,6 +234,7 @@ class AdminGroup extends Model
             'setting_system_urls' => 'yes',
             'setting_access_when_offline' => 'yes',
             'setting_background_job' => 'yes',
+            'setting_twilio_manager' => 'yes',
             'setting_upgrade_manager' => 'no',
             'language_read' => 'yes',
             'language_create' => 'yes',
