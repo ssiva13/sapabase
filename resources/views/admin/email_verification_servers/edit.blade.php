@@ -22,11 +22,23 @@
 @endsection
 
 @section('content')
-
+    <div class="row">
+        @component('admin.common-components.settings_breadcrumb')
+            @slot('title') {{ trans('messages.email_verification_servers') }}  @endslot
+            @slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+            @slot('li2') Admin  @endslot
+            @slot('li3') {{ trans('messages.email_verification_server') }} @endslot
+            @slot('li4') {{ trans('messages.edit') }} @endslot
+        @endcomponent
+    </div>
+    <div class="card">
+        <div class="card-body">
     <form enctype="multipart/form-data" action="{{ action('Admin\EmailVerificationServerController@update', $server->uid) }}" method="POST" class="form-validate-jqueryz email-verification-server-form">
         {{ csrf_field() }}
         <input type="hidden" name="_method" value="PATCH">
         @include('admin.email_verification_servers._form')
-    <form>
+    </form>
+        </div>
+    </div>
 
 @endsection

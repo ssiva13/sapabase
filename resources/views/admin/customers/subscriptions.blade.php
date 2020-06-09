@@ -29,42 +29,50 @@
 
 @section('content')
 	@include('admin.customers._tabs')
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title text-muted text-center"><strong>{{ trans('messages.subscriptions') }}</strong></h4>
+            <div class="card">
+                <div class="card-body">
+                    <form class="listing-form"
+                        sort-url="{{ action('Admin\SubscriptionController@sort') }}"
+                        data-url="{{ action('Admin\SubscriptionController@listing') }}"
+                        per-page="15"
+                    >
+                        <input type="hidden" name="customer_uid" value="{{ $customer->uid }}" />
+                        <div class="row top-list-controls">
+                            <div class="col-md-11">
+                                <div class="filter-box">
+                                    <span class="filter-group">
+                                            <!--<span class="title text-semibold text-muted">{{ trans('messages.sort_by') }}</span>-->
+                                            <select class="select" name="sort-order">
+                                                <option value="subscriptions.updated_at">{{ trans('messages.updated_at') }}</option>
+                                                <option value="subscriptions.created_at">{{ trans('messages.created_at') }}</option>
+                                                <option value="subscriptions.ends_at">{{ trans('messages.ends_at') }}</option>
+                                            </select>
+                                            <button class="btn btn-xs sort-direction" rel="desc" data-popup="tooltip" title="{{ trans('messages.change_sort_direction') }}" type="button" class="btn btn-xs">
+                                                <i class="icon-sort-amount-desc"></i>
+                                            </button>
+                                        </span>
+                                        <span class="mr-10 input-medium">
+                                            <select placeholder="{{ trans('messages.plan') }}"
+                                                class="select2-ajax"
+                                                name="plan_uid"
+                                                data-url="{{ action('Admin\PlanController@select2') }}">
+                                            </select>
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
 
-    <form class="listing-form"
-        sort-url="{{ action('Admin\SubscriptionController@sort') }}"
-        data-url="{{ action('Admin\SubscriptionController@listing') }}"
-        per-page="15"
-    >
-        <input type="hidden" name="customer_uid" value="{{ $customer->uid }}" />
-        <div class="row top-list-controls">
-            <div class="col-md-11">
-                <div class="filter-box">
-                    <span class="filter-group">
-                            <!--<span class="title text-semibold text-muted">{{ trans('messages.sort_by') }}</span>-->
-                            <select class="select" name="sort-order">
-                                <option value="subscriptions.updated_at">{{ trans('messages.updated_at') }}</option>
-                                <option value="subscriptions.created_at">{{ trans('messages.created_at') }}</option>
-                                <option value="subscriptions.ends_at">{{ trans('messages.ends_at') }}</option>
-                            </select>
-                            <button class="btn btn-xs sort-direction" rel="desc" data-popup="tooltip" title="{{ trans('messages.change_sort_direction') }}" type="button" class="btn btn-xs">
-                                <i class="icon-sort-amount-desc"></i>
-                            </button>
-                        </span>
-                        <span class="mr-10 input-medium">
-                            <select placeholder="{{ trans('messages.plan') }}"
-                                class="select2-ajax"
-                                name="plan_uid"
-                                data-url="{{ action('Admin\PlanController@select2') }}">
-                            </select>
-                        </span>
+                        <div class="pml-table-container">
+
+
+
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <div class="pml-table-container">
-
-
-
-        </div>
-    </form>
+    </div>
 @endsection

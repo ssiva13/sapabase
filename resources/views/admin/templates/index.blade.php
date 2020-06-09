@@ -23,65 +23,86 @@
 @endsection
 
 @section('content')
-				<form class="listing-form"
-					sort-url="{{ action('Admin\TemplateController@sort') }}"
-					data-url="{{ action('Admin\TemplateController@listing') }}"
-					per-page="{{ Acelle\Model\Template::$itemsPerPage }}"
-				>
-					<div class="row top-list-controls">
-						<div class="col-md-9">
-							@if ($templates->count() >= 0)
-								<div class="filter-box">
-									<div class="btn-group list_actions hide">
-										<button type="button" class="btn btn-xs btn-grey-600 dropdown-toggle" data-toggle="dropdown">
-											{{ trans('messages.actions') }} <span class="caret"></span>
-										</button>
-										<ul class="dropdown-menu">
-											<li>
+
+	<div class="row">
+		@component('admin.common-components.settings_breadcrumb')
+			@slot('title') {{ trans('messages.settings') }}  @endslot
+			@slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+			@slot('li2') Admin  @endslot
+			@slot('li3') {{ trans('messages.settings') }} @endslot
+			@slot('li4') {{ trans('messages.template_gallery') }} @endslot
+		@endcomponent
+	</div>
+	<div class="card">
+		<div class="card-body">
+		<form class="listing-form"
+			sort-url="{{ action('Admin\TemplateController@sort') }}"
+			data-url="{{ action('Admin\TemplateController@listing') }}"
+			per-page="{{ Acelle\Model\Template::$itemsPerPage }}"
+		>
+			<div class="row top-list-controls">
+				<div class="col-md-9">
+					@if ($templates->count() >= 0)
+						<div class="filter-box">
+							<div class="btn-group list_actions hide">
+								<button type="button" class="btn btn-xs btn-grey-600 dropdown-toggle" data-toggle="dropdown">
+									{{ trans('messages.actions') }} <span class="caret"></span>
+								</button>
+								<div style="max-height: 230px;" class="dropdown-menu dropdown-menu-right" >
+									<div class="media-body">
+										<ol class="activity-feed mb-0">
+											<li class="dropdown-item">
 												<a delete-confirm="{{ trans('messages.delete_templates_confirm') }}" href="{{ action('TemplateController@delete') }}">
-													<i class="icon-trash"></i> {{ trans('messages.delete') }}
+													<div class="text-muted">
+														<p class="mb-1">
+															<i class="icon-trash"></i> {{ trans('messages.delete') }}
+														</p>
+													</div>
 												</a>
 											</li>
-										</ul>
+										</ol>
 									</div>
-									<div class="checkbox inline check_all_list">
-										<label>
-											<input type="checkbox" class="styled check_all">
-										</label>
-									</div>
-									<span class="filter-group">
-										<span class="title text-semibold text-muted">{{ trans('messages.sort_by') }}</span>
-										<select class="select" name="sort-order">
-											<option value="custom_order" class="active">{{ trans('messages.custom_order') }}</option>
-											<option value="name">{{ trans('messages.name') }}</option>
-											<option value="created_at">{{ trans('messages.created_at') }}</option>
-										</select>
-										<button class="btn btn-xs sort-direction" rel="asc" data-popup="tooltip" title="{{ trans('messages.change_sort_direction') }}" type="button" class="btn btn-xs">
-											<i class="icon-sort-amount-asc"></i>
-										</button>
-									</span>
-									<span class="text-nowrap">
-										<input name="search_keyword" class="form-control search" placeholder="{{ trans('messages.type_to_search') }}" />
-										<i class="icon-search4 keyword_search_button"></i>
-									</span>
 								</div>
-							@endif
+							</div>
+							<div class="checkbox inline check_all_list">
+								<label>
+									<input type="checkbox" class="styled check_all">
+								</label>
+							</div>
+							<span class="filter-group">
+								<span class="title text-semibold text-muted">{{ trans('messages.sort_by') }}</span>
+								<select class="select" name="sort-order">
+									<option value="custom_order" class="active">{{ trans('messages.custom_order') }}</option>
+									<option value="name">{{ trans('messages.name') }}</option>
+									<option value="created_at">{{ trans('messages.created_at') }}</option>
+								</select>
+								<button class="btn btn-xs sort-direction" rel="asc" data-popup="tooltip" title="{{ trans('messages.change_sort_direction') }}" type="button" class="btn btn-xs">
+									<i class="icon-sort-amount-asc"></i>
+								</button>
+							</span>
+							<span class="text-nowrap">
+								<input name="search_keyword" class="form-control search" placeholder="{{ trans('messages.type_to_search') }}" />
+								<i class="icon-search4 keyword_search_button"></i>
+							</span>
 						</div>
-						<div class="col-md-3 text-right">
-							<a href="{{ action('Admin\TemplateController@upload') }}" type="button" class="btn bg-info-800">
-								<i class="icon icon-upload"></i> {{ trans('messages.upload') }}
-							</a>
-							<a href="{{ action('Admin\TemplateController@builderCreate') }}" type="button" class="btn bg-info-800">
-								<i class="icon icon-plus2"></i> {{ trans('messages.create') }}
-							</a>
-						</div>
-					</div>
+					@endif
+				</div>
+				<div class="col-md-3 text-right">
+					<a href="{{ action('Admin\TemplateController@upload') }}" type="button" class="btn bg-info-800">
+						<i class="icon icon-upload"></i> {{ trans('messages.upload') }}
+					</a>
+					<a href="{{ action('Admin\TemplateController@builderCreate') }}" type="button" class="btn bg-info-800">
+						<i class="icon icon-plus2"></i> {{ trans('messages.create') }}
+					</a>
+				</div>
+			</div>
 
-					<div class="pml-table-container">
+			<div class="pml-table-container">
 
 
 
-					</div>
-				</form>
-
+			</div>
+		</form>
+		</div>
+	</div>
 @endsection

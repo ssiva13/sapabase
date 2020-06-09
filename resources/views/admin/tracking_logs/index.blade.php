@@ -23,7 +23,16 @@
 @endsection
 
 @section('content')
-				
+	<div class="row">
+		@component('admin.common-components.breadcrumb')
+			@slot('title') {{ trans('messages.tracking_log') }}  @endslot
+			@slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+			@slot('li2') Admin  @endslot
+			@slot('li3') {{ trans('messages.tracking_log') }} @endslot
+		@endcomponent
+	</div>
+	<div class="card">
+		<div class="card-body">
 				<form class="listing-form"
 					data-url="{{ action('Admin\TrackingLogController@listing') }}"
 					per-page="{{ Acelle\Model\TrackingLog::$itemsPerPage }}"					
@@ -60,5 +69,7 @@
 						
 						
 					</div>
-				</form>				
+				</form>
+		</div>
+	</div>
 @endsection

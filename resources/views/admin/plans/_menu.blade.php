@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row mt-4 pt-4">
     <div class="col-md-12">
         <ul class="nav nav-tabs nav-tabs-top page-second-nav mc-nav-tabs">
             <li rel0="PlanController/general">
@@ -11,27 +11,45 @@
                 rel1="PlanController/security"
                 rel2="PlanController/emailFooter"
             >
-                <a href="" class="level-1" data-toggle="dropdown">
+                <a href="" class="dropdown-toggle level-1" data-toggle="dropdown">
                     {{ trans('messages.plan.settings') }}
                     <span class="caret"></span>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-right">
-                    <li rel0="PlanController/quota">
-                        <a href="{{ action('Admin\PlanController@quota', $plan->uid) }}">
-                            {{ trans('messages.plan.quota') }}
-                        </a>
-                    </li>
-                    <li rel0="PlanController/security">
-                        <a href="{{ action('Admin\PlanController@security', $plan->uid) }}">
-                            {{ trans('messages.plan.security') }}
-                        </a>
-                    </li>
-                    <li rel0="PlanController/emailFooter">
-                        <a href="{{ action('Admin\PlanController@emailFooter', $plan->uid) }}">
-                            {{ trans('messages.plan.email_footer') }}
-                        </a>
-                    </li>
-                </ul>
+                <div style="max-height: 230px;" class="dropdown-menu dropdown-menu-right" >
+                    <div class="media-body">
+                        <ol class="activity-feed mb-0">
+                            <li class="dropdown-item" rel0="PlanController/quota">
+                                <a href="{{ action('Admin\PlanController@quota', $plan->uid) }}">
+
+                                    <div class="text-muted">
+                                        <p class="mb-1">
+                                            {{ trans('messages.plan.quota') }}
+                                        </p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="dropdown-item" rel0="PlanController/security">
+                                <a href="{{ action('Admin\PlanController@security', $plan->uid) }}">
+
+                                    <div class="text-muted">
+                                        <p class="mb-1">
+                                            {{ trans('messages.plan.security') }}
+                                        </p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="dropdown-item" rel0="PlanController/emailFooter">
+                                <a href="{{ action('Admin\PlanController@emailFooter', $plan->uid) }}">
+                                    <div class="text-muted">
+                                        <p class="mb-1">
+                                            {{ trim(trans('messages.plan.email_footer')) }}
+                                        </p>
+                                    </div>
+                                </a>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
             </li>
             <!--<li  class="dropdown"
                 rel0="PlanController/payment"
@@ -54,9 +72,10 @@
                     </li>
                 </ul>
             </li>-->
-            <li rel0="PlanController/sendingServer" rel1="PlanController/sendingServers">                
+
+            <li rel0="PlanController/sendingServer" rel1="PlanController/sendingServers">
                 @if ($plan->useSystemSendingServer() && !$plan->hasPrimarySendingServer())
-                    <a href="{{ action('Admin\PlanController@sendingServer', $plan->uid) }}" class="level-1 xtooltip"
+                    <a href="{{ action('Admin\PlanController@sendingServer', $plan->uid) }}" class="level-1 "
                          title="{{ trans('messages.plans.send_via.empty') }}"
                     >
                         {{ trans('messages.plan.sending_server') }}
@@ -67,7 +86,7 @@
                         {{ trans('messages.plan.sending_server') }}
                     </a>
                 @endif
-                
+
             </li>
             <li rel0="PlanController/emailVerification">
                 <a href="{{ action('Admin\PlanController@emailVerification', $plan->uid) }}" class="level-1">

@@ -308,7 +308,34 @@ class Admin extends Model
         if (!empty($this->color_scheme)) {
             return $this->color_scheme;
         } else {
-            return \Acelle\Model\Setting::get('backend_scheme');
+            return \Acelle\Model\Setting::get('data_topbar');
+        }
+    }
+    /**
+     * Get user's top bar scheme.
+     *
+     * @return string
+     */
+    public function getTopBarScheme()
+    {
+        if (!empty($this->color_scheme)) {
+            return $this->color_scheme;
+        } else {
+            return \Acelle\Model\Setting::get('data_topbar');
+        }
+    }
+
+    /**
+     * Get user's top bar scheme.
+     *
+     * @return string
+     */
+    public function getSideBarScheme()
+    {
+        if (!empty($this->color_scheme)) {
+            return $this->color_scheme;
+        } else {
+            return \Acelle\Model\Setting::get('data_sidebar');
         }
     }
 

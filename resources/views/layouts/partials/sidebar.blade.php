@@ -79,6 +79,22 @@
                         </ul>
                     </li>
                 @endif
+                @if ( Auth::user()->admin->getPermission("setting_twilio_manager") != 'no' )
+                    <li rel0="TwilioIntegrationController" rel1="SettingController">
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="icon-phone"></i> <span>{{ trans('messages.twilio_settings') }}</span>
+                        </a>
+                        <ul aria-expanded="false" class="sub-menu">
+                            @if (Auth::user()->admin->getPermission("setting_twilio_manager") != 'no')
+                                <li rel0="LanguageController">
+                                    <a href="{{ action('Admin\TwilioIntegrationController@index') }}">
+                                        <i class="mdi mdi-phone"></i> <span>{{ trans('messages.twilio_numbers') }}</span>
+                                    </a>
+                                </li>
+                            @endif
+                        </ul>
+                    </li>
+                @endif
                 @if (
                         Auth::user()->admin->getPermission("sending_domain_read") != 'no'
                         || Auth::user()->admin->getPermission("sending_server_read") != 'no'
@@ -184,13 +200,6 @@
                             <li rel0="LanguageController">
                                 <a href="{{ action('Admin\LanguageController@index') }}">
                                     <i class="mdi mdi-flag"></i> <span>{{ trans('messages.language') }}</span>
-                                </a>
-                            </li>
-                        @endif
-                        @if (Auth::user()->admin->getPermission("setting_twilio_manager") != 'no')
-                            <li rel0="LanguageController">
-                                <a href="{{ action('Admin\TwilioIntegrationController@index') }}">
-                                    <i class="mdi mdi-phone"></i> <span>{{ trans('messages.twilio_settings') }}</span>
                                 </a>
                             </li>
                         @endif

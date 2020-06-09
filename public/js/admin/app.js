@@ -203,4 +203,16 @@ $(function ($) {
 
     init();
 
+    $(document).on('click', '.showModalButton', function(){
+        triggerModal($(this));
+    });
+    function triggerModal(e)
+    {
+        $('#advanced_settings_form').prop('action', e.data("url"));
+        $('#advanced_modal_input_value').val(e.data("setting_val"))
+        $('#advanced_modal_input_name').html(e.data("setting_name"))
+        $('#advanced_modal_label').html('Edit Setting ' + e.data("setting_name"))
+        $('#advanced_modal').modal('show')
+    }
+
 })

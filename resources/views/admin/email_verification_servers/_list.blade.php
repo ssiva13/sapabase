@@ -8,11 +8,8 @@
                     <div class="text-nowrap">
                         <div class="checkbox inline">
                             <label>
-                                <input type="checkbox" class="node styled"
-                                    custom-order="{{ $server->custom_order }}"
-                                    name="ids[]"
-                                    value="{{ $server->uid }}"
-                                />
+                                <input type="checkbox" class="node styled" custom-order="{{ $server->custom_order }}"
+                                    name="ids[]" value="{{ $server->uid }}" />
                             </label>
                         </div>
                     </div>
@@ -54,29 +51,45 @@
                     @if (Auth::user()->admin->can('delete', $server) || Auth::user()->admin->can('disable', $server) || Auth::user()->admin->can('enable', $server))
                         <div class="btn-group">
                             <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret ml-0"></span></button>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                @if (Auth::user()->admin->can('enable', $server))
-                                    <li>
-                                        <a link-confirm="{{ trans('messages.enable_email_verification_servers_confirm') }}" href="{{ action('Admin\EmailVerificationServerController@enable', ["uids" => $server->uid]) }}">
-                                            <i class="icon-checkbox-checked2"></i> {{ trans('messages.enable') }}
-                                        </a>
-                                    </li>
-                                @endif
-                                @if (Auth::user()->admin->can('disable', $server))
-                                    <li>
-                                        <a link-confirm="{{ trans('messages.disable_email_verification_servers_confirm') }}" href="{{ action('Admin\EmailVerificationServerController@disable', ["uids" => $server->uid]) }}">
-                                            <i class="icon-checkbox-unchecked2"></i> {{ trans('messages.disable') }}
-                                        </a>
-                                    </li>
-                                @endif
-                                @if (Auth::user()->admin->can('delete', $server))
-                                    <li>
-                                        <a delete-confirm="{{ trans('messages.delete_email_verification_servers_confirm') }}" href="{{ action('Admin\EmailVerificationServerController@delete', ["uids" => $server->uid]) }}">
-                                            <i class="icon-trash"></i> {{ trans('messages.delete') }}
-                                        </a>
-                                    </li>
-                                @endif
-                            </ul>
+                            <div data-simplebar style="max-height: 230px;" class="dropdown-menu dropdown-menu-right" >
+                                <div class="media-body">
+                                    <ol class="activity-feed mb-0">
+                                        @if (Auth::user()->admin->can('enable', $server))
+                                            <li>
+                                                <a link-confirm="{{ trans('messages.enable_email_verification_servers_confirm') }}" href="{{ action('Admin\EmailVerificationServerController@enable', ["uids" => $server->uid]) }}">
+                                                    <div class="text-muted">
+                                                        <p class="mb-1">
+                                                            <i class="icon-checkbox-checked2"></i> {{ trans('messages.enable') }}
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if (Auth::user()->admin->can('disable', $server))
+                                            <li>
+                                                <a link-confirm="{{ trans('messages.disable_email_verification_servers_confirm') }}" href="{{ action('Admin\EmailVerificationServerController@disable', ["uids" => $server->uid]) }}">
+                                                    <div class="text-muted">
+                                                        <p class="mb-1">
+                                                            <i class="icon-checkbox-unchecked2"></i> {{ trans('messages.disable') }}
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if (Auth::user()->admin->can('delete', $server))
+                                            <li>
+                                                <a delete-confirm="{{ trans('messages.delete_email_verification_servers_confirm') }}" href="{{ action('Admin\EmailVerificationServerController@delete', ["uids" => $server->uid]) }}">
+                                                    <div class="text-muted">
+                                                        <p class="mb-1">
+                                                            <i class="icon-trash"></i> {{ trans('messages.delete') }}
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    </ol>
+                                </div>
+                            </div>
                         </div>
                     @endif
                 </td>

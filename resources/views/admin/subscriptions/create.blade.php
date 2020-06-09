@@ -22,6 +22,8 @@
                             'url' => action('Admin\CustomerController@select2'),
                             'placeholder' => trans('messages.select_customer')
                         ])
+                    </div>
+                    <div class="col-md-6">
 
                         @include('helpers.form_control', [
                             'type' => 'select_ajax',

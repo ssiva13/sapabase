@@ -29,7 +29,7 @@
 										</td>
 										<td class="text-right">																					
 											@can("translate", $item)
-												<a href="{{ action('Admin\LanguageController@translate', ["id" => $item->uid, "file" => "messages"]) }}" data-popup="tooltip" title="{{ trans('messages.translate') }}" type="button" class="btn bg-teal btn-icon"><i class="icon-share2"></i> {{ trans('messages.translate') }}</a>
+												<a href="{{ action('Admin\LanguageController@translate', ["id" => $item->uid, "file" => "messages"]) }}" data-popup="tooltip" title="{{ trans('messages.translate') }}" type="button" class="btn btn-secondary btn-icon"><i class="icon-share2"></i> {{ trans('messages.translate') }}</a>
 											@endcan
 											@if(Auth::user()->can("delete", $item) ||
 												Auth::user()->can("update", $item) ||
@@ -39,46 +39,80 @@
 												Auth::user()->can("download", $item)
 											)
 												<div class="btn-group">										
-													<button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret ml-0"></span></button>
-													<ul class="dropdown-menu dropdown-menu-right">
-														@can('enable', $item)
-															<li>														
-																<a link-confirm="{{ trans('messages.enable_languages_confirm') }}" href="{{ action('Admin\LanguageController@enable', ["uids" => $item->uid]) }}">
-																	<i class="icon-checkbox-checked2"></i> {{ trans('messages.enable') }}
-																</a>
-															</li>
-														@endcan
-														@can('disable', $item)
-															<li>														
-																<a link-confirm="{{ trans('messages.disable_languages_confirm') }}" href="{{ action('Admin\LanguageController@disable', ["uids" => $item->uid]) }}">
-																	<i class="icon-checkbox-unchecked2"></i> {{ trans('messages.disable') }}
-																</a>
-															</li>
-														@endcan
-														@can("download", $item)
-															<li>
-																<a href="{{ action('Admin\LanguageController@download', $item->uid) }}" data-popup="tooltip" title="{{ trans('messages.download') }}"><i class="icon-download"></i> {{ trans('messages.download') }}</a>
-															</li>
-														@endcan
-														@can("upload", $item)
-															<li>
-																<a href="{{ action('Admin\LanguageController@upload', $item->uid) }}" data-popup="tooltip" title="{{ trans('messages.upload') }}"><i class="icon-upload"></i> {{ trans('messages.upload') }}</a>
-															</li>
-														@endcan
-														@can("update", $item)
-															<li>
-																<a href="{{ action('Admin\LanguageController@edit', $item->uid) }}" data-popup="tooltip" title="{{ trans('messages.edit') }}"><i class="icon-pencil"></i> {{ trans('messages.edit') }}</a>
-															</li>
-														@endcan
-														@can("delete", $item)
-															<li>
-																<a list-delete-confirm="{{ action('Admin\LanguageController@deleteConfirm', ['uids' => $item->uid]) }}" href="{{ action('Admin\LanguageController@delete', ["uids" => $item->uid]) }}">
-																	<i class="icon-trash"></i> {{ trans('messages.delete') }}
-																</a>
-															</li>
-														@endcan
-														</li>
-													</ul>
+													<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret ml-0"></span></button>
+													<div style="max-height: 230px;" class="dropdown-menu dropdown-menu-right" >
+														<div class="media-body">
+															<ol class="activity-feed mb-0">
+																@can('enable', $item)
+																	<li class="dropdown-item">
+																		<a link-confirm="{{ trans('messages.enable_languages_confirm') }}" href="{{ action('Admin\LanguageController@enable', ["uids" => $item->uid]) }}">
+																			<div class="text-muted">
+																				<p class="mb-1">
+																					<i class="icon-checkbox-checked2"></i> {{ trans('messages.enable') }}
+																				</p>
+																			</div>
+																		</a>
+																	</li>
+																@endcan
+																@can('disable', $item)
+																	<li class="dropdown-item">
+																		<a link-confirm="{{ trans('messages.disable_languages_confirm') }}" href="{{ action('Admin\LanguageController@disable', ["uids" => $item->uid]) }}">
+																			<div class="text-muted">
+																				<p class="mb-1">
+																					<i class="icon-checkbox-unchecked2"></i> {{ trans('messages.disable') }}
+																				</p>
+																			</div>
+																		</a>
+																	</li>
+																@endcan
+																@can("download", $item)
+																	<li class="dropdown-item">
+																		<a href="{{ action('Admin\LanguageController@download', $item->uid) }}" data-popup="tooltip" title="{{ trans('messages.download') }}">
+																			<div class="text-muted">
+																				<p class="mb-1">
+																					<i class="icon-download"></i> {{ trans('messages.download') }}
+																				</p>
+																			</div>
+																		</a>
+																	</li>
+																@endcan
+																@can("upload", $item)
+																	<li class="dropdown-item">
+																		<a href="{{ action('Admin\LanguageController@upload', $item->uid) }}" data-popup="tooltip" title="{{ trans('messages.upload') }}">
+																			<div class="text-muted">
+																				<p class="mb-1">
+																					<i class="icon-upload"></i> {{ trans('messages.upload') }}
+																				</p>
+																			</div>
+																		</a>
+																	</li>
+																@endcan
+																@can("update", $item)
+																	<li class="dropdown-item">
+																		<a href="{{ action('Admin\LanguageController@edit', $item->uid) }}" data-popup="tooltip" title="{{ trans('messages.edit') }}">
+																			<div class="text-muted">
+																				<p class="mb-1">
+																					<i class="icon-pencil"></i> {{ trans('messages.edit') }}
+																				</p>
+																			</div>
+																		</a>
+																	</li>
+																@endcan
+																@can("delete", $item)
+																	<li class="dropdown-item">
+																		<a list-delete-confirm="{{ action('Admin\LanguageController@deleteConfirm', ['uids' => $item->uid]) }}" href="{{ action('Admin\LanguageController@delete', ["uids" => $item->uid]) }}">
+																			<div class="text-muted">
+																				<p class="mb-1">
+																					<i class="icon-trash"></i> {{ trans('messages.delete') }}
+																				</p>
+																			</div>
+																		</a>
+																	</li>
+																@endcan
+																</li>
+															</ol>
+														</div>
+													</div>
 												</div>
 											@endcan
 										</td>

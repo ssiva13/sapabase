@@ -8,11 +8,8 @@
                     <div class="text-nowrap">
                         <div class="checkbox inline">
                             <label>
-                                <input type="checkbox" class="node styled"
-                                    custom-order="{{ $item->custom_order }}"
-                                    name="ids[]"
-                                    value="{{ $item->uid }}"
-                                />
+                                <input type="checkbox" class="node styled" custom-order="{{ $item->custom_order }}"
+                                    name="ids[]" value="{{ $item->uid }}" />
                             </label>
                         </div>
                     </div>
@@ -75,34 +72,50 @@
                 </td>
                 <td class="text-right text-nowrap">
                     @if (Auth::user()->admin->can('update', $item))
-                        <a href="{{ action('Admin\SendingServerController@edit', ["uid" => $item->uid, "type" => $item->type]) }}" data-popup="tooltip" title="{{ trans('messages.edit') }}" type="button" class="btn bg-grey btn-icon"><i class="icon-pencil"></i> {{ trans('messages.edit') }}</a>
+                        <a href="{{ action('Admin\SendingServerController@edit', ["uid" => $item->uid, "type" => $item->type]) }}" data-popup="tooltip" title="{{ trans('messages.edit') }}" type="button" class="btn btn-info btn-icon"><i class="icon-pencil"></i> {{ trans('messages.edit') }}</a>
                     @endif
                     @if (Auth::user()->admin->can('delete', $item) || Auth::user()->admin->can('disable', $item) || Auth::user()->admin->can('enable', $item))
                         <div class="btn-group">
-                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret ml-0"></span></button>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                @if (Auth::user()->admin->can('enable', $item))
-                                    <li>
-                                        <a link-confirm="{{ trans('messages.enable_sending_servers_confirm') }}" href="{{ action('Admin\SendingServerController@enable', ["uids" => $item->uid]) }}">
-                                            <i class="icon-checkbox-checked2"></i> {{ trans('messages.enable') }}
-                                        </a>
-                                    </li>
-                                @endif
-                                @if (Auth::user()->admin->can('disable', $item))
-                                    <li>
-                                        <a link-confirm="{{ trans('messages.disable_sending_servers_confirm') }}" href="{{ action('Admin\SendingServerController@disable', ["uids" => $item->uid]) }}">
-                                            <i class="icon-checkbox-unchecked2"></i> {{ trans('messages.disable') }}
-                                        </a>
-                                    </li>
-                                @endif
-                                @if (Auth::user()->admin->can('delete', $item))
-                                    <li>
-                                        <a delete-confirm="{{ trans('messages.delete_sending_servers_confirm') }}" href="{{ action('Admin\SendingServerController@delete', ["uids" => $item->uid]) }}">
-                                            <i class="icon-trash"></i> {{ trans('messages.delete') }}
-                                        </a>
-                                    </li>
-                                @endif
-                            </ul>
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret ml-0"></span></button>
+                            <div style="max-height: 250px; overflow: auto" class="dropdown-menu dropdown-menu-right" >
+                                <div class="media-body">
+                                    <ol class="activity-feed mb-0" style="position: relative !important;">
+                                        @if (Auth::user()->admin->can('enable', $item))
+                                            <li class="dropdown-item">
+                                                <a link-confirm="{{ trans('messages.enable_sending_servers_confirm') }}" href="{{ action('Admin\SendingServerController@enable', ["uids" => $item->uid]) }}">
+                                                    <div class="text-muted">
+                                                        <p class="mb-1">
+                                                            <i class="icon-checkbox-checked2"></i> {{ trans('messages.enable') }}
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if (Auth::user()->admin->can('disable', $item))
+                                            <li class="dropdown-item">
+                                                <a link-confirm="{{ trans('messages.disable_sending_servers_confirm') }}" href="{{ action('Admin\SendingServerController@disable', ["uids" => $item->uid]) }}">
+                                                    <div class="text-muted">
+                                                        <p class="mb-1">
+                                                            <i class="icon-checkbox-unchecked2"></i> {{ trans('messages.disable') }}
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if (Auth::user()->admin->can('delete', $item))
+                                            <li class="dropdown-item">
+                                                <a delete-confirm="{{ trans('messages.delete_sending_servers_confirm') }}" href="{{ action('Admin\SendingServerController@delete', ["uids" => $item->uid]) }}">
+                                                    <div class="text-muted">
+                                                        <p class="mb-1">
+                                                            <i class="icon-trash"></i> {{ trans('messages.delete') }}
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    </ol>
+                                </div>
+                            </div>
                         </div>
                     @endif
                 </td>

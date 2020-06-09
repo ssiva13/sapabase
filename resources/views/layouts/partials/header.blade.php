@@ -73,29 +73,45 @@
                             <!-- item-->
                             @can("customer_access", Auth::user())
                                 <a class="dropdown-item d-block"  href="{{ action("HomeController@index") }}">
-                                    <i class="mdi mdi-exit-to-app font-size-17 text-muted align-middle mr-1"></i> {{ trans('messages.customer_view') }}
+                                    <div class="text-muted">
+                                        <p class="mb-1 mt-1">
+                                            <i class="mdi mdi-exit-to-app font-size-17 text-muted align-middle mr-1"></i> {{ trans('messages.customer_view') }}
+                                        </p>
+                                    </div>
                                 </a>
                                 <div class="dropdown-divider"></div>
                             @endif
                             <a class="dropdown-item " href="{{ action("Admin\AccountController@profile") }}">
-                                <i class="icon-profile font-size-17 text-muted align-middle mr-1"></i> {{ trans('messages.account') }}
+                                <div class="text-muted">
+                                    <p class="mb-1">
+                                        <i class="icon-profile font-size-17 text-muted align-middle mr-1"></i> {{ trans('messages.account') }}
+                                    </p>
+                                </div>
                             </a>
                             <a class="dropdown-item"  rel0="AccountController/api" href="{{ action("Admin\AccountController@api") }}" >
-                                <i class="mdi mdi-key font-size-17 text-muted align-middle mr-1"></i> {{ trans('messages.api') }}
+                                <div class="text-muted">
+                                    <p class="mb-1">
+                                        <i class="mdi mdi-key font-size-17 text-muted align-middle mr-1"></i> {{ trans('messages.api') }}
+                                    </p>
+                                </div>
                             </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item text-danger" href="{{ url("/logout") }}">
-                                <i class="icon-switch2 font-size-17 text-muted align-middle mr-1"></i> {{ trans('messages.logout') }}
+                                <div class="text-muted">
+                                    <p class="mb-1">
+                                        <i class="icon-switch2 font-size-17 text-muted align-middle mr-1"></i> {{ trans('messages.logout') }}
+                                    </p>
+                                </div>
                             </a>
                         </div>
 
                     </div>
 
-                    <div class="dropdown d-inline-block">
-                        <button type="button" class="btn header-item noti-icon right-bar-toggle waves-effect">
-                            <i class="mdi mdi-spin mdi-settings"></i>
-                        </button>
-                    </div>
+{{--                    <div class="dropdown d-inline-block">--}}
+{{--                        <button type="button" class="btn header-item noti-icon right-bar-toggle waves-effect">--}}
+{{--                            <i class="mdi mdi-spin mdi-settings"></i>--}}
+{{--                        </button>--}}
+{{--                    </div>--}}
             
                 </div>
             </div>

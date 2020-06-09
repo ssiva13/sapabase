@@ -2,6 +2,7 @@
 
 namespace Acelle\Http\Controllers\Admin;
 
+use Acelle\Model\Customer;
 use Illuminate\Http\Request;
 use Acelle\Http\Controllers\Controller;
 use Acelle\Model\Plan;
@@ -19,16 +20,16 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         // authorize
-        if (\Gate::denies('read', new \Acelle\Model\Customer())) {
+        if (\Gate::denies('read', new Customer())) {
             return $this->notAuthorized();
         }
 
         // If admin can view all customer
-        if (!$request->user()->admin->can("readAll", new \Acelle\Model\Customer())) {
+        if (!$request->user()->admin->can("readAll", new Customer())) {
             $request->merge(array("admin_id" => $request->user()->admin->id));
         }
 
-        $customers = \Acelle\Model\Customer::search($request);
+        $customers = Customer::search($request);
 
         return view('admin.customers.index', [
             'customers' => $customers,
@@ -43,16 +44,17 @@ class CustomerController extends Controller
     public function listing(Request $request)
     {
         // authorize
-        if (\Gate::denies('read', new \Acelle\Model\Customer())) {
+        if (\Gate::denies('read', new Customer())) {
             return $this->notAuthorized();
         }
 
         // If admin can view all customer
-        if (!$request->user()->admin->can("readAll", new \Acelle\Model\Customer())) {
+        if (!$request->user()->admin->can("readAll", new Customer())) {
             $request->merge(array("admin_id" => $request->user()->admin->id));
         }
 
-        $customers = \Acelle\Model\Customer::search($request)->paginate($request->per_page);
+        $customers = Customer::search($request)->paginate($request->per_page);
+
 
         return view('admin.customers._list', [
             'customers' => $customers,
@@ -66,7 +68,7 @@ class CustomerController extends Controller
      */
     public function create(Request $request)
     {
-        $customer = new \Acelle\Model\Customer();
+        $customer = new Customer();
         $customer->status = 'active';
         $customer->uid = '0';
 
@@ -98,7 +100,7 @@ class CustomerController extends Controller
     {
         // Get current user
         $current_user = $request->user();
-        $customer = new \Acelle\Model\Customer();
+        $customer = new Customer();
         $contact = new \Acelle\Model\Contact();
 
         // authorize
@@ -171,7 +173,7 @@ class CustomerController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $customer = \Acelle\Model\Customer::findByUid($id);
+        $customer = Customer::findByUid($id);
         event(new \Acelle\Events\UserUpdated($customer));
 
         // authorize
@@ -202,7 +204,7 @@ class CustomerController extends Controller
     {
         // Get current user
         $current_user = $request->user();
-        $customer = \Acelle\Model\Customer::findByUid($id);
+        $customer = Customer::findByUid($id);
 
         // authorize
         if (\Gate::denies('update', $customer)) {
@@ -280,7 +282,7 @@ class CustomerController extends Controller
      */
     public function enable(Request $request)
     {
-        $items = \Acelle\Model\Customer::whereIn('uid', explode(',', $request->uids));
+        $items = Customer::whereIn('uid', explode(',', $request->uids));
 
         foreach ($items->get() as $item) {
             // authorize
@@ -302,7 +304,7 @@ class CustomerController extends Controller
      */
     public function disable(Request $request)
     {
-        $items = \Acelle\Model\Customer::whereIn('uid', explode(',', $request->uids));
+        $items = Customer::whereIn('uid', explode(',', $request->uids));
 
         foreach ($items->get() as $item) {
             // authorize
@@ -324,7 +326,7 @@ class CustomerController extends Controller
      */
     public function delete(Request $request)
     {
-        $items = \Acelle\Model\Customer::whereIn('uid', explode(',', $request->uids));
+        $items = Customer::whereIn('uid', explode(',', $request->uids));
 
         foreach ($items->get() as $item) {
             // authorize
@@ -354,7 +356,7 @@ class CustomerController extends Controller
      */
     public function loginAs(Request $request)
     {
-        $customer = \Acelle\Model\Customer::findByUid($request->uid);
+        $customer = Customer::findByUid($request->uid);
 
         // authorize
         if (\Gate::denies('loginAs', $customer)) {
@@ -377,7 +379,7 @@ class CustomerController extends Controller
     public function loginBack(Request $request)
     {
         $id = \Session::pull('orig_customer_id');
-        $orig_user = \Acelle\Model\Customer::findByUid($id);
+        $orig_user = Customer::findByUid($id);
 
         \Auth::login($orig_user);
 
@@ -393,7 +395,7 @@ class CustomerController extends Controller
      */
     public function select2(Request $request)
     {
-        echo \Acelle\Model\Customer::select2($request);
+        echo Customer::select2($request);
     }
 
     /**
@@ -404,7 +406,7 @@ class CustomerController extends Controller
      */
     public function subscriptions(Request $request, $uid)
     {
-        $customer = \Acelle\Model\Customer::findByUid($uid);
+        $customer = Customer::findByUid($uid);
 
         // authorize
         if (\Gate::denies('read', $customer)) {
@@ -426,7 +428,7 @@ class CustomerController extends Controller
     public function growthChart(Request $request)
     {
         // authorize
-        if (\Gate::denies('read', new \Acelle\Model\Customer())) {
+        if (\Gate::denies('read', new Customer())) {
             return $this->notAuthorized();
         }
 
@@ -445,7 +447,7 @@ class CustomerController extends Controller
         foreach ($result['bar_names'] as $bar) {
             $data = [];
             for ($i = 12; $i >= 0; --$i) {
-                $data[] = \Acelle\Model\Customer::customersCountByTime(
+                $data[] = Customer::customersCountByTime(
                     \Carbon\Carbon::now()->subMonthsNoOverflow($i)->startOfMonth(),
                     \Carbon\Carbon::now()->subMonthsNoOverflow($i)->endOfMonth(),
                     $request->user()->admin
@@ -482,7 +484,7 @@ class CustomerController extends Controller
     public function contact(Request $request, $uid)
     {
         // Get current user
-        $customer = \Acelle\Model\Customer::findByUid($uid);
+        $customer = Customer::findByUid($uid);
 
         // authorize
         if (\Gate::denies('update', $customer)) {
@@ -536,7 +538,7 @@ class CustomerController extends Controller
     public function subAccount(Request $request, $uid)
     {
         // Get current user
-        $customer = \Acelle\Model\Customer::findByUid($uid);
+        $customer = Customer::findByUid($uid);
 
         // authorize
         if (\Gate::denies('viewSubAccount', $customer)) {
@@ -557,7 +559,7 @@ class CustomerController extends Controller
      */
     public function assignPlan(Request $request, $uid)
     {
-        $customer = \Acelle\Model\Customer::findByUid($uid);
+        $customer = Customer::findByUid($uid);
         $plans = Plan::getAvailablePlans();
         $gateway = Cashier::getPaymentGateway();
 

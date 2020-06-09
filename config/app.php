@@ -254,7 +254,7 @@ return [
         'Yaml' => Symfony\Component\Yaml\Yaml::class,
         'Zipper' => Chumper\Zipper\Zipper::class,
         'Geoip'=> Lawepham\Geoip\Facades\LaweGeoipFacade::class,
-        'Twig' => TwigBridge\Facade\Twig::class,        
+        'Twig' => TwigBridge\Facade\Twig::class
     ],
 
     /*

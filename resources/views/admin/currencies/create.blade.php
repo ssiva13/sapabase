@@ -23,11 +23,25 @@
 @endsection
 
 @section('content')
-          <form enctype="multipart/form-data" action="{{ action('Admin\CurrencyController@store') }}" method="POST" class="form-validate-jqueryz">
+	<div class="row">
+		@component('admin.common-components.settings_breadcrumb')
+			@slot('title') <a href="{{ action("HomeController@index") }}">{{ trans('messages.home') }}</a>@endslot
+			@slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+			@slot('li2') Admin  @endslot
+			@slot('li3') {{ trans('messages.currency') }} @endslot
+			@slot('li4') {{ trans('messages.create') }} @endslot
+		@endcomponent
+	</div>
+
+	<div class="card">
+		<div class="card-body">
+			<form enctype="multipart/form-data" action="{{ action('Admin\CurrencyController@store') }}" method="POST" class="form-validate-jqueryz">
 					{{ csrf_field() }}
-					
-					@include('admin.currencies._form')			
-					
-				<form>
+
+			  @include('admin.currencies._form')
+
+			</form>
+		</div>
+	</div>
 				
 @endsection

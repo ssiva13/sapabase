@@ -43,26 +43,54 @@ class TwilioIntegrationController extends Controller
         parent::__construct();
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
-        if (!$request->user()->admin->can('read', new \Acelle\Model\SendingServer())) {
+        // authorize
+        if (\Gate::denies('read', new \Acelle\Model\Admin())) {
             return $this->notAuthorized();
         }
 
         // If admin can view all sending domains
-        if (!$request->user()->admin->can("readAll", new \Acelle\Model\SendingServer())) {
-            $request->merge(array("admin_id" => $request->user()->admin->id));
+        if (!$request->user()->admin->can("readAll", new \Acelle\Model\Admin())) {
+            $request->merge(array("creator_id" => $request->user()->id));
         }
 
-        // exlude customer seding servers
-        $request->merge(array("no_customer" => true));
+        $admins = \Acelle\Model\Admin::search($request);
 
-        $items = \Acelle\Model\SendingServer::search($request);
-
-        return view('admin.sending_servers.index', [
-            'items' => $items,
+        return view('admin.twilio_numbers.index', [
+            'twilio_numbers' => $admins,
         ]);
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listing(Request $request)
+    {
+        // authorize
+        if (\Gate::denies('read', new \Acelle\Model\Admin())) {
+            return $this->notAuthorized();
+        }
+
+        // If admin can view all sending domains
+        if (!$request->user()->admin->can("readAll", new \Acelle\Model\Admin())) {
+            $request->merge(array("creator_id" => $request->user()->id));
+        }
+
+        $admins = \Acelle\Model\Admin::search($request)->paginate($request->per_page);
+
+        return view('admin.twilio_numbers._list', [
+            'twilio_numbers' => $admins,
+        ]);
+    }
+
 
     /**
      * automated sms sending function

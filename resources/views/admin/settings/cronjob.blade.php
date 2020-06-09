@@ -23,21 +23,38 @@
 @endsection
 
 @section('content')
-				<div class="tabbable">
+	<div class="row">
+		@component('admin.common-components.settings_breadcrumb')
+			@slot('title') {{ trans('messages.settings') }}  @endslot
+			@slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+			@slot('li2') Admin  @endslot
+			@slot('li3') {{ trans('messages.settings') }} @endslot
+			@slot('li4') {{ trans('messages.background_job') }} @endslot
+		@endcomponent
+	</div>
+	<div class="tabbable">
 
-					@include("admin.settings._tabs")
+		@include("admin.settings._tabs")
+		<div class="card">
+			<div class="card-body">
+				<h4 class="card-title text-muted text-center"><strong>{{ trans('messages.background_job') }}</strong></h4>
+				<div class="card">
+					<div class="card-body">
+						<form action="{{ action('Admin\SettingController@cronjob') }}" method="POST" class="form-validate-jqueryz">
+							{!! csrf_field() !!}
 
-                    <form action="{{ action('Admin\SettingController@cronjob') }}" method="POST" class="form-validate-jqueryz">
-						{!! csrf_field() !!}
+							@include('elements._cron_jobs', ['show_all' => true])
 
-						@include('elements._cron_jobs', ['show_all' => true])
-
-						<hr>
-						<div class="text-left">
-							<button class="btn btn-primary bg-teal">
-								{!! trans('messages.save') !!}
-							</button>
-						</div>
-					</form>
+							<hr>
+							<div class="text-left">
+								<button class="btn btn-primary bg-teal">
+									{!! trans('messages.save') !!}
+								</button>
+							</div>
+						</form>
+					</div>
 				</div>
+			</div>
+		</div>
+	</div>
 @endsection

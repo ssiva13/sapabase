@@ -23,13 +23,25 @@
 @endsection
 
 @section('content')
-	
+	<div class="row">
+		@component('admin.common-components.settings_breadcrumb')
+			@slot('title') {{ trans('messages.bounce_handler') }}  @endslot
+			@slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+			@slot('li2') Admin  @endslot
+			@slot('li3') {{ trans('messages.bounce_handler') }} @endslot
+			@slot('li4') {{ trans('messages.edit') }} @endslot
+		@endcomponent
+	</div>
+
+	<div class="card">
+		<div class="card-body">
 				<form enctype="multipart/form-data" action="{{ action('Admin\BounceHandlerController@update', $server->uid) }}" method="POST" class="form-validate-jquery">
 					{{ csrf_field() }}
 					<input type="hidden" name="_method" value="PATCH">
 					
 					@include('admin.bounce_handlers._form')
 					
-				<form>
-	
+				</form>
+		</div>
+	</div>
 @endsection

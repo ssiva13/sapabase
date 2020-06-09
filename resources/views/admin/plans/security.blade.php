@@ -23,44 +23,54 @@
 @endsection
 
 @section('content')
+    <div class="row">
+        @component('admin.common-components.settings_breadcrumb')
+            @slot('title') {{ trans('messages.plans') }}  @endslot
+            @slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+            @slot('li2') Admin  @endslot
+            @slot('li3') {{ trans('messages.plans') }} @endslot
+            @slot('li4') {{ trans('messages.plan.speed_limit') }} @endslot
+        @endcomponent
+    </div>
     
     @include('admin.plans._menu')
-    
-    <form enctype="multipart/form-data" action="{{ action('Admin\PlanController@save', $plan->uid) }}" method="POST" class="form-validate-jqueryx">
-        {{ csrf_field() }}
-        
-        <div class="row">
-            <div class="col-md-6">
-                <div class="mc_section">
-                    <h2>{{ trans('messages.plan.speed_limit') }}</h2>
-                        
-                    <p>{{ trans('messages.plan.speed_limit.intro') }}</p>
-                        
-                    <div class="select-custom" data-url="{{ action('Admin\PlanController@sendingLimit', $plan->uid) }}">
-                        @include ('admin.plans._sending_limit')
-                    </div>
-                    <p>{{ trans('messages.plan.process_limit.intro') }}</p>
-                    <div class="boxing">
-                        <div class="row">
-                            <div class="col-md-12">
-                                @include('helpers.form_control', ['type' => 'select',
-                                    'name' => 'plan[options][max_process]',
-                                    'value' => $plan->getOption('max_process'),
-                                    'label' => trans('messages.max_number_of_processes'),
-                                    'options' => \Acelle\Model\Plan::multiProcessSelectOptions(),
-                                    'help_class' => 'plan',
-                                    'rules' => $plan->validationRules()['general'],
-                                ])
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title text-muted text-center"><strong>{{ trans('messages.plan.speed_limit') }}</strong></h4>
+            <p>{{ trans('messages.plan.speed_limit.intro') }}</p>
+            <form enctype="multipart/form-data" action="{{ action('Admin\PlanController@save', $plan->uid) }}" method="POST" class="form-validate-jqueryx">
+                {{ csrf_field() }}
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mc_section">
+                            <div class="select-custom" data-url="{{ action('Admin\PlanController@sendingLimit', $plan->uid) }}">
+                                @include ('admin.plans._sending_limit')
                             </div>
+                            <p>{{ trans('messages.plan.process_limit.intro') }}</p>
+                            <div class="boxing">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @include('helpers.form_control', ['type' => 'select',
+                                            'name' => 'plan[options][max_process]',
+                                            'value' => $plan->getOption('max_process'),
+                                            'label' => trans('messages.max_number_of_processes'),
+                                            'options' => \Acelle\Model\Plan::multiProcessSelectOptions(),
+                                            'help_class' => 'plan',
+                                            'rules' => $plan->validationRules()['general'],
+                                        ])
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary mr-10">{{ trans('messages.save') }}</button>
+                            <a href="{{ action('Admin\PlanController@index') }}" type="button" class="btn btn-mc_inline">
+                                {{ trans('messages.cancel') }}
+                            </a>
                         </div>
                     </div>
-                    <button class="btn btn-mc_primary mr-10">{{ trans('messages.save') }}</button>
-                    <a href="{{ action('Admin\PlanController@index') }}" type="button" class="btn btn-mc_inline">
-                        {{ trans('messages.cancel') }}
-                    </a>
                 </div>
-            </div>
+            </form>
         </div>
-    </form>
+    </div>
         
 @endsection

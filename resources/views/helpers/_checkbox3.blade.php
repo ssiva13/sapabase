@@ -1,9 +1,9 @@
-<div class="checkbox3">    
+<div class="checkbox3">
     <div class="checkbox3-desc pr-4" style="width: 100%">
         @if (!empty($label))
             <div class="label">{!! $label !!}</div>
         @endif
-    
+
         @if (isset($help_class) && Lang::has('messages.' . $help_class . '.' . $name . '.help'))
             <span class="checkbox-description">
                 {!! trans('messages.' . $help_class . '.' . $name . '.help') !!}

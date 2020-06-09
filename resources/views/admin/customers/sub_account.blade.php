@@ -25,42 +25,47 @@
 @section('content')
 
 	@include('admin.customers._tabs')
-    <div class="sub-section">
-        <h3 class="text-semibold">{{ trans('messages.customer.sub_account.title') }}</h3>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title text-muted text-center text-semibold">{{ trans('messages.customer.sub_account.title') }}</h4>
+            <p>{{ trans('messages.customer.sub_account.wording') }}</p>
+            <div class="card">
+                <div class="card-body">
+                    <div class="sub-section">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul class="modern-listing big-icon no-top-border-list mt-0">
+                                    @foreach ($customer->subAccounts as $key => $account)
+                                        <li>
+                                            @if (Auth::user()->admin->can('delete', $account))
+                                                <a href="{{ action('Admin\SubAccountController@delete', $account->uid) }}"
+                                                    data-popup="tooltip" title="{{ trans('messages.subaccount.delete.tooltip') }}"
+                                                    type="button" class="btn btn-danger reload_page"
+                                                    data-method="delete"
+                                                    list-delete-confirm="{{ action('Admin\SubAccountController@deleteConfirm', $account->uid) }}"
+                                                >
+                                                        <i class="icon-cross2"></i> {{ trans('messages.subaccount.delete') }}
+                                                </a>
+                                            @endcan
+                                            <div>
+                                                <span class="">
+                                                    <i class="icon-drive text-grey-800"></i>
+                                                </span>
+                                            </div>
+                                            <h4><span class="text-teal-800">{{ $account->username }}</span></h4>
+                                            <p>
+                                                {{ $account->sendingServer->name }} ({{ trans('messages.' . $account->sendingServer->type) }})
+                                            </p>
+                                        </li>
+                                    @endforeach
 
-        <p>{{ trans('messages.customer.sub_account.wording') }}</p>
-
-        <div class="row">
-            <div class="col-md-10">
-                <ul class="modern-listing big-icon no-top-border-list mt-0">
-                    @foreach ($customer->subAccounts as $key => $account)
-                        <li>
-                            @if (Auth::user()->admin->can('delete', $account))
-                                <a href="{{ action('Admin\SubAccountController@delete', $account->uid) }}"
-                                    data-popup="tooltip" title="{{ trans('messages.subaccount.delete.tooltip') }}"
-                                    type="button" class="btn btn-danger reload_page"
-                                    data-method="delete"
-                                    list-delete-confirm="{{ action('Admin\SubAccountController@deleteConfirm', $account->uid) }}"
-                                >
-                                        <i class="icon-cross2"></i> {{ trans('messages.subaccount.delete') }}
-                                </a>
-                            @endcan
-                            <div>
-                                <span class="">
-                                    <i class="icon-drive text-grey-800"></i>
-                                </span>
+                                </ul>
                             </div>
-                            <h4><span class="text-teal-800">{{ $account->username }}</span></h4>
-                            <p>
-                                {{ $account->sendingServer->name }} ({{ trans('messages.' . $account->sendingServer->type) }})
-                            </p>
-                        </li>
-                    @endforeach
-
-                </ul>
+                            <div class="col-md-1"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-1"></div>
         </div>
     </div>
-
 @endsection

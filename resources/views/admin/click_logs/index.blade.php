@@ -23,7 +23,16 @@
 @endsection
 
 @section('content')
-				
+	<div class="row">
+		@component('admin.common-components.breadcrumb')
+			@slot('title') {{ trans('messages.click_log') }}  @endslot
+			@slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+			@slot('li2') Admin  @endslot
+			@slot('li3') {{ trans('messages.click_log') }} @endslot
+		@endcomponent
+	</div>
+	<div class="card">
+		<div class="card-body">
 				<form class="listing-form"
 					data-url="{{ action('Admin\ClickLogController@listing') }}"
 					per-page="{{ Acelle\Model\ClickLog::$itemsPerPage }}"					
@@ -61,5 +70,7 @@
 						
 						
 					</div>
-				</form>				
+				</form>
+		</div>
+	</div>
 @endsection

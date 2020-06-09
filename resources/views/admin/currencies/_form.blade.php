@@ -31,5 +31,5 @@
 					
 					<hr />
 					<div class="text-right">
-						<button class="btn bg-teal"><i class="icon-check"></i> {{ trans('messages.save') }}</button>
+						<button class="btn btn-primary"><i class="icon-check"></i> {{ trans('messages.save') }}</button>
 					</div>

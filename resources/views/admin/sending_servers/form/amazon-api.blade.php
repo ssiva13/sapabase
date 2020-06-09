@@ -10,7 +10,7 @@
     
     <div class="mc_section">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <p>{!! trans('messages.sending_servers.amazon_api_key.intro') !!}</p>
                     
                 @include('helpers.form_control', [
@@ -95,7 +95,7 @@
     {{ csrf_field() }}
     <div class="mc_section">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <h2 class=" mt-20">{{ trans('messages.sending_servers.configuration_settings') }}</h2>
                 <p>
                     {{ trans('messages.sending_servers.configuration_settings.aws.intro') }}

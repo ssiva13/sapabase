@@ -701,6 +701,7 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['not_installed', 'auth', 
     // Settings
     Route::post('admin/settings/payment', 'SettingController@payment');
     Route::post('admin/settings/advanced/{name}/update', 'SettingController@advancedUpdate');
+    Route::get('admin/settings/advanced/{name}/update', 'SettingController@advancedUpdate');
     Route::get('admin/settings/advanced', 'SettingController@advanced');
     Route::post('admin/settings/upgrade/cancel', 'SettingController@cancelUpgrade');
     Route::post('admin/settings/upgrade', 'SettingController@doUpgrade');
@@ -919,5 +920,12 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['not_installed', 'twilio'
 });
 Route::group(['namespace' => 'Admin'], function () {
     Route::get('/test', "HomeController@test");
-    Route::get('/twilio', "TwilioIntegrationController@index");
+    Route::get('admin/twilio/login-as/{uid}', 'TwilioIntegrationController@loginAs');
+    Route::get('admin/twilio/listing/{page?}', 'TwilioIntegrationController@listing');
+    Route::get('admin/twilio/sort', 'TwilioIntegrationController@sort');
+    Route::get('admin/twilio/delete', 'TwilioIntegrationController@delete');
+    Route::get('admin/twilio/disable', 'TwilioIntegrationController@disable');
+    Route::get('admin/twilio/enable', 'TwilioIntegrationController@enable');
+    Route::get('admin/twilio/login-back', 'TwilioIntegrationController@loginBack');
+    Route::resource('admin/twilio', 'TwilioIntegrationController');
 });

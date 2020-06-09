@@ -132,7 +132,7 @@ class Setting extends Model
     /**
      * Default setting.
      *
-     * @return object
+     * @return array|object
      */
     public static function defaultSettings()
     {
@@ -150,11 +150,13 @@ class Setting extends Model
             'site_logo_small' => [
                 'cat' => 'general',
                 'value' => '',
+                'class' => 'filestyle',
                 'type' => 'image',
             ],
             'site_logo_big' => [
                 'cat' => 'general',
                 'value' => '',
+                'class' => 'filestyle',
                 'type' => 'image',
             ],
             'site_favicon' => [
@@ -197,6 +199,18 @@ class Setting extends Model
                 'value' => 'en',
                 'type' => 'select',
                 'options' => \Acelle\Model\Language::getSelectOptions(),
+            ],
+            'data_topbar' => [
+                'cat' => 'general',
+                'value' => 'light',
+                'type' => 'select',
+                'options' => self::ThemeColors(),
+            ],
+            'data_sidebar' => [
+                'cat' => 'general',
+                'value' => 'dark',
+                'type' => 'select',
+                'options' => self::ThemeColors(),
             ],
             'frontend_scheme' => [
                 'cat' => 'general',
@@ -488,6 +502,31 @@ class Setting extends Model
                 'type' => 'text',
                 'not_required' => true,
             ],
+            'twilio_application_sid' => [
+                'cat' => 'general',
+                'value' => '',
+                'type' => 'text',
+                'not_required' => true,
+            ],
+            'twilio_auth_token' => [
+                'cat' => 'general',
+                'value' => '',
+                'type' => 'text',
+                'not_required' => true,
+            ],
+            'twilio_account_sid' => [
+                'cat' => 'general',
+                'value' => '',
+                'type' => 'text',
+                'not_required' => true,
+            ],
+            'twilio_enabled' => [
+                'cat' => 'general',
+                'value' => 'yes',
+                'type' => 'checkbox',
+                'options' => ['no', 'yes'],
+            ],
+
         ];
     }
 
@@ -506,6 +545,13 @@ class Setting extends Model
             ['value' => 'pink', 'text' => trans('messages.pink')],
             ['value' => 'grey', 'text' => trans('messages.grey')],
             ['value' => 'white', 'text' => trans('messages.white')],
+        ];
+    }
+    public static function ThemeColors()
+    {
+        return [
+            ['value' => 'dark', 'text' => trans('messages.dark')],
+            ['value' => 'blue', 'text' => trans('messages.light')]
         ];
     }
 

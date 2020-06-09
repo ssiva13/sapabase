@@ -22,44 +22,59 @@
 @endsection
 
 @section('content')
-    <p>{{ trans('messages.languages.wording') }}</p>
-    <form class="listing-form"
-        data-url="{{ action('Admin\LanguageController@listing') }}"
-        per-page="{{ Acelle\Model\SendingDomain::$itemsPerPage }}"
-    >
-        <div class="row top-list-controls">
-            <div class="col-md-9">
-                @if ($items->count() >= 0)
-                    <div class="filter-box">
-                        <span class="filter-group">
-                            <span class="title text-semibold text-muted">{{ trans('messages.sort_by') }}</span>
-                            <select class="select" name="sort-order">
-                                <option value="languages.name">{{ trans('messages.name') }}</option>
-                                <option value="bounce_handlers.code">{{ trans('messages.code') }}</option>
-                                <option value="bounce_handlers.region_code">{{ trans('messages.region') }}</option>
-                                <option value="bounce_handlers.created_at">{{ trans('messages.created_at') }}</option>
-                                <option value="bounce_handlers.updated_at">{{ trans('messages.updated_at') }}</option>
-                            </select>
-                            <button class="btn btn-xs sort-direction" rel="asc" data-popup="tooltip" title="{{ trans('messages.change_sort_direction') }}" type="button" class="btn btn-xs">
-                                <i class="icon-sort-amount-asc"></i>
-                            </button>
-                        </span>
-                        <span class="text-nowrap">
-                            <input name="search_keyword" class="form-control search" placeholder="{{ trans('messages.type_to_search') }}" />
-                            <i class="icon-search4 keyword_search_button"></i>
-                        </span>
-                    </div>
-                @endif
-            </div>
-            @can("create", new Acelle\Model\Language())
-                <div class="col-md-3 text-right">
-                    <a href="{{ action('Admin\LanguageController@create') }}" type="button" class="btn bg-info-800">
-                        <i class="icon icon-plus2"></i> {{ trans('messages.create_language') }}
-                    </a>
-                </div>
-            @endcan
-        </div>
+    <div class="row">
+        @component('admin.common-components.settings_breadcrumb')
+            @slot('title') {{ trans('messages.settings') }}  @endslot
+            @slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+            @slot('li2') Admin  @endslot
+            @slot('li3') {{ trans('messages.settings') }} @endslot
+            @slot('li4') {{ trans('messages.languages') }} @endslot
+        @endcomponent
+    </div>
 
-        <div class="pml-table-container"></div>
-    </form>
+    <p>{{ trans('messages.languages.wording') }}</p>
+
+    <div class="card">
+        <div class="card-body">
+            <form class="listing-form"
+            data-url="{{ action('Admin\LanguageController@listing') }}"
+            per-page="{{ Acelle\Model\SendingDomain::$itemsPerPage }}"
+            >
+                <div class="row top-list-controls">
+                    <div class="col-md-9">
+                        @if ($items->count() >= 0)
+                            <div class="filter-box">
+                                <span class="filter-group">
+                                    <span class="title text-semibold text-muted">{{ trans('messages.sort_by') }}</span>
+                                    <select class="select" name="sort-order">
+                                        <option class="dropdown-item" value="languages.name">{{ trans('messages.name') }}</option>
+                                        <option class="dropdown-item" value="bounce_handlers.code">{{ trans('messages.code') }}</option>
+                                        <option class="dropdown-item" value="bounce_handlers.region_code">{{ trans('messages.region') }}</option>
+                                        <option class="dropdown-item" value="bounce_handlers.created_at">{{ trans('messages.created_at') }}</option>
+                                        <option class="dropdown-item" value="bounce_handlers.updated_at">{{ trans('messages.updated_at') }}</option>
+                                    </select>
+                                    <button class="btn btn-xs sort-direction" rel="asc" data-popup="tooltip" title="{{ trans('messages.change_sort_direction') }}" type="button" class="btn btn-xs">
+                                        <i class="icon-sort-amount-asc"></i>
+                                    </button>
+                                </span>
+                                <span class="text-nowrap">
+                                    <input name="search_keyword" class="form-control search" placeholder="{{ trans('messages.type_to_search') }}" />
+                                    <i class="icon-search4 keyword_search_button"></i>
+                                </span>
+                            </div>
+                        @endif
+                    </div>
+                    @can("create", new Acelle\Model\Language())
+                        <div class="col-md-3 text-right">
+                            <a href="{{ action('Admin\LanguageController@create') }}" type="button" class="btn bg-info-800">
+                                <i class="icon icon-plus2"></i> {{ trans('messages.create_language') }}
+                            </a>
+                        </div>
+                    @endcan
+                </div>
+
+                <div class="pml-table-container"></div>
+            </form>
+        </div>
+    </div>
 @endsection

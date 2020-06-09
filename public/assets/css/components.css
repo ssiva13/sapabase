@@ -2430,6 +2430,7 @@ label.checkbox-switch.checkbox-inline {
   display: block;
   padding-left: 12px;
   padding-right: 28px;
+  line-height: 1 !important;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

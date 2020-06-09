@@ -23,17 +23,29 @@
 @endsection
 
 @section('content')
+    <div class="row">
+        @component('admin.common-components.settings_breadcrumb')
+            @slot('title') {{ trans('messages.admin') }}  @endslot
+            @slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+            @slot('li2') Admin  @endslot
+            @slot('li3') {{ trans('messages.admin_group') }} @endslot
+            @slot('li4') {{ trans('messages.edit') }} @endslot
+        @endcomponent
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <form action="{{ action('Admin\AdminGroupController@update', $group->id) }}" method="POST" class="form-validate-jqueryz">
+                {{ csrf_field() }}
+                <input type="hidden" name="_method" value="PATCH">
 
-    <form action="{{ action('Admin\AdminGroupController@update', $group->id) }}" method="POST" class="form-validate-jqueryz">
-        {{ csrf_field() }}
-        <input type="hidden" name="_method" value="PATCH">
-
-        @include("admin.admin_groups._form")
-        <hr />
-        <div class="text-left">
-            <button class="btn bg-teal mr-10"><i class="icon-check"></i> {{ trans('messages.save') }}</button>
-            <a href="{{ action('Admin\AdminGroupController@index') }}" class="btn bg-grey-800"><i class="icon-cross2"></i> {{ trans('messages.cancel') }}</a>
+                @include("admin.admin_groups._form")
+                <hr />
+                <div class="text-left">
+                    <button class="btn btn-primary mr-10"><i class="icon-check"></i> {{ trans('messages.save') }}</button>
+                    <a href="{{ action('Admin\AdminGroupController@index') }}" class="btn bg-grey-800"><i class="icon-cross2"></i> {{ trans('messages.cancel') }}</a>
+                </div>
+            </form>
         </div>
-    <form>
+    </div>
 
 @endsection

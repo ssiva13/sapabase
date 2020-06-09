@@ -23,7 +23,16 @@
 @endsection
 
 @section('content')
-
+    <div class="row">
+        @component('admin.common-components.breadcrumb')
+            @slot('title') {{ trans('messages.feedback_log') }}  @endslot
+            @slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+            @slot('li2') Admin  @endslot
+            @slot('li3') {{ trans('messages.feedback_log') }} @endslot
+        @endcomponent
+    </div>
+    <div class="card">
+        <div class="card-body">
                 <form class="listing-form"
                     data-url="{{ action('Admin\FeedbackLogController@listing') }}"
                     per-page="{{ Acelle\Model\FeedbackLog::$itemsPerPage }}"
@@ -60,4 +69,6 @@
 
                     </div>
                 </form>
+        </div>
+    </div>
 @endsection

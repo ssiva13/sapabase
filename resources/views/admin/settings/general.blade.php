@@ -6,6 +6,8 @@
     <script type="text/javascript" src="{{ URL::asset('assets/js/core/libraries/jquery_ui/interactions.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::asset('assets/js/core/libraries/jquery_ui/touch.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::asset('js/listing.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('assets/js/plugins/forms/styling/uniform.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/validate.js') }}"></script>
 @endsection
 
 @section('page_header')
@@ -22,17 +24,26 @@
 @endsection
 
 @section('content')
+    <div class="row">
+        @component('admin.common-components.settings_breadcrumb')
+            @slot('title') {{ trans('messages.settings') }}  @endslot
+            @slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+            @slot('li2') Admin  @endslot
+            @slot('li3') {{ trans('messages.settings') }} @endslot
+            @slot('li4') {{ trans('messages.general') }} @endslot
+        @endcomponent
+    </div>
+
     <form action="{{ action('Admin\SettingController@general') }}" method="POST" class="form-validate-jqueryz" enctype="multipart/form-data">
         {{ csrf_field() }}
 
         <div class="tabbable">
             @include("admin.settings._tabs")
             <div class="tab-content">
-                @include("admin.settings._general")                        
+                @include("admin.settings._general")
             </div>
         </div>
     </form>
-
     <script>
         function changeSelectColor() {
             $('.select2 .select2-selection__rendered, .select2-results__option').each(function() {

@@ -23,6 +23,15 @@
 @endsection
 
 @section('content')
+    <div class="row">
+        @component('admin.common-components.settings_breadcrumb')
+            @slot('title') {{ trans('messages.settings') }}  @endslot
+            @slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+            @slot('li2') Admin  @endslot
+            @slot('li3') {{ trans('messages.settings') }} @endslot
+            @slot('li4') {{ trans('messages.system_email') }} @endslot
+        @endcomponent
+    </div>
 	
     @if (count($errors) > 0 && $errors->has('smtp_valid'))
         <!-- Form Error List -->

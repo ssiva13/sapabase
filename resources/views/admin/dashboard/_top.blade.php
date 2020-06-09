@@ -3,7 +3,7 @@
     @component('admin.common-components.breadcrumb')
         @slot('title') Admin Dashboard  @endslot
         @slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
-        @slot('li2') Adminn  @endslot
+        @slot('li2') Admin  @endslot
         @slot('li3') Dashboard @endslot
     @endcomponent
 

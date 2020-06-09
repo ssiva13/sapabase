@@ -5,37 +5,30 @@
                 <a href="javascript:void(0);" class="right-bar-toggle float-right">
                     <i class="mdi mdi-close noti-icon"></i>
                 </a>
-                <h5 class="m-0">Settings</h5>
+                <h5 class="m-0">Layout Settings</h5>
             </div>
 
             <!-- Settings -->
             <hr class="mt-0" />
-            <h6 class="text-center mb-0">Choose Layouts</h6>
+            <h6 class="text-center mb-0">Choose A Layout</h6>
 
             <div class="p-4">
                 <div class="mb-2">
-                    <img src="" class="img-fluid img-thumbnail" alt="">
-    `               {{--<img src="{{ URL::asset('/images/layouts/layout-1.jpg')}}" class="img-fluid img-thumbnail" alt="">--}}
+                    <img src="{{ URL::asset('/images/layouts/layout-1.jpg')}}" class="img-fluid img-thumbnail" alt="Dark">
                 </div>
                 <div class="custom-control custom-switch mb-3">
-                    <input type="checkbox" class="custom-control-input theme-choice" id="light-mode-switch" data-bsStyle="css/admin/bootstrap.min.css" data-appStyle="css/admin/app.min.css"/>
-                    <label class="custom-control-label" for="light-mode-switch">Light Mode</label>
+                    <input type="checkbox" class="custom-control-input theme-choice" id="dark-mode-switch" data-bsStyle="{{ URL::asset('/css/admin/bootstrap-dark.min.css')}}" data-appStyle="{{ URL::asset('/css/admin/app.min.css')}}" />
+                    <label class="custom-control-label" for="dark-mode-switch">
+                        Dark Mode
+                    </label>
                 </div>
 
                 <div class="mb-2">
-                    <img src="" class="img-fluid img-thumbnail" alt="">
-                </div>
-                <div class="custom-control custom-switch mb-3">
-                    <input type="checkbox" class="custom-control-input theme-choice" id="dark-mode-switch" data-bsStyle="css/admin/bootstrap-dark.min.css" data-appStyle="css/admin/app-dark.min.css" />
-                    <label class="custom-control-label" for="dark-mode-switch">Dark Mode</label>
-                </div>
-
-                <div class="mb-2">
-                    <img src="" class="img-fluid img-thumbnail" alt="">
+                    <img src="{{ URL::asset('/images/layouts/layout-2.jpg')}}" class="img-fluid img-thumbnail" alt="Light">
                 </div>
                 <div class="custom-control custom-switch mb-5">
-                    <input type="checkbox" class="custom-control-input theme-choice" id="rtl-mode-switch" data-appStyle="css/admin/app-rtl.min.css" />
-                    <label class="custom-control-label" for="rtl-mode-switch">RTL Mode</label>
+                    <input type="checkbox" class="custom-control-input theme-choice" id="light-mode-switch" data-bsStyle="{{ URL::asset('/css/admin/bootstrap.min.css')}}" data-appStyle="{{ URL::asset('/css/admin/app.min.css')}}"/>
+                    <label class="custom-control-label" for="light-mode-switch"></label>
                 </div>
             </div>
 

@@ -23,7 +23,18 @@
 @endsection
 
 @section('content')
-
-    @include('admin.sending_servers.form.' . $server->type)
-    
+	<div class="row">
+		@component('admin.common-components.settings_breadcrumb')
+			@slot('title') {{ trans('messages.sending_servers') }}  @endslot
+			@slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+			@slot('li2') Admin  @endslot
+			@slot('li3') {{ trans('messages.sending_servers') }} @endslot
+			@slot('li4') {{ trans('messages.create') }} @endslot
+		@endcomponent
+	</div>
+	<div class="card">
+		<div class="card-body">
+    		@include('admin.sending_servers.form.' . $server->type)
+		</div>
+	</div>
 @endsection

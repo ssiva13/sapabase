@@ -55,7 +55,7 @@
                             {{ trans('messages.template.pro_builder') }}
                         </a>
                         <a href="{{ action('Admin\TemplateController@edit', $template->uid) }}"
-							type="button" class="btn bg-grey btn-icon template-compose-classic">
+							type="button" class="btn btn-secondary btn-icon template-compose-classic">
                             {{ trans('messages.template.classic_builder') }}
                         </a>
 					@endif
@@ -63,38 +63,62 @@
 						Auth::user()->admin->can('copy', $template) ||
 						Auth::user()->admin->can('delete', $template))
 						<div class="btn-group">
-							<button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret ml-0"></span></button>
-							<ul class="dropdown-menu dropdown-menu-right">
-								@if (Auth::user()->admin->can('update', $template))
-									<li>
-										<a class="template-compose-classic" href="{{ action('Admin\TemplateController@edit', $template->uid) }}">
-											<i class="icon-hammer"></i> {{ trans("messages.buider.builder_classic") }}
-										</a>
-									</li>
-								@endif
-								@if (Auth::user()->admin->can('update', $template))
-                                    <li>
-                                        <a class="upload-thumb-button" href="{{ action('Admin\TemplateController@updateThumb', $template->uid) }}">
-                                            <i class="icon-file-picture"></i> {{ trans("messages.template.upload_thumbnail") }}
-                                        </a>
-                                    </li>
-                                @endif
-								@if (Auth::user()->admin->can('copy', $template))
-									<li>
-										<a
-											href="{{ action('Admin\TemplateController@copy', $template->uid) }}"
-											type="button"
-											class="modal_link"
-											data-method="GET"
-										>
-											<i class="icon-copy4"></i> {{ trans("messages.template.copy") }}
-										</a>
-									</li>
-								@endif
-								@if (Auth::user()->admin->can('delete', $template))
-									<li><a delete-confirm="{{ trans('messages.delete_templates_confirm') }}" href="{{ action('Admin\TemplateController@delete', ["uids" => $template->uid]) }}"><i class="icon-trash"></i> {{ trans("messages.delete") }}</a></li>
-								@endif
-							</ul>
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret ml-0"></span></button>
+							<div style="max-height: 230px;" class="dropdown-menu dropdown-menu-right" >
+								<div class="media-body">
+									<ol class="activity-feed mb-0">
+										@if (Auth::user()->admin->can('update', $template))
+											<li class="dropdown-item">
+												<a class="template-compose-classic" href="{{ action('Admin\TemplateController@edit', $template->uid) }}">
+													<div class="text-muted">
+														<p class="mb-1">
+															<i class="icon-hammer"></i> {{ trans("messages.buider.builder_classic") }}
+														</p>
+													</div>
+												</a>
+											</li>
+										@endif
+										@if (Auth::user()->admin->can('update', $template))
+											<li class="dropdown-item">
+												<a class="upload-thumb-button" href="{{ action('Admin\TemplateController@updateThumb', $template->uid) }}">
+													<div class="text-muted">
+														<p class="mb-1">
+															<i class="icon-file-picture"></i> {{ trans("messages.template.upload_thumbnail") }}
+														</p>
+													</div>
+												</a>
+											</li>
+										@endif
+										@if (Auth::user()->admin->can('copy', $template))
+											<li class="dropdown-item">
+												<a
+													href="{{ action('Admin\TemplateController@copy', $template->uid) }}"
+													type="button"
+													class="modal_link"
+													data-method="GET"
+												>
+													<div class="text-muted">
+														<p class="mb-1">
+															<i class="icon-copy4"></i> {{ trans("messages.template.copy") }}
+														</p>
+													</div>
+												</a>
+											</li>
+										@endif
+										@if (Auth::user()->admin->can('delete', $template))
+											<li class="dropdown-item">
+												<a delete-confirm="{{ trans('messages.delete_templates_confirm') }}" href="{{ action('Admin\TemplateController@delete', ["uids" => $template->uid]) }}">
+													<div class="text-muted">
+														<p class="mb-1">
+															<i class="icon-trash"></i> {{ trans("messages.delete") }}
+														</p>
+													</div>
+												</a>
+											</li>
+										@endif
+									</ol>
+								</div>
+							</div>
 						</div>
 					@endif
 				</td>

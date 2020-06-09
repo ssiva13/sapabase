@@ -22,15 +22,22 @@
 @endsection
 
 @section('content')
-
     <div class="row">
-        <div class="col-sm-12 col-md-10 col-lg-10">
-            <p>{!! trans('messages.sending_domain.wording') !!}</p>
+        @component('admin.common-components.settings_breadcrumb')
+            @slot('title') {{ trans('messages.sending_domain') }}  @endslot
+            @slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+            @slot('li2') Admin  @endslot
+            @slot('li3') {{ trans('messages.sending_domain') }} @endslot
+            @slot('li4') {{ trans('messages.create') }} @endslot
+        @endcomponent
+    </div>
+    <p>{!! trans('messages.sending_domain.wording') !!}</p>
+    <div class="card">
+        <div class="card-body">
+            <form action="{{ action('Admin\SendingDomainController@store') }}" method="POST" class="form-validate-jqueryz">
+                @include('admin.sending_domains._form')
+            </form>
         </div>
     </div>
-
-    <form action="{{ action('Admin\SendingDomainController@store') }}" method="POST" class="form-validate-jqueryz">
-        @include('admin.sending_domains._form')
-    </form>
 
 @endsection

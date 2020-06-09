@@ -23,20 +23,29 @@
 @endsection
 
 @section('content')
-			<form action="{{ action('Admin\SettingController@sending') }}" method="POST" class="form-validate-jqueryz">
-				{{ csrf_field() }}
-				
-				<div class="tabbable">
-					
-                    @include("admin.settings._tabs")
-	
-					<div class="tab-content">
-						
-						@include("admin.settings._sending")
-						
-					</div>
-				</div>
-					
-				
-			</form>
+	<div class="row">
+		@component('admin.common-components.settings_breadcrumb')
+			@slot('title') {{ trans('messages.settings') }}  @endslot
+			@slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+			@slot('li2') Admin  @endslot
+			@slot('li3') {{ trans('messages.settings') }} @endslot
+			@slot('li4') {{ trans('messages.sending') }} @endslot
+		@endcomponent
+	</div>
+	<form action="{{ action('Admin\SettingController@sending') }}" method="POST" class="form-validate-jqueryz">
+		{{ csrf_field() }}
+
+		<div class="tabbable">
+
+			@include("admin.settings._tabs")
+
+			<div class="tab-content">
+
+				@include("admin.settings._sending")
+
+			</div>
+		</div>
+
+
+	</form>
 @endsection

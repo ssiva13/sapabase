@@ -2,12 +2,12 @@
     <table class="table table-box pml-table" current-page="{{ empty(request()->page) ? 1 : empty(request()->page) }}">
         @foreach ($items as $key => $item)
             <tr>
-                <td width="1%">         
+                <td width="1%">
                     <div class="text-nowrap">
                         <div class="checkbox inline">
-                        <label>                 
-                            <input type="checkbox" class="node styled" custom-order="{{ $item->custom_order }}" name="ids[]" value="{{ $item->uid }}" />
-                        </label>
+                            <label>
+                                <input type="checkbox" class="node styled" custom-order="{{ $item->custom_order }}" name="ids[]" value="{{ $item->uid }}" />
+                            </label>
                         </div>
                     </div>
                 </td>
@@ -46,28 +46,38 @@
                         <span class="text-muted">{{ trans("messages.signing_enabled") }}</span>
                     </div>
                 </td>
-                
                 <td class="text-right">
                     <span class="text-muted2 list-status pull-left">
                         <span class="label label-flat bg-{{ $item->status }}">{{ trans('messages.sending_domain_status_' . $item->status) }}</span>
                     </span>
+                </td>
+                
+                <td class="text-right">
 
                     @if (Auth::user()->admin->can('read', $item))
-                        <a href="{{ action('Admin\SendingDomainController@show', $item->uid) }}" data-popup="tooltip" title="{{ trans('messages.sending_domain.view') }}" type="button" class="btn bg-grey btn-icon">
+                        <a href="{{ action('Admin\SendingDomainController@show', $item->uid) }}" data-popup="tooltip" title="{{ trans('messages.sending_domain.view') }}" type="button" class="btn btn-info btn-icon">
                             {{ trans('messages.sending_domain.view') }}
                         </a>
                     @endif
 
                     @if (Auth::user()->admin->can('delete', $item))
                         <div class="btn-group">
-                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret ml-0"></span></button>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                <li>
-                                    <a delete-confirm="{{ trans('messages.delete_sending_domains_confirm') }}" href="{{ action('Admin\SendingDomainController@delete', ["uids" => $item->uid]) }}">
-                                        <i class="icon-trash"></i> {{ trans('messages.delete') }}
-                                    </a>
-                                </li>
-                            </ul>
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret ml-0"></span></button>
+                            <div data-simplebar style="max-height: 230px;" class="dropdown-menu dropdown-menu-right" >
+                                <div class="media-body">
+                                    <ol class="activity-feed mb-0">
+                                        <li class="dropdown-item">
+                                            <a delete-confirm="{{ trans('messages.delete_sending_domains_confirm') }}" href="{{ action('Admin\SendingDomainController@delete', ["uids" => $item->uid]) }}">
+                                                <div class="text-muted">
+                                                    <p class="mb-1">
+                                                        <i class="icon-trash"></i> {{ trans('messages.delete') }}
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
                         </div>
                     @endif
                 </td>

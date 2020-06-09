@@ -73,7 +73,7 @@
 
 <hr >
 <div class="text-left">
-	<button class="btn bg-teal mr-5"><i class="icon-check"></i> {{ trans('messages.save') }}</button>
+	<button class="btn btn-primary mr-5"><i class="icon-check"></i> {{ trans('messages.save') }}</button>
 	<a href="{{ action('Admin\EmailVerificationServerController@index') }}" type="button" class="btn bg-grey">
 		<i class="icon-cross2"></i> {{ trans('messages.cancel') }}
 	</a>

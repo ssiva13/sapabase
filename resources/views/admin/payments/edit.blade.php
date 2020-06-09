@@ -27,14 +27,23 @@
 @endsection
 
 @section('content')
-		<div class="row">
-			<div class="col-md-6">
-				<p>
-					{!! trans('messages.payment.' . $gateway['name'] . '.wording') !!}
-				</p>
-			</div>
-		</div>
-			
-		@include('admin.payments._' . $gateway['name']) 
+    <div class="row">
+        @component('admin.common-components.settings_breadcrumb')
+            @slot('title') {{ trans('messages.settings') }}  @endslot
+            @slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+            @slot('li2') Admin  @endslot
+            @slot('li3') {{ trans('messages.settings') }} @endslot
+            @slot('li4') {{ trans('messages.payment.options') }} @endslot
+        @endcomponent
+    </div>
+    <p>
+        {!! trans('messages.payment.' . $gateway['name'] . '.wording') !!}
+    </p>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title text-muted text-center"><strong>{{ trans('messages.payments.' . $gateway['name']) }}  {{ trans('messages.payment.options') }} </strong></h4>
+            @include('admin.payments._' . $gateway['name'])
+        </div>
+    </div>
 
 @endsection

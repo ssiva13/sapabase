@@ -23,6 +23,15 @@
 @endsection
 
 @section('content')
-      <h2 class="text-semibold text-teal-800 mt-0">{{ trans('messages.last_300_logs') }}</h2>
-			<textarea class="system_logs">{{ $error_logs }}</textarea>
+	<div class="row">
+		@component('admin.common-components.settings_breadcrumb')
+			@slot('title') {{ trans('messages.settings') }}  @endslot
+			@slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+			@slot('li2') Admin  @endslot
+			@slot('li3') {{ trans('messages.settings') }} @endslot
+			@slot('li4') {{ trans('messages.system_logs') }} @endslot
+		@endcomponent
+	</div>
+  	<h2 class="text-semibold text-teal-800 mt-0">{{ trans('messages.last_300_logs') }}</h2>
+		<textarea class="system_logs">{{ $error_logs }}</textarea>
 @endsection

@@ -100,5 +100,5 @@
             <i class="icon-rotate-cw3"></i> {{ trans('messages.feedback_loop_handler.test') }}
         </a>
     @endcan
-    <button class="btn bg-teal"><i class="icon-check"></i> {{ trans('messages.save') }}</button>
+    <button class="btn btn-primary float-left"><i class="icon-check"></i> {{ trans('messages.save') }}</button>
 </div>

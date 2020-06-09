@@ -23,77 +23,116 @@
 @endsection
 
 @section('content')
+    <div class="row">
+        @component('admin.common-components.breadcrumb')
+            @slot('title') {{ trans('messages.sending_servers') }}  @endslot
+            @slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+            @slot('li2') Admin  @endslot
+            @slot('li3') {{ trans('messages.sending_servers') }} @endslot
+        @endcomponent
+    </div>
     <div class="alert alert-info">
         <p>
             <span class="text-semibold">{{ trans('messages.notification.note') }} </span> {{ trans('messages.notification.sending_servers') }}
         </p>
     </div>
     <p>{{ trans('messages.sending_server.wording') }}</p>
-
-
-    <form class="listing-form"
-        sort-url="{{ action('Admin\SendingServerController@sort') }}"
-        data-url="{{ action('Admin\SendingServerController@listing') }}"
-        per-page="{{ Acelle\Model\SendingServer::$itemsPerPage }}"
-    >
-        <div class="row top-list-controls">
-            <div class="col-md-10">
-                @if ($items->count() >= 0)
-                    <div class="filter-box">
-                        <div class="btn-group list_actions hide">
-                            <button type="button" class="btn btn-xs btn-grey-600 dropdown-toggle" data-toggle="dropdown">
-                                {{ trans('messages.actions') }} <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a link-confirm="{{ trans('messages.enable_sending_servers_confirm') }}" href="{{ action('Admin\SendingServerController@enable') }}"><i class="icon-checkbox-checked2"></i> {{ trans('messages.enable') }}</a></li>
-                                <li><a link-confirm="{{ trans('messages.disable_sending_servers_confirm') }}" href="{{ action('Admin\SendingServerController@disable') }}"><i class="icon-checkbox-unchecked2"></i> {{ trans('messages.disable') }}</a></li>
-                                <li><a delete-confirm="{{ trans('messages.delete_sending_servers_confirm') }}" href="{{ action('Admin\SendingServerController@delete') }}"><i class="icon-trash"></i> {{ trans('messages.delete') }}</a></li>
-                            </ul>
-                        </div>
-                        <div class="checkbox inline check_all_list">
-                            <label>
-                                <input type="checkbox" class="styled check_all">
-                            </label>
-                        </div>
-                        <span class="filter-group">
-                            <span class="title text-semibold text-muted">{{ trans('messages.sort_by') }}</span>
-                            <select class="select" name="sort-order">
-                                <option value="sending_servers.name">{{ trans('messages.name') }}</option>
-                                <option value="sending_servers.created_at">{{ trans('messages.created_at') }}</option>
-                                <option value="sending_servers.updated_at">{{ trans('messages.updated_at') }}</option>
-                            </select>
-                            <button class="btn btn-xs sort-direction" rel="asc" data-popup="tooltip" title="{{ trans('messages.change_sort_direction') }}" type="button" class="btn btn-xs">
-                                <i class="icon-sort-amount-asc"></i>
-                            </button>
-                        </span>
-                        <span class="filter-group">
-                            <span class="title text-semibold text-muted">{{ trans('messages.type') }}</span>
-                            <select class="select" name="type">
-                                <option value="">{{ trans('messages.all') }}</option>
-                                @foreach (Acelle\Model\SendingServer::types() as $key => $type)
-                                    <option value="{{ $key }}">{{ trans('messages.' . $key) }}</option>
-                                @endforeach
-                            </select>
-                        </span>
-                        <span class="text-nowrap">
-                            <input name="search_keyword" class="form-control search" placeholder="{{ trans('messages.type_to_search') }}" />
-                            <i class="icon-search4 keyword_search_button"></i>
-                        </span>
+    <div class="card">
+        <div class="card-body">
+            <form class="listing-form"
+                sort-url="{{ action('Admin\SendingServerController@sort') }}"
+                data-url="{{ action('Admin\SendingServerController@listing') }}"
+                per-page="{{ Acelle\Model\SendingServer::$itemsPerPage }}"
+            >
+                <div class="row top-list-controls">
+                    <div class="col-md-10">
+                        @if ($items->count() >= 0)
+                            <div class="filter-box">
+                                <div class="btn-group list_actions hide">
+                                    <button type="button" class="btn btn-xs btn-grey-600 dropdown-toggle" data-toggle="dropdown">
+                                        {{ trans('messages.actions') }} <span class="caret"></span>
+                                    </button>
+                                    <div data-simplebar style="max-height: 230px;" class="dropdown-menu dropdown-menu-right" >
+                                        <div class="media-body">
+                                            <ol class="activity-feed mb-0">
+                                                <li class="dropdown-item">
+                                                    <a link-confirm="{{ trans('messages.enable_sending_servers_confirm') }}" href="{{ action('Admin\SendingServerController@enable') }}">
+                                                        <div class="text-muted">
+                                                            <p class="mb-1">
+                                                                <i class="icon-checkbox-checked2"></i> {{ trans('messages.enable') }}
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a link-confirm="{{ trans('messages.disable_sending_servers_confirm') }}" href="{{ action('Admin\SendingServerController@disable') }}">
+                                                        <div class="text-muted">
+                                                            <p class="mb-1">
+                                                                <i class="icon-checkbox-unchecked2"></i> {{ trans('messages.disable') }}
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a delete-confirm="{{ trans('messages.delete_sending_servers_confirm') }}" href="{{ action('Admin\SendingServerController@delete') }}">x
+                                                        <div class="text-muted">
+                                                            <p class="mb-1">
+                                                                <i class="icon-trash"></i> {{ trans('messages.delete') }}
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="checkbox inline check_all_list ml-2">
+                                    <label>
+                                        <input type="checkbox" class="styled check_all">
+                                    </label>
+                                </div>
+                                <span class="filter-group">
+                                    <span class="title text-semibold text-muted">{{ trans('messages.sort_by') }}</span>
+                                    <select class="select" name="sort-order">
+                                        <option value="sending_servers.name">{{ trans('messages.name') }}</option>
+                                        <option value="sending_servers.created_at">{{ trans('messages.created_at') }}</option>
+                                        <option value="sending_servers.updated_at">{{ trans('messages.updated_at') }}</option>
+                                    </select>
+                                    <button class="btn btn-xs sort-direction" rel="asc" data-popup="tooltip" title="{{ trans('messages.change_sort_direction') }}" type="button" class="btn btn-xs">
+                                        <i class="icon-sort-amount-asc"></i>
+                                    </button>
+                                </span>
+                                <span class="filter-group">
+                                    <span class="title text-semibold text-muted">{{ trans('messages.type') }}</span>
+                                    <select class="select" name="type">
+                                        <option value="">{{ trans('messages.all') }}</option>
+                                        @foreach (Acelle\Model\SendingServer::types() as $key => $type)
+                                            <option value="{{ $key }}">{{ trans('messages.' . $key) }}</option>
+                                        @endforeach
+                                    </select>
+                                </span>
+                                <span class="text-nowrap">
+                                    <input name="search_keyword" class="form-control search" placeholder="{{ trans('messages.type_to_search') }}" />
+                                    <i class="icon-search4 keyword_search_button"></i>
+                                </span>
+                            </div>
+                        @endif
                     </div>
-                @endif
-            </div>
-            @if (Auth::user()->admin->can('create', new Acelle\Model\SendingServer()))
-                <div class="col-md-2 text-right">
-                    <a href="{{ action('Admin\SendingServerController@select') }}" type="button" class="btn bg-info-800">
-                        <i class="icon icon-plus2"></i> {{ trans('messages.create_sending_server') }}
-                    </a>
+                    @if (Auth::user()->admin->can('create', new Acelle\Model\SendingServer()))
+                        <div class="col-md-2 text-right">
+                            <a href="{{ action('Admin\SendingServerController@select') }}" type="button" class="btn btn-info">
+                                <i class="icon icon-plus2"></i> {{ trans('messages.create_sending_server') }}
+                            </a>
+                        </div>
+                    @endif
                 </div>
-            @endif
-        </div>
 
-        <div class="pml-table-container">
+                <div class="pml-table-container">
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
+
 
 
     <!-- Basic modal -->

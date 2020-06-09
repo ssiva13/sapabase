@@ -21,8 +21,16 @@
 			</div>
 
 @endsection
-
 @section('content')
+	<div class="row">
+		@component('admin.common-components.settings_breadcrumb')
+			@slot('title') {{ trans('messages.advanced_settings') }}  @endslot
+			@slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+			@slot('li2') Admin  @endslot
+			@slot('li3') {{ trans('messages.settings') }} @endslot
+			@slot('li4') {{ trans('messages.advanced_settings') }} @endslot
+		@endcomponent
+	</div>
     <form action="{{ action('Admin\SettingController@advanced') }}" method="POST" class="form-validate-jqueryz">
         {{ csrf_field() }}
 
@@ -36,4 +44,31 @@
         </div>
 
     </form>
+
+	<div id="advanced_modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+		<form class="form-control" id="advanced_settings_form">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title mt-0" id="advanced_modal_label"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label id="advanced_modal_input_name" for="example-text-input" class="col-sm-2 col-form-label">Text</label>
+							<div class="col-sm-10">
+								<input class="form-control" name="value" type="text" id="advanced_modal_input_value">
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+		</form>
+		<!-- /.modal-dialog -->
+	</div>
 @endsection

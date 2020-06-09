@@ -23,11 +23,21 @@
 @endsection
 
 @section('content')
-          <form enctype="multipart/form-data" action="{{ action('Admin\CustomerController@store') }}" method="POST" class="form-validate-jqueryz">
-					{{ csrf_field() }}
-					
-					@include('admin.customers._form')			
-					
-				<form>
+	<div class="row">
+		@component('admin.common-components.breadcrumb')
+			@slot('title') {{ trans('messages.create_customer') }}  @endslot
+			@slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+			@slot('li2') Admin  @endslot
+			@slot('li3') {{ trans('messages.create_customer') }} @endslot
+		@endcomponent
+	</div>
+	<div class="card">
+		<div class="card-body">
+			<form enctype="multipart/form-data" action="{{ action('Admin\CustomerController@store') }}" method="POST" class="form-validate-jqueryz">
+				{{ csrf_field() }}
+				@include('admin.customers._form')
+			</form>
+		</div>
+	</div>
 				
 @endsection

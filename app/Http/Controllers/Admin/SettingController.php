@@ -673,6 +673,7 @@ class SettingController extends Controller
         \Acelle\Model\Setting::set($name, $request->value);
 
         echo trans('messages.setting.update.success', ['name' => $name]);
+        return redirect()->action('Admin\SettingController@general');
     }
 
     /**

@@ -10,7 +10,7 @@
     
     <div class="mc_section">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <p>{!! trans('messages.sending_servers.smtp.intro') !!}</p>
                     
                 @include('helpers.form_control', [
@@ -113,7 +113,7 @@
     {{ csrf_field() }}
     <div class="mc_section">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <h2 class=" mt-20">{{ trans('messages.sending_servers.configuration_settings') }}</h2>
                 <p>
                     {{ trans('messages.sending_servers.configuration_settings.sendgrid.intro') }}
@@ -177,7 +177,7 @@
     
     <div class="mc_section boxing">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <h3 class="mt-0">{{ trans('messages.sending_servers.sending_identity') }}</h3>
                 <p>
                     {!! trans('messages.sending_servers.local_identity.intro') !!}                    
@@ -257,7 +257,7 @@
                 
                 <hr>
                 <div class="mt-20">
-                    <button class="btn btn-mc_primary mr-10">{{ trans('messages.save') }}</button>
+                    <button class="btn btn-primary mr-10">{{ trans('messages.save') }}</button>
                     <a href="{{ action('Admin\SendingServerController@index') }}" type="button" class="btn btn-mc_inline">
                         {{ trans('messages.cancel') }}
                     </a>

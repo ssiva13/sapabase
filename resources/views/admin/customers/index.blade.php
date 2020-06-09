@@ -6,7 +6,13 @@
     <script type="text/javascript" src="{{ URL::asset('assets/js/core/libraries/jquery_ui/interactions.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::asset('assets/js/core/libraries/jquery_ui/touch.min.js') }}"></script>
 		
-	<script type="text/javascript" src="{{ URL::asset('js/listing.js') }}"></script>		
+	<script type="text/javascript" src="{{ URL::asset('js/listing.js') }}"></script>
+
+	<!-- Responsive Table js -->
+	<script src="{{ URL::asset('/libs/rwd-table/rwd-table.min.js')}}"></script>
+
+	<!-- Init js -->
+	<script src="{{ URL::asset('/js/admin/pages/table-responsive.init.js')}}"></script>
 @endsection
 
 @section('page_header')
@@ -22,51 +28,61 @@
 
 @endsection
 
-@section('content')				
-	<form class="listing-form"
-		sort-url="{{ action('Admin\CustomerController@sort') }}"
-		data-url="{{ action('Admin\CustomerController@listing') }}"
-		per-page="{{ Acelle\Model\Customer::$itemsPerPage }}"					
-	>				
-		<div class="row top-list-controls">
-			<div class="col-md-10">
-				@if ($customers->count() >= 0)					
-					<div class="filter-box">
+@section('content')
+	<div class="row">
+		@component('admin.common-components.breadcrumb')
+			@slot('title') {{ trans('messages.customers') }}  @endslot
+			@slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+			@slot('li2') Admin  @endslot
+			@slot('li3') {{ trans('messages.customers') }} @endslot
+		@endcomponent
+	</div>
+	<div class="card">
+		<div class="card-body">
+			<form class="listing-form"
+				  sort-url="{{ action('Admin\CustomerController@sort') }}"
+				  data-url="{{ action('Admin\CustomerController@listing') }}"
+				  per-page="{{ Acelle\Model\Customer::$itemsPerPage }}"
+			>
+				<div class="row top-list-controls">
+					<div class="col-md-10">
+						@if ($customers->count() >= 0)
+							<div class="filter-box">
 						<span class="filter-group">
 							<span class="title text-semibold text-muted">{{ trans('messages.sort_by') }}</span>
-							<select class="select" name="sort-order">											
+							<select class="select" name="sort-order">
 								<option value="customers.created_at">{{ trans('messages.created_at') }}</option>
 								<option value="customers.updated_at">{{ trans('messages.updated_at') }}</option>
-							</select>										
+							</select>
 							<button class="btn btn-xs sort-direction" rel="desc" data-popup="tooltip" title="{{ trans('messages.change_sort_direction') }}" type="button" class="btn btn-xs">
 								<i class="icon-sort-amount-desc"></i>
 							</button>
-						</span>									
-						<span class="text-nowrap">
+						</span>
+								<span class="text-nowrap">
 							<input name="search_keyword" class="form-control search" placeholder="{{ trans('messages.type_to_search') }}" />
 							<i class="icon-search4 keyword_search_button"></i>
 						</span>
+							</div>
+						@endif
 					</div>
-				@endif
-			</div>
-			@can('create', new Acelle\Model\Customer())
-				<div class="col-md-2 text-right">
-					<a href="{{ action("Admin\CustomerController@create") }}" type="button" class="btn bg-info-800">
-						<i class="icon icon-plus2"></i> {{ trans('messages.create_customer') }}
-					</a>
+					@can('create', new Acelle\Model\Customer())
+						<div class="col-md-2 text-right">
+							<a href="{{ action("Admin\CustomerController@create") }}" type="button" class="btn btn-info">
+								<i class="icon icon-plus2"></i> {{ trans('messages.create_customer') }}
+							</a>
+						</div>
+					@endcan
 				</div>
-			@endcan
-		</div>
-		
-		<div class="pml-table-container">
-			
-			
-			
-		</div>
-	</form>
 
-	<script>
-		var assignPlanModal = new IframeModal();
-	</script>
+				<div class="row pml-table-container">
+
+				</div>
+			</form>
+
+			<script>
+				var assignPlanModal = new IframeModal();
+			</script>
+		</div>
+	</div>
 
 @endsection

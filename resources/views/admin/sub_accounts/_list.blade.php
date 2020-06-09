@@ -5,7 +5,7 @@
         @foreach ($accounts as $key => $account)
             <tr>
                 <td width="1%">
-                    <img width="50" class="img-circle mr-10" src="{{ action('CustomerController@avatar', $account->customer->uid) }}" alt="">
+                    <img src="{{ action('CustomerController@avatar', $account->customer->uid) }}" alt="" width="80" class="avatar-xs rounded-circle mr-2" />
                 </td>
                 <td>
                     <div class="single-stat-box pull-left ml-20">

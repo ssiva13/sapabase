@@ -17,12 +17,17 @@
 		@foreach ($blacklists as $key => $blacklist)
 			<tr>
 				<td width="1%">
+
+					<input type="checkbox" class="node styled"
+						   name="ids[]"
+						   value="{{ $blacklist->id }}"
+					/>
 					<div class="checkbox inline">
 						<label>
-							<input type="checkbox" class="node styled"
-								name="ids[]"
-								value="{{ $blacklist->id }}"
-							/>
+{{--							<input type="checkbox" class="node styled"--}}
+{{--								   name="ids[]"--}}
+{{--								   value="{{ $blacklist->id }}"--}}
+{{--							/>--}}
 						</label>
 					</div>
 				</td>

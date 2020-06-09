@@ -23,13 +23,30 @@
 @endsection
 
 @section('content')
+	<div class="row">
+		@component('admin.common-components.breadcrumb')
+			@slot('title') {{ trans('messages.customer') }}  @endslot
+			@slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+			@slot('li2') Admin  @endslot
+			@slot('li3') {{$customer->first_name}}  {{$customer->last_name}}@endslot
+		@endcomponent
+	</div>
+
 	@include('admin.customers._tabs')
 
 	<form enctype="multipart/form-data" action="{{ action('Admin\CustomerController@update', $customer->uid) }}" method="POST" class="form-validate-jquery">
 		{{ csrf_field() }}
 		<input type="hidden" name="_method" value="PATCH">
-		
-		@include('admin.customers._form')
+		<div class="card">
+			<div class="card-body">
+				<h4 class="card-title text-muted text-center"><strong>{{ trans('messages.profile') }}</strong></h4>
+				<div class="card">
+					<div class="card-body">
+						@include('admin.customers._form')
+					</div>
+				</div>
+			</div>
+		</div>
 		
 	<form>
 @endsection

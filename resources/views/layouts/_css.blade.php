@@ -23,9 +23,10 @@
 <link href="{{ URL::asset('css/admin/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css" />
 <link href="{{ URL::asset('css/admin/app.css')}}" id="app-style" rel="stylesheet" type="text/css" />
 <!-- Bootstrap  light -->
-{{--<link href="{{ URL::asset('assets/css/bootstrap.css') }}" rel="stylesheet" type="text/css">--}}
+
+{{--<link href="{{ URL::asset('assets/css/bootstrap.css') }}" id="new_bootstrap_style" rel="stylesheet" type="text/css">--}}
 <link href="{{ URL::asset('css/admin/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
-<link href="{{ URL::asset('css/admin/bootstrap.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('css/admin/bootstrap.css') }}" id="bootstrap_style" rel="stylesheet" type="text/css" />
 
 
 <link href="{{ URL::asset('css/app.css') }}?v={{ app_version() }}" rel="stylesheet" type="text/css">
@@ -43,3 +44,10 @@
 <link href="{{ URL::asset('css/popup.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ URL::asset('css/mc.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ URL::asset('css/loading.css') }}" rel="stylesheet" type="text/css">
+
+
+<link href="{{ URL::asset('libs/select2/select2.min.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('libs/bootstrap-datepicker/bootstrap-datepicker.min.css')}}" rel="stylesheet">
+<link href="{{ URL::asset('libs/bootstrap-colorpicker/bootstrap-colorpicker.min.css')}}" rel="stylesheet">
+<link href="{{ URL::asset('libs/bootstrap-touchspin/bootstrap-touchspin.min.css')}}" rel="stylesheet" />
+<link href="{{ URL::asset('libs/datatables/datatables.min.css')}}" rel="stylesheet" type="text/css" />

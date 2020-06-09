@@ -30,54 +30,65 @@
             ]) !!}
         </div>
     @endif
+    <div class="row">
+        @component('admin.common-components.breadcrumb')
+            @slot('title') {{ trans('messages.blacklist') }}  @endslot
+            @slot('li1') {{ \Acelle\Model\Setting::get("site_name") }}  @endslot
+            @slot('li2') Admin  @endslot
+            @slot('li3') {{ trans('messages.blacklist') }} @endslot
+        @endcomponent
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <form class="listing-form"
+                data-url="{{ action('Admin\BlacklistController@listing') }}"
+                per-page="{{ Acelle\Model\Blacklist::$itemsPerPage }}"
+            >
 
-    <form class="listing-form"
-        data-url="{{ action('Admin\BlacklistController@listing') }}"
-        per-page="{{ Acelle\Model\Blacklist::$itemsPerPage }}"
-    >
-
-        <div class="row top-list-controls">
-            <div class="col-md-9">
-                @if ($blacklists->count() >= 0)
-                    <div class="filter-box">
-                        @include('helpers.select_tool')
-                        <div class="btn-group list_actions hide">
-                            <button type="button" class="btn btn-xs btn-grey-600 dropdown-toggle" data-toggle="dropdown">
-                                {{ trans('messages.actions') }} <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a delete-confirm="{{ trans('messages.remove_blacklist_confirm') }}" href="{{ action('Admin\BlacklistController@delete') }}"><i class="icon-trash"></i> {{ trans('messages.delete') }}</a></li>
-                            </ul>
-                        </div>
-                        <span class="filter-group">
-                            <span class="title text-semibold text-muted">{{ trans('messages.sort_by') }}</span>
-                            <select class="select" name="sort-order">
-                                <option value="blacklists.created_at">{{ trans('messages.created_at') }}</option>
-                                <option value="blacklists.email">{{ trans('messages.email') }}</option>
-                            </select>
-                            <button class="btn btn-xs sort-direction" rel="desc" data-popup="tooltip" title="{{ trans('messages.change_sort_direction') }}" type="button" class="btn btn-xs">
-                                <i class="icon-sort-amount-desc"></i>
-                            </button>
-                        </span>
-                        <span class="text-nowrap">
-                            <input name="search_keyword" class="form-control search" placeholder="{{ trans('messages.type_to_search') }}" />
-                            <i class="icon-search4 keyword_search_button"></i>
-                        </span>
+                <div class="row top-list-controls">
+                    <div class="col-md-9">
+                        @if ($blacklists->count() >= 0)
+                            <div class="filter-box">
+                                @include('helpers.select_tool')
+                                <div class="btn-group list_actions hide">
+                                    <button type="button" class="btn btn-xs btn-grey-600 dropdown-toggle" data-toggle="dropdown">
+                                        {{ trans('messages.actions') }} <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-item"><a delete-confirm="{{ trans('messages.remove_blacklist_confirm') }}" href="{{ action('Admin\BlacklistController@delete') }}"><i class="icon-trash"></i> {{ trans('messages.delete') }}</a></li>
+                                    </ul>
+                                </div>
+                                <span class="filter-group">
+                                    <span class="title text-semibold text-muted">{{ trans('messages.sort_by') }}</span>
+                                    <select class="select" name="sort-order">
+                                        <option value="blacklists.created_at">{{ trans('messages.created_at') }}</option>
+                                        <option value="blacklists.email">{{ trans('messages.email') }}</option>
+                                    </select>
+                                    <button class="btn btn-xs sort-direction" rel="desc" data-popup="tooltip" title="{{ trans('messages.change_sort_direction') }}" type="button" class="btn btn-xs">
+                                        <i class="icon-sort-amount-desc"></i>
+                                    </button>
+                                </span>
+                                <span class="text-nowrap">
+                                    <input name="search_keyword" class="form-control search" placeholder="{{ trans('messages.type_to_search') }}" />
+                                    <i class="icon-search4 keyword_search_button"></i>
+                                </span>
+                            </div>
+                        @endif
                     </div>
-                @endif
-            </div>
-            <div class="col-md-3">
-                @if (Auth::user()->admin->can('import', new Acelle\Model\Blacklist()))
-                    <div class="text-right">
-                        <a href="{{ action('Admin\BlacklistController@import') }}" type="button" class="btn bg-info-800">
-                            <i class="icon-download4"></i> {{ trans('messages.blacklist.import') }}
-                        </a>
+                    <div class="col-md-3">
+                        @if (Auth::user()->admin->can('import', new Acelle\Model\Blacklist()))
+                            <div class="text-right">
+                                <a href="{{ action('Admin\BlacklistController@import') }}" type="button" class="btn btn-info">
+                                    <i class="icon-download4"></i> {{ trans('messages.blacklist.import') }}
+                                </a>
+                            </div>
+                        @endif
                     </div>
-                @endif
-            </div>
-        </div>
+                </div>
 
-        <div class="pml-table-container">
+                <div class="pml-table-container">
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 @endsection

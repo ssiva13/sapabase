@@ -5,7 +5,7 @@
 								@foreach ($admins as $key => $item)
 									<tr>
 										<td width="1%">
-											<img width="80" class="img-circle mr-10" src="{{ action('AdminController@avatar', $item->uid) }}" alt="">
+											<img src="{{ action('AdminController@avatar', $item->uid) }}" alt="" width="80" class="avatar-xs rounded-circle mr-2" />
 										</td>
 										<td>
 											<h5 class="no-margin text-bold">
@@ -51,37 +51,53 @@
 										</td>
 										<td class="text-right">
 											@can('loginAs', $item)
-												<a href="{{ action('Admin\AdminController@loginAs', $item->uid) }}" data-popup="tooltip" title="{{ trans('messages.login_as_this_admin') }}" type="button" class="btn bg-teal-600 btn-icon"><i class="glyphicon glyphicon-random pr-5"></i></a>
+												<a href="{{ action('Admin\AdminController@loginAs', $item->uid) }}" data-popup="tooltip" title="{{ trans('messages.login_as_this_admin') }}" type="button" class="btn btn-secondary"><i class="icon icon-shuffle"></i></a>
 											@endcan
 											@can('update', $item)
-												<a href="{{ action('Admin\AdminController@edit', $item->uid) }}" data-popup="tooltip" title="{{ trans('messages.edit') }}" type="button" class="btn bg-grey-600 btn-icon"><i class="icon icon-pencil pr-0 mr-0"></i></a>
+												<a href="{{ action('Admin\AdminController@edit', $item->uid) }}" data-popup="tooltip" title="{{ trans('messages.edit') }}" type="button" class="btn btn-success btn-icon"><i class="icon icon-pencil pr-0 mr-0"></i></a>
 											@endcan
 											@if (Auth::user()->can('delete', $item) || Auth::user()->can('enable', $item) || Auth::user()->can('disable', $item) || Auth::user()->can('delete', $item))
 												<div class="btn-group">
-													<button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret ml-0"></span></button>
-													<ul class="dropdown-menu dropdown-menu-right">
-														@can('enable', $item)
-															<li>
-																<a link-confirm="{{ trans('messages.enable_admins_confirm') }}" href="{{ action('Admin\AdminController@enable', ["uids" => $item->uid]) }}">
-																	<i class="icon-checkbox-checked2"></i> {{ trans('messages.enable') }}
-																</a>
-															</li>
-														@endcan
-														@can('disable', $item)
-															<li>
-																<a link-confirm="{{ trans('messages.disable_admins_confirm') }}" href="{{ action('Admin\AdminController@disable', ["uids" => $item->uid]) }}">
-																	<i class="icon-checkbox-unchecked2"></i> {{ trans('messages.disable') }}
-																</a>
-															</li>
-														@endcan
-														@can('delete', $item)
-															<li>
-																<a delete-confirm="{{ trans('messages.delete_admins_confirm') }}" href="{{ action('Admin\AdminController@delete', ['uids' => $item->uid]) }}">
-																	<i class="icon-trash"></i> {{ trans('messages.delete') }}
-																</a>
-															</li>
-														@endcan
-													</ul>
+													<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret ml-0"></span></button>
+													<div style="max-height: 250px; overflow: auto" class="dropdown-menu dropdown-menu-right" >
+														<div class="media-body">
+															<ol class="activity-feed mb-0" style="position: relative !important;">
+																@can('enable', $item)
+																	<li class="dropdown-item">
+																		<a link-confirm="{{ trans('messages.enable_admins_confirm') }}" href="{{ action('Admin\AdminController@enable', ["uids" => $item->uid]) }}">
+																			<div class="text-muted">
+																				<p class="mb-1">
+																					<i class="icon-checkbox-checked2"></i> {{ trans('messages.enable') }}
+																				</p>
+																			</div>
+																		</a>
+																	</li>
+																@endcan
+																@can('disable', $item)
+																	<li class="dropdown-item">
+																		<a link-confirm="{{ trans('messages.disable_admins_confirm') }}" href="{{ action('Admin\AdminController@disable', ["uids" => $item->uid]) }}">
+																			<div class="text-muted">
+																				<p class="mb-1">
+																					<i class="icon-checkbox-unchecked2"></i> {{ trans('messages.disable') }}
+																				</p>
+																			</div>
+																		</a>
+																	</li>
+																@endcan
+																@can('delete', $item)
+																	<li class="dropdown-item">
+																		<a delete-confirm="{{ trans('messages.delete_admins_confirm') }}" href="{{ action('Admin\AdminController@delete', ['uids' => $item->uid]) }}">
+																			<div class="text-muted">
+																				<p class="mb-1">
+																					<i class="icon-trash"></i> {{ trans('messages.delete') }}
+																				</p>
+																			</div>
+																		</a>
+																	</li>
+																@endcan
+															</ol>
+														</div>
+													</div>
 												</div>
 											@endcan
 										</td>

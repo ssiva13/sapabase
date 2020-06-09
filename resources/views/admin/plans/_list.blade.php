@@ -1,10 +1,10 @@
 @if ($plans->count() > 0)
-    <table class="table table-box pml-table"
+    <table class="table pml-table table-striped"
         current-page="{{ empty(request()->page) ? 1 : empty(request()->page) }}"
     >
         @foreach ($plans as $key => $plan)
             <tr>
-                <td width="1%">
+                <td width="1%"> class="dropdown-item"
                     <div class="text-nowrap d-flex align-items-canter">
                         @if (request()->sort_order == 'custom_order' && empty(request()->keyword))
                             <i data-action="move" class="icon icon-more2 list-drag-button"></i>
@@ -69,30 +69,42 @@
                 </td>
                 <td class="text-right text-nowrap" width="5%">
                     @can('update', $plan)
-                        <a href="{{ action('Admin\PlanController@general', $plan->uid) }}" type="button" class="btn bg-grey btn-icon"> <i class="icon-pencil"></i> {{ trans('messages.edit') }}</a>
+                        <a href="{{ action('Admin\PlanController@general', $plan->uid) }}" type="button" class="btn btn-info btn-icon"> <i class="icon-pencil"></i> {{ trans('messages.edit') }}</a>
                     @endcan
                     @if (\Auth::user()->can('delete', $plan) ||
                          \Auth::user()->can('copy', $plan)
                     )
                         <div class="btn-group">
-                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret ml-0"></span></button>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                @can('copy', $plan)
-                                    <li>
-                                        <a data-name="{{'Copy of '}}{{$plan->name}}" data-uid="{{$plan->uid}}" title="{{ trans('messages.copy') }}" class="copy-plan-link">
-                                            <i class="icon icon-copy4"></i> {{ trans('messages.copy') }}
-                                        </a>
-                                    </li>
-                                  @endcan
-                                @can('delete', $plan)
-                                    <li>
-                                        <a list-delete-confirm="{{ action('Admin\PlanController@deleteConfirm', ['uids' => $plan->uid]) }}" href="{{ action('Admin\PlanController@delete', ['uids' => $plan->uid]) }}" title="{{ trans('messages.delete') }}" class="">
-                                            <i class="icon icon-trash"></i> {{ trans('messages.delete') }}
-                                        </a>
-                                    </li>
-                                @endcan
-                            </ul>
-                        </div>
+                                <button type="button" class="btn dropdown-toggle btn-primary" aria-expanded="false" data-toggle="dropdown"><span class="caret ml-0"></span></button>
+                                <div style="max-height: 230px;" class="dropdown-menu dropdown-menu-right" >
+                                    <div class="media-body">
+                                        <ol class="activity-feed mb-0">
+                                            @can('copy', $plan)
+                                                <li class="dropdown-item">
+                                                    <a data-name="{{'Copy of '}}{{$plan->name}}" data-uid="{{$plan->uid}}" title="{{ trans('messages.copy') }}" class="copy-plan-link">
+                                                        <div class="text-muted">
+                                                            <p class="mb-1">
+                                                                <i class="icon icon-copy4"></i> {{ trans('messages.copy') }}
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            @endcan
+                                            @can('delete', $plan)
+                                                <li class="dropdown-item">
+                                                    <a list-delete-confirm="{{ action('Admin\PlanController@deleteConfirm', ['uids' => $plan->uid]) }}" href="{{ action('Admin\PlanController@delete', ['uids' => $plan->uid]) }}" title="{{ trans('messages.delete') }}" class="">
+                                                        <div class="text-muted">
+                                                            <p class="mb-1">
+                                                                <i class="icon icon-trash"></i> {{ trans('messages.delete') }}
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            @endcan
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
                     @endif
                 </td>
             </tr>

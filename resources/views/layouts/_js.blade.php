@@ -1,7 +1,7 @@
     <!-- Core JS files -->
-	<script type="text/javascript" src="{{ URL::asset('assets/js/plugins/loaders/pace.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::asset('assets/js/core/libraries/jquery.min.js') }}"></script>
-{{--	<script type="text/javascript" src="{{ URL::asset('assets/js/core/libraries/bootstrap.min.js') }}"></script>--}}
+	<script type="text/javascript" src="{{ URL::asset('assets/js/plugins/loaders/pace.min.js') }}"></script>
+	<script type="text/javascript" src="{{ URL::asset('assets/js/core/libraries/bootstrap.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::asset('libs/bootstrap/bootstrap.min.js')}}"></script>
 	<script type="text/javascript" src="{{ URL::asset('assets/js/plugins/loaders/blockui.min.js') }}"></script>
 	<script type="text/javascript" src="{{ URL::asset('assets/js/plugins/ui/nicescroll.min.js') }}"></script>
@@ -77,9 +77,18 @@
 	<script type="text/javascript" src="{{ URL::asset('assets2/js/box.js') }}"></script>
 	<!-- /theme JS files -->
 
+	<script src="{{ URL::asset('libs/select2/select2.min.js')}}"></script>
+{{--	<script src="{{ URL::asset('libs/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>--}}
+	<script src="{{ URL::asset('libs/bootstrap-colorpicker/bootstrap-colorpicker.min.js')}}"></script>
+	<script src="{{ URL::asset('libs/bootstrap-touchspin/bootstrap-touchspin.min.js')}}"></script>
+	<script src="{{ URL::asset('libs/bootstrap-filestyle2/bootstrap-filestyle2.min.js')}}"></script>
+	<script src="{{ URL::asset('libs/bootstrap-maxlength/bootstrap-maxlength.min.js')}}"></script>
+
+	<script src="{{ URL::asset('js/admin/pages/form-advanced.init.js')}}"></script>
+
 
 	@include('layouts._script_vars')
-{{--	@include('layouts._menu_script')--}}
+	@include('layouts._menu_script')
 
 	<!-- display flash message -->
 	@include('common.flash')
