@@ -411,6 +411,7 @@
   'bounce_handlers' => 'Bounce handlers',
   'bounce_handler' => 'Bounce handler',
   'setting' => 'Configuração',
+  'voice' => 'Voz',
   'page_form_layout' => 'Layout de página / formulário',
   'twilio_settings' => 'Configurações do Twilio',
     'twilio_numbers' => 'Números Twilio',

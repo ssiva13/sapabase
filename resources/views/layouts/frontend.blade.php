@@ -124,6 +124,11 @@
 						</ul>
 					</li>
 				@endif
+				<li rel0="TwilioController">
+					<a href="{{ action('TwilioController@index') }}">
+						<i class="icon-phone"></i> {{ trans('messages.voice') }}
+					</a>
+				</li>
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">

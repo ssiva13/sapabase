@@ -17,13 +17,15 @@
         <div class="col-sm-6 col-md-6">
             <div class="content-group-sm">
                 <div class="pull-right  text-semibold">
-                    <span class="text-muted">{{ \Acelle\Library\Tool::format_number(Auth::user()->customer->getSendingQuotaUsage()) }}/{{ (Auth::user()->customer->getSendingQuota() == -1) ? '∞' : \Acelle\Library\Tool::format_number(Auth::user()->customer->getSendingQuota()) }}</span>
-                    &nbsp;&nbsp;&nbsp;{{ Auth::user()->customer->displaySendingQuotaUsage() }}
+                    <span class="text-muted">
+{{--                        {{ \Acelle\Library\Tool::format_number(Auth::user()->customer->getSendingQuotaUsage()) }}/{{ (Auth::user()->customer->getSendingQuota() == -1) ? '∞' : \Acelle\Library\Tool::format_number(Auth::user()->customer->getSendingQuota()) }}--}}
+                    </span>
+{{--                        &nbsp;&nbsp;&nbsp;{{ Auth::user()->customer->displaySendingQuotaUsage() }}--}}
                 </div>
                 <h5 class="text-semibold mb-5">{{ trans('messages.sending_quota') }}</h5>
                 <div class="progress progress-sm">
-                    <div class="progress-bar bg-{{ Auth::user()->customer->getSendingQuotaUsagePercentage() >= 80 ? 'danger' : 'primary' }}" style="width: {{ Auth::user()->customer->getSendingQuotaUsagePercentage() }}%">
-                    </div>
+{{--                    <div class="progress-bar bg-{{ Auth::user()->customer->getSendingQuotaUsagePercentage() >= 80 ? 'danger' : 'primary' }}" style="width: {{ Auth::user()->customer->getSendingQuotaUsagePercentage() }}%">--}}
+{{--                    </div>--}}
                 </div>
             </div>
         </div>
@@ -40,6 +42,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row quota_box">
         <div class="col-sm-6 col-md-6">
             <div class="content-group-sm">
                 <div class="pull-right  text-semibold">

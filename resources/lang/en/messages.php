@@ -429,6 +429,7 @@
   'page_form_layout' => 'Page/Form Layout',
   'twilio_settings' => 'Twilio Settings',
     'twilio_numbers' => 'Twilio Numbers',
+    'voice' => 'Voice',
   'report' => 'Report',
   'blacklist' => 'Blacklist',
   'sending_log' => 'Sending log',

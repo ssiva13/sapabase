@@ -17,9 +17,15 @@ class CreateTwilioNumbersTable extends Migration
         Schema::create('twilio_numbers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('number')->nullable()->default(null);
+            $table->integer('user_id')->unsigned();
+            $table->integer('admin_id')->unsigned()->nullable();
             $table->string('inbound_recording', 60)->default('do-not-record');
             $table->string('outbound_recording', 60)->default('do-not-record');
             $table->timestamps();
+
+            // foreign
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('admin_id')->references('id')->on('admins');
         });
 
         // Create Twilio number

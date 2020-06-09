@@ -415,6 +415,7 @@
   'page_form_layout' => 'Seite/Formular Layout',
   'twilio_settings' => 'Twilio-Einstellungen',
     'twilio_numbers' => 'Twilio Zahlen',
+  'voice' => 'Stimme',
   'report' => 'Bericht',
   'blacklist' => 'Schwarze Liste',
   'sending_log' => 'Sendungs-log',

@@ -21,9 +21,10 @@
     <link rel="icon" type="image/png" sizes="96x96" href="{{ URL::asset('favicon/favicon-96x96.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ URL::asset('favicon/favicon-16x16.png') }}">
 
-	@include('layouts._css')
-	
-	@include('layouts._js')
+
+	@include('layouts._frontcss')
+
+	@include('layouts._frontjs')
 
 </head>
 

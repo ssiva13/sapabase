@@ -28,12 +28,4 @@ class HomeController extends Controller
         $notifications = Notification::top();
         return view('admin.dashboard', ['notifications' => $notifications]);
     }
-
-    public function test($folderName = 'layouts', $fileName = 'master')
-    {
-        if (view()->exists($folderName . "." . $fileName)) {
-            return view($folderName . "." . $fileName);
-        }
-        return abort(404);
-    }
 }

@@ -914,12 +914,14 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['not_installed', 'auth', 
     Route::get('admin/payment/gateways/index', 'PaymentController@index');
 });
 
+
+//new routes
 Route::group(['namespace' => 'Admin', 'middleware' => ['not_installed', 'twilio' ,'auth', 'backend']], function () {
     Route::get('admin/twilio/send', 'TwilioIntegrationController@automatedNotification');
     Route::get('admin/twilio/purchase', 'TwilioIntegrationController@purchaseNumber');
 });
+
 Route::group(['namespace' => 'Admin'], function () {
-    Route::get('/test', "HomeController@test");
     Route::get('admin/twilio/login-as/{uid}', 'TwilioIntegrationController@loginAs');
     Route::get('admin/twilio/listing/{page?}', 'TwilioIntegrationController@listing');
     Route::get('admin/twilio/sort', 'TwilioIntegrationController@sort');
@@ -928,4 +930,28 @@ Route::group(['namespace' => 'Admin'], function () {
     Route::get('admin/twilio/enable', 'TwilioIntegrationController@enable');
     Route::get('admin/twilio/login-back', 'TwilioIntegrationController@loginBack');
     Route::resource('admin/twilio', 'TwilioIntegrationController');
+});
+
+Route::group(['middleware' => ['not_installed', 'auth', 'frontend', 'subscription']], function () {
+    Route::resource('voice', 'TwilioController');
+    Route::get('voice/listing/{page?}', 'TwilioController@listing'); //
+    Route::get('voice/sort', 'TwilioController@sort'); //
+    Route::get('voice/deactivate', 'TwilioController@deactivate'); //
+    Route::get('voice/activate', 'TwilioController@activate'); //
+    Route::get('voice/delete/confirm', 'TwilioController@deactivateConfirm'); //
+
+
+
+    Route::get('twilio/connect', 'TwilioController@connectTwilio');
+    Route::get('twilio/numbers', 'TwilioController@searchPhoneNumbers');
+
+    Route::get('voice/login-as/{uid}', 'TwilioController@loginAs');
+    Route::get('voice/enable', 'TwilioController@enable');
+    Route::get('voice/{uid}/enable', 'TwilioController@statitics');
+    Route::get('voice/login-back', 'TwilioController@loginBack');
+
+
+
+
+//    //connectTwilio
 });
