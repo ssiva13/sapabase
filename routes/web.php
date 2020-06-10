@@ -932,8 +932,11 @@ Route::group(['namespace' => 'Admin'], function () {
     Route::resource('admin/twilio', 'TwilioIntegrationController');
 });
 
-Route::group(['middleware' => ['not_installed', 'auth', 'frontend', 'subscription']], function () {
-    Route::resource('voice', 'TwilioController');
+//Route::group(['middleware' => ['not_installed', 'auth', 'frontend', 'subscription']], function () {
+Route::group(['middleware' => ['not_installed', 'auth', 'frontend']], function () {
+    Route::resource('voice', 'TwilioController', [ 'only'=> [
+        'index','create','store','update','delete','edit'
+    ]]);
     Route::get('voice/listing/{page?}', 'TwilioController@listing'); //
     Route::get('voice/sort', 'TwilioController@sort'); //
     Route::get('voice/deactivate', 'TwilioController@deactivate'); //
@@ -944,6 +947,9 @@ Route::group(['middleware' => ['not_installed', 'auth', 'frontend', 'subscriptio
 
     Route::get('twilio/connect', 'TwilioController@connectTwilio');
     Route::get('twilio/numbers', 'TwilioController@searchPhoneNumbers');
+    Route::get('voice/twilio/country', 'TwilioController@searchCountryResource');
+    Route::get('voice/country/numbers', 'TwilioController@readCountryResources');
+    Route::get('voice/country/numbers/list', 'TwilioController@readCountryResource');
 
     Route::get('voice/login-as/{uid}', 'TwilioController@loginAs');
     Route::get('voice/enable', 'TwilioController@enable');

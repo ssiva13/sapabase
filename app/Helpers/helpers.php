@@ -751,8 +751,8 @@ function checkEmail($email) {
      $monthAgo1 =  $today->subMonth();
      $monthAgo2 =  $monthAgo1->subMonth();
 
-     $pastmonth1 = \DB::table($table)->where('status', 'active')->whereDate('created_at', '<=', $today)->whereDate('created_at', '>',$monthAgo1)->count();
-     $pastmonth2 = \DB::table($table)->where('status', 'active')->whereDate('created_at', '<=', $monthAgo1)->whereDate('created_at', '>',$monthAgo2)->count();
+     $pastmonth1 = \DB::table(strtolower($table))->where('status', 'active')->whereDate('created_at', '<=', $today)->whereDate('created_at', '>',$monthAgo1)->count();
+     $pastmonth2 = \DB::table(strtolower($table))->where('status', 'active')->whereDate('created_at', '<=', $monthAgo1)->whereDate('created_at', '>',$monthAgo2)->count();
 
      if($pastmonth2 > 0){
          return (($pastmonth1 - $pastmonth2)/ $pastmonth2) * 100;

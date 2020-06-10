@@ -6,23 +6,30 @@ namespace Acelle\Http\Controllers;
 
 use Acelle\Model\Setting;
 use Acelle\Model\TwilioNumber;
+use Exception;
+use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Twilio\Exceptions\ConfigurationException;
 use Twilio\Exceptions\TwilioException;
-use Twilio\Rest\Client;
+use Twilio\Rest\Client as Twilio;
 use Twilio\TwiML\Messaging\Message;
 use Twilio\TwiML\MessagingResponse;
 use Twilio\TwiML\VoiceResponse;
 
 class TwilioController extends Controller
 {
-    private Client $client;
+    private Twilio $twilio;
     private array $call_url;
     private string $fax_url;
+    private string $twilio_account_sid;
+    private string $twilio_auth_token;
+    private string $twilio_application_sid;
 
     /**
      * TwilioIntegrationController constructor.
@@ -30,12 +37,12 @@ class TwilioController extends Controller
     public function __construct()
     {
 
-        $twilio_account_sid = Setting::get('twilio_account_sid');
-        $twilio_auth_token = Setting::get('twilio_auth_token');
-        $twilio_application_sid = Setting::get('twilio_application_sid');
+        $this->twilio_account_sid = Setting::get('twilio_account_sid');
+        $this->twilio_auth_token = Setting::get('twilio_auth_token');
+        $this->twilio_application_sid = Setting::get('twilio_application_sid');
 
         try {
-            $this->client = new Client($twilio_account_sid, $twilio_auth_token);
+            $this->twilio = new Twilio($this->twilio_account_sid, $this->twilio_auth_token);
         } catch (ConfigurationException $e) {
         }
 
@@ -89,32 +96,32 @@ class TwilioController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse|Response
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function store(Request $request)
     {
-        // Generate info
         $customer = $request->user()->customer;
         $twilio_number = new TwilioNumber();
         // save posted data
         if ($request->isMethod('post')) {
             $this->validate($request, TwilioNumber::$rules);
-
             // Save current user info
             $twilio_number->fill($request->all());
-            $twilio_number->user_id = $customer->user_id;
-            $twilio_number->uid = $customer->uid;
-            $twilio_number->admin_id = $customer->admin_id;
-
-            if ($twilio_number->save()) {
-                $request->session()->flash('alert-success', trans('messages.twilio.purchased'));
-                return redirect()->action('TwilioController@index');
+            if($this->purchaseNumber($twilio_number->number)){
+                $twilio_number->user_id = $customer->user_id;
+                $twilio_number->uid = $customer->uid;
+                $twilio_number->admin_id = $customer->admin_id;
+                if ($twilio_number->save()) {
+                    $request->session()->flash('alert-success', trans('messages.twilio.purchased'));
+                    return redirect()->action('TwilioController@index');
+                }else{
+                    $request->session()->flash('alert-danger', trans('messages.twilio.not_purchased_not_stored'));
+                    return redirect()->action('TwilioController@create');
+                }
             }else{
                 $request->session()->flash('alert-danger', trans('messages.twilio.not_purchased'));
-                return redirect()->action('TwilioController@create');
+                return redirect()->action('TwilioController@index');
             }
         }
     }
@@ -140,11 +147,9 @@ class TwilioController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param int                      $id
-     *
-     * @return \Illuminate\Http\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
     public function update(Request $request, $id)
     {
@@ -168,10 +173,8 @@ class TwilioController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
      * @param int $id
-     *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function deactivate(Request $request)
     {
@@ -186,10 +189,8 @@ class TwilioController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
      * @param int $id
-     *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse|Response
      */
     public function activate(Request $request)
     {
@@ -205,10 +206,8 @@ class TwilioController extends Controller
 
     /**
      * Delete confirm message.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function deactivateConfirm(Request $request)
     {
@@ -223,20 +222,94 @@ class TwilioController extends Controller
     }
 
     public function connectTwilio(){
-        return $this->client;
+        return $this->twilio;
     }
-
+    /**
+     * Get All Phone Numbers
+     * */
     public function searchPhoneNumbers(){
 
-        $available_phone_numbers = $this->client->availablePhoneNumbers("US")->local([], 20);
-        $twilio_numbers = array();
-        foreach ($available_phone_numbers as $record) {
-            $twilio_numbers[$record->friendlyName] = ($record->friendlyName);
+        $availablePhoneNumbers = $this->twilio->availablePhoneNumbers->read();
+        foreach ($availablePhoneNumbers as $record) {
+            print($record->uri).PHP_EOL;
         }
-        return $twilio_numbers;
-
+        return 13;
     }
 
+    /**
+     * Get Country Specific Phone Numbers
+     * @param Request $request
+     * @return array|false|string
+     */
+    public function searchCountryResource(Request $request){
+        $country =  $request->country;
+        try {
+            $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->fetch();
+            $response = array(
+                'code' => 200,
+                'body' => $availablePhoneNumbers->uri
+            );
+        } catch (TwilioException $e) {
+            $response = array(
+                'code' => $e->getCode(),
+                'body' => $e->getMessage()
+            );
+        }
+        if($response['code'] == 200){
+            return $response;
+        }else{
+            $request->session()->flash('alert-danger', trans('messages.twilio.no_numbers'));
+            return redirect()->action('TwilioController@index');
+        }
+    }
+
+    public function readCountryResources(Request $request){
+        $uri =  $request->uri;
+        $guzzle = new Guzzle();
+        try {
+            $guzzle_response = $guzzle->request('GET', $uri, [
+                'auth' => [
+                    $this->twilio_account_sid,
+                    $this->twilio_auth_token
+                ],
+                array('stream' => true)
+            ]);
+
+            $guzzle_response = $guzzle_response->getBody()->getContents();
+            $stream = json_decode($guzzle_response);
+            $response = ($stream->subresource_uris);
+
+            $numbers = array();
+            foreach ($response as $key => $obj) {
+                $numbers[$key] = $this->readCountryResource($obj);
+            }
+            $response = $numbers;
+        } catch (GuzzleException $e) {
+            $response = $e->getCode();
+        }
+        return $response;
+    }
+
+    /**
+     * @param $uri
+     * @return int|mixed|string
+     */
+    public function readCountryResource($uri){
+        $uri =  'https://api.twilio.com'.$uri;
+        $guzzle = new Guzzle();
+        try {
+            $guzzle_response = $guzzle->request('GET', $uri, [
+                'auth' => [
+                    $this->twilio_account_sid,
+                    $this->twilio_auth_token
+                ]
+            ]);
+            $response = $guzzle_response->getBody()->getContents();
+        } catch (GuzzleException $e) {
+            $response = $e->getCode();
+        }
+        return $response;
+    }
     public function statitics(Request $request, $number){
         return 12;
     }
@@ -285,7 +358,7 @@ class TwilioController extends Controller
         foreach ($recipients as $recipient){
             switch ($type){
                 case 'sms':
-                    $response = $this->client->messages->create($recipient,
+                    $response = $this->twilio->messages->create($recipient,
                         [
                             'from' => $this->twilio_number,
                             'body' => 'Welcome Test Message'
@@ -340,22 +413,24 @@ class TwilioController extends Controller
 
     /**
      * Function that handles the purchase of a mobile number from twilio
-     * @param Request $request
+     * @param $number
      * @return string|TwilioException
      */
-    public function purchaseNumber(Request $request){
+    public function purchaseNumber($number){
         try {
-            $purchase_number = $this->client->incomingPhoneNumbers->create(
+            $number = '+15005550006';
+//            $purchase_number = $this->twilio->incomingPhoneNumbers->create(
+            $twilio = new Twilio('ACfdf30451329bf8936ee07edeb909d7b0', '3662bd5d9d6fcd58b49e25d4f31550fd');
+            $purchase_number = $twilio->incomingPhoneNumbers->create(
                 [
-                    "phoneNumber" => "+15005550006",
+                    "phoneNumber" => $number,
                     "voiceUrl" => "http://demo.twilio.com/docs/voice.xml" // get set value from env
                 ]);
             return $purchase_number->sid;
 
         }catch (TwilioException $exception){
-            return new TwilioException('Error '.$exception->getMessage());
+             throw $exception->getCode();
         }
-
     }
 
     /**
@@ -366,7 +441,7 @@ class TwilioController extends Controller
     private function voiceCallCustomer($recipient){
 
         try {
-            $call = $this->client->calls->create(
+            $call = $this->twilio->calls->create(
                 $recipient, // to
                 $this->twilio_number, //from
                 [
@@ -406,8 +481,8 @@ class TwilioController extends Controller
      */
     private function fetchCallLog($starttime = null, $endtime = null){
         $call_log = array();
-        if (!empty($this->client->account)) {
-            foreach ($this->client->account->calls->read() as $key => $call) {
+        if (!empty($this->twilio->account)) {
+            foreach ($this->twilio->account->calls->read() as $key => $call) {
                 $time = $call->startTime->format("Y-m-d H:i:s");
                 $call_log[$key] = array(
                     'from' => $call->from,

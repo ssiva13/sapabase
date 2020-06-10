@@ -37,7 +37,7 @@ class TwilioNumber extends Model
      * @var array
      */
     protected $fillable = [
-        'number',
+        'number'
     ];
 
     /**

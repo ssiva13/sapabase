@@ -38,7 +38,7 @@
 						</button>
 						<ul class="dropdown-menu">
 							<li>
-								<a list-delete-confirm="{{ action('TwilioController@deactivateConfirm') }}" href="{{ action('TwilioController@deactivateConfirm') }}">
+								<a href="{{ action('TwilioController@deactivateConfirm') }}">
 									<i class="icon-trash"></i> {{ trans('messages.deactivate') }}
 								</a>
 							</li>

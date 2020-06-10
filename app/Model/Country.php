@@ -309,4 +309,35 @@ class Country extends Model
             $c->save();
         }
     }
+
+    /**
+     * get all countries in select options
+     *
+     * @return array
+     */
+    public static function getCountryOptions()
+    {
+        $countries = array();
+        foreach (self::countries() as $country) {
+            $country_option = array();
+            $country_option['text'] = $country['name'];
+            $country_option['value'] = $country['code'];
+            $countries[] = $country_option;
+        }
+        return $countries;
+    }
+
+    /**
+     * get all countries in select options
+     *
+     * @return array
+     */
+    public static function defaultNUmbers()
+    {
+        $default_numbers = array();
+        $default_numbers['text'] = trans('messages.phone_number');
+        $default_numbers['value'] = '';
+        return $default_numbers;
+    }
+
 }

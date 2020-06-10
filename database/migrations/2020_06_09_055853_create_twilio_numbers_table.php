@@ -16,11 +16,13 @@ class CreateTwilioNumbersTable extends Migration
     {
         Schema::create('twilio_numbers', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->uuid('uid');
             $table->string('number')->nullable()->default(null);
             $table->integer('user_id')->unsigned();
             $table->integer('admin_id')->unsigned()->nullable();
             $table->string('inbound_recording', 60)->default('do-not-record');
             $table->string('outbound_recording', 60)->default('do-not-record');
+            $table->string('status')->nullable()->default('active');
             $table->timestamps();
 
             // foreign

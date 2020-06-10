@@ -77,11 +77,6 @@
 								</a>
 							</li>
 							<li>
-								<a href="{{ action('TwilioController@edit', [$item->uid, $item->id]) }}">
-									<i class="icon-pen"></i> {{ trans('messages.edit') }}
-								</a>
-							</li>
-							<li>
 								@if($item->status != 'active')
 									<a title="{{trans('messages.activate')}}" href="{{ action('TwilioController@activate', ['id' => $item->id]) }}">
 										<i class="icon-trash"></i> {{ trans('messages.activate') }}
