@@ -273,7 +273,7 @@
 				
 					var url = $(this).attr('action');
 					var data = $(this).serialize();
-					
+
 					// show loading effect
 					popup.loading();
 					$.ajax({
@@ -282,20 +282,20 @@
 						data: data,
 					}).always(function(response) {
 						if (response.options.key == 'wait') {
-							var newE = new ElementWait({title: response.title, options: response.options});							
+							var newE = new ElementWait({title: response.title, options: response.options});
 						} else if (response.options.key == 'condition') {
-							var newE = new ElementCondition({title: response.title, options: response.options});							
+							var newE = new ElementCondition({title: response.title, options: response.options});
 						}
 
 						insertToTree(newE);
 
 						newE.validate();
-						
+
 						// save tree
 						saveData(function() {
 							// hide popup
 							popup.hide();
-							
+
 							notify('success', '{{ trans('messages.notify.success') }}', response.message);
 						});
 					});
@@ -306,6 +306,16 @@
 		function EmailSetup(id) {
 			var url = '{{ action('Automation2Controller@emailSetup', $automation->uid) }}' + '?action_id=' + id;
 			
+			popup.load(url, function() {
+				// set back event
+				popup.back = function() {
+					Popup.hide();
+				};
+			});
+		}
+		function TwilioSetup(id, type = 'sms') {
+			var url = '{{ action('Automation2Controller@twilioSetup', $automation->uid) }}' + '?action_id=' + id;
+
 			popup.load(url, function() {
 				// set back event
 				popup.back = function() {
@@ -331,7 +341,7 @@
 						// new action as email
 						var newE = new ElementAction({
 							title: '{{ trans('messages.automation.tree.action_not_set') }}',
-							options: {init: "false"}
+							options: {init: "false", type: key}
 						});
 						
 						// add email to tree
@@ -344,7 +354,43 @@
 						saveData(function() {
 							notify('success', '{{ trans('messages.notify.success') }}', '{{ trans('messages.automation.email.created') }}');
 						});
-					} else {
+					}
+					else if (key == 'sms') {
+						// new action as email
+						var newE = new ElementAction({
+							title: '{{ trans('messages.automation.tree.action_not_set') }}',
+							options: {init: "false", type: key}
+						});
+
+						// add email to tree
+						insertToTree(newE);
+						//
+						// // validate
+						newE.validate();
+
+						// save tree
+						saveData(function() {
+							notify('success', '{{ trans('messages.notify.success') }}', '{{ trans('messages.automation.sms.created') }}');
+						});
+					}
+					else if(key == 'call') {
+						// new action as email
+						var newE = new ElementAction({
+							title: '{{ trans('messages.automation.tree.action_not_set') }}',
+							options: {init: "false", type: key}
+						});
+
+						// add email to tree
+						insertToTree(newE);
+
+						// validate
+						newE.validate();
+
+						// save tree
+						saveData(function() {
+							notify('success', '{{ trans('messages.notify.success') }}', '{{ trans('messages.automation.call.created') }}');
+						});
+					}else {
 						// show select trigger confirm box
 						SelectActionConfirm(key, insertToTree);
 					}					
@@ -465,9 +511,7 @@
 			// Trên server: gọi hàm model: Automation2::getActionInfo(id)
 			
 			e.select(); // highlight
-			
-			console.log(e.getType());
-			
+
 			// if click on a trigger
 			if (e.getType() == 'ElementTrigger') {
 				var options = e.getOptions();
@@ -500,15 +544,28 @@
 			}
 			// is Email
 			else if (e.getType() == 'ElementAction') {
+
 				if (e.getOptions().init == "true") {
 					var type = $(this).attr('data-type');
+					alert(type)
 					var url = '{{ action('Automation2Controller@email', $automation->uid) }}?email_uid=' + e.getOptions().email_uid;
-					
+					 alert (' iniiiiiiiiiiiiiiiiiit')
 					// Open trigger types select list
 					EditAction(url);
-				} else {
-					// show select trigger confirm box
-					EmailSetup(e.getId());
+				}
+				else {
+					if((e.getOptions().type == "sms")){
+						// show select trigger confirm box
+						TwilioSetup(e.getId(), 'sms');
+					}
+					else if((e.getOptions().type == "call")){
+						// show select trigger confirm box
+						TwilioSetup(e.getId(), 'call');
+					}
+					else if((e.getOptions().type == "send-an-email")){
+						// show select trigger confirm box
+						EmailSetup(e.getId());
+					}
 				}
 			}
 		}
@@ -541,8 +598,8 @@
 					e.select();
 					OpenActionSelectPopup(function(element) {
 						e.insert(element);
-						e.getTrigger().organize();
 
+						e.getTrigger().organize();
 						// select new element
 						doSelect(element);
 					});
@@ -583,8 +640,21 @@
 
                     if (e.getType() == 'ElementAction') {
                         if (e.getOptions()['init'] == null || !(e.getOptions()['init'] == "true" || e.getOptions()['init'] == true)) {
-							e.showNotice('{{ trans('messages.automation.email.is_not_setup') }}');
-                            e.setTitle('{{ trans('messages.automation.email.is_not_setup.title') }}');
+							if(e.getOptions()['type'] == 'sms'){
+								e.showNotice('{{ trans('messages.automation.sms.is_not_setup') }}');
+								e.setTitle('{{ trans('messages.automation.sms.is_not_setup.title') }}');
+							}
+							else if(e.getOptions()['type'] == 'call'){
+								e.showNotice('{{ trans('messages.automation.call.is_not_setup') }}');
+								e.setTitle('{{ trans('messages.automation.call.is_not_setup.title') }}');
+							}
+							else if(e.getOptions()['type'] == 'send-an-email'){
+								e.showNotice('{{ trans('messages.automation.email.is_not_setup') }}');
+								e.setTitle('{{ trans('messages.automation.email.is_not_setup.title') }}');
+							}else{
+								e.showNotice('{{ trans('messages.automation.action.is_not_setup') }}');
+								e.setTitle('{{ trans('messages.automation.action.is_not_setup.title') }}');
+							}
                         } else if (e.getOptions()['template'] == null || !(e.getOptions()['template'] == "true" || e.getOptions()['template'] == true)) {
 							e.showNotice('{{ trans('messages.automation.email.has_no_content') }}');
                         } else {

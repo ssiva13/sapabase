@@ -37,7 +37,7 @@
                             'type' => 'select',
                             'label' => '',
                             'value' => (is_object($automation->mailList) ? $automation->mailList->uid : ''),
-                            'options' => Auth::user()->customer->readCache('MailListSelectOptions', []),
+                            'options' => Auth::user()->customer->getMailListSelectOptions(),
                             'rules' => $automation->rules(),
                         ])
                     </div>

@@ -571,6 +571,12 @@ class InstallController extends Controller
             ],
             [
                 'type' => 'requirement',
+                'name' => 'MemCache Extension',
+                'check' => extension_loaded('memcache'),
+                'note' => 'PHP MemCache Extension is required.',
+            ],
+            [
+                'type' => 'requirement',
                 'name' => 'SQLite3 Extension',
                 'check' => class_exists('SQLite3'),
                 'note' => 'PHP SQLite3 Extension is required.',

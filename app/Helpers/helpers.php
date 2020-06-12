@@ -307,7 +307,8 @@ function artisan_config_cache()
  */
 function artisan_migrate()
 {
-    \Artisan::call('migrate', ['--force' => true]);
+//    \Artisan::call('migrate', ['--force' => true]);
+    \Artisan::call('migrate');
 }
 
 /**

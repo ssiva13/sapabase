@@ -2730,6 +2730,15 @@
         to create an email or series of emails that send when triggered by specific date, event or contact\'s activities.',
   'automation.action.send-an-email' => 'Send an Email',
   'automation.action.wait' => 'Wait',
+
+    'automation.action.sms' => 'SMS',
+    'automation.action.call' => 'Call',
+    'automation.action.call.icon' => 'phone',
+    'automation.action.sms.icon' => 'envelope',
+    'automation.action.call.desc' => 'Design or send automated or regular calls recordings to your contacts.',
+    'automation.action.sms.desc' => 'Design or send automated or regular texts to your contacts.',
+
+
   'automation.action.condition' => 'Condition',
   'automation.action.send-an-email.desc' => 'Design or send automated or regular emails to your contacts.',
   'automation.action.wait.desc' => 'Design or send automated or regular emails to your contacts.',
@@ -2927,6 +2936,8 @@
   'automation.condition.choose_email' => 'Choose email',
   'automation.condition.choose_link' => 'Choose link',
   'automation.automation_email' => 'Automation Email',
+  'automation.automation_call' => 'Automated Call',
+  'automation.automation_sms' => 'Automated Text',
   'automation.back_to_workflow' => 'Back to Workflow',
   'automation.automation_email.intro' => 'Discover who opens your campaigns by tracking the number of times an
     invisible web beacon embedded in the campaign is downloaded.',

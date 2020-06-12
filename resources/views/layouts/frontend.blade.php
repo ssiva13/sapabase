@@ -59,10 +59,36 @@
 						<i class="icon-paperplane"></i> {{ trans('messages.campaigns') }}
 					</a>
 				</li>
-				<li rel0="Automation2Controller">
-					<a href="{{ action('Automation2Controller@index') }}">
+				<li class="dropdown language-switch"
+					rel0="Automation2Controller"
+					rel1="TwilioController"
+				>
+					<a class="dropdown-toggle" data-toggle="dropdown">
 						<i class="icon-alarm-check"></i> {{ trans('messages.Automations') }}
+						<span class="caret"></span>
 					</a>
+					<ul class="dropdown-menu">
+						<li rel0="Automation2Controller">
+							<a href="{{ action('Automation2Controller@index') }}">
+								<i class="glyphicon-envelope"></i> {{ trans('messages.email') }}
+							</a>
+						</li>
+						<li rel0="TwilioController">
+							<a href="{{ action('TwilioController@index') }}">
+								<i class="icon-phone-incoming"></i> {{ trans('messages.voice') }}
+							</a>
+						</li>
+						<li rel0="TwilioController">
+							<a href="{{ action('TwilioController@index') }}">
+								<i class="icon-envelop2"></i> {{ trans('messages.sms') }}
+							</a>
+						</li>
+						<li rel0="TwilioController">
+							<a href="{{ action('TwilioController@index') }}">
+								<i class="icon-phone"></i> {{ trans('messages.fax') }}
+							</a>
+						</li>
+					</ul>
 				</li>
 				<li
 					rel0="MailListController"

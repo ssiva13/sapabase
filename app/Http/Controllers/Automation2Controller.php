@@ -334,6 +334,8 @@ class Automation2Controller extends Controller
         
         $types = [
             'send-an-email',
+            'call',
+            'sms',
             'wait',
             'condition',
         ];
@@ -556,8 +558,7 @@ class Automation2Controller extends Controller
     
     /**
      * Email setup.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function emailSetup(Request $request, $uid)
     {
@@ -696,7 +697,7 @@ class Automation2Controller extends Controller
             'email' => $email,
         ]);
     }
-    
+
     /**
      * Email confirm.
      *
@@ -1739,6 +1740,117 @@ class Automation2Controller extends Controller
         return view('automation2.segmentSelect', [
             'automation' => $automation,
             'list' => $list,
+        ]);
+    }
+
+
+
+    /**
+     * Email show.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function sms(Request $request, $uid)
+    {
+        // init automation
+        $automation = Automation2::findByUid($uid);
+        $email = Email::findByUid($request->email_uid);
+
+        // authorize
+        if (\Gate::denies('update', $automation)) {
+            return $this->notAuthorized();
+        }
+
+        return view('automation2.email.index', [
+            'automation' => $automation,
+            'email' => $email,
+        ]);
+    }
+
+    /**
+     * Email show.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function call(Request $request, $uid)
+    {
+        // init automation
+        $automation = Automation2::findByUid($uid);
+        $email = Email::findByUid($request->email_uid);
+
+        // authorize
+        if (\Gate::denies('update', $automation)) {
+            return $this->notAuthorized();
+        }
+
+        return view('automation2.email.index', [
+            'automation' => $automation,
+            'email' => $email,
+        ]);
+    }
+    /**
+     * Email setup.
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function twilioSetup(Request $request, $uid)
+    {
+        // init automation
+        $automation = Automation2::findByUid($uid);
+
+        if ($request->email_uid) {
+            $email = Email::findByUid($request->email_uid);
+        } else {
+            $email = new Email([
+                'sign_dkim' => true,
+                'track_open' => true,
+                'track_click' => true,
+                'action_id' => $request->action_id,
+            ]);
+        }
+
+        // authorize
+        if (\Gate::denies('update', $automation)) {
+            return $this->notAuthorized();
+        }
+
+        // saving
+        if($request->isMethod('post')) {
+            // fill before save
+            $email->fill($request->all());
+
+            // make validator
+            $validator = Validator::make($request->all(), $email->rules());
+
+            // redirect if fails
+            if ($validator->fails()) {
+                return response()->view('automation2.email.setup', [
+                    'automation' => $automation,
+                    'email' => $email,
+                    'errors' => $validator->errors(),
+                ], 400);
+            }
+
+            // pass validation and save
+            $email->automation2_id = $automation->id;
+            $email->save();
+
+            return response()->json([
+                'status' => 'success',
+                'title' => trans('messages.automation.send_a_email', ['title' => $email->subject]),
+                'message' => trans('messages.automation.email.set_up.success'),
+                'url' => action('Automation2Controller@emailTemplate', [
+                    'uid' => $automation->uid,
+                    'email_uid' => $email->uid,
+                ]),
+                'options' => [
+                    'email_uid' => $email->uid,
+                ],
+            ], 201);
+        }
+
+        return view('automation2.email.setup', [
+            'automation' => $automation,
+            'email' => $email,
         ]);
     }
 }

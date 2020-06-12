@@ -2730,6 +2730,10 @@
         to create an email or series of emails that send when triggered by specific date, event or contact\'s activities.',
   'automation.action.send-an-email' => 'Send an Email',
   'automation.action.wait' => 'Wait',
+
+  'automation.action.sms' => 'SMS',
+  'automation.action.call' => 'Call',
+
   'automation.action.condition' => 'Condition',
   'automation.action.send-an-email.desc' => 'Design or send automated or regular emails to your contacts.',
   'automation.action.wait.desc' => 'Design or send automated or regular emails to your contacts.',
