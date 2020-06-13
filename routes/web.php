@@ -558,11 +558,14 @@ Route::group(['middleware' => ['not_installed', 'auth', 'frontend', 'subscriptio
     
     Route::post('automation2/{uid}/email/{email_uid}/delete', 'Automation2Controller@emailDelete');
     Route::match(['get', 'post'], 'automation2/{uid}/email/setup', 'Automation2Controller@emailSetup');
+    Route::match(['get', 'post'], 'automation2/{uid}/email/{email_uid?}', 'Automation2Controller@email');
     Route::match(['get', 'post'], 'automation2/{uid}/email/{email_uid}/confirm', 'Automation2Controller@emailConfirm');
 
+
     Route::match(['get', 'post'], 'automation2/{uid}/twilio/setup', 'Automation2Controller@twilioSetup');
-    Route::match(['get', 'post'], 'automation2/{uid}/email/{email_uid?}', 'Automation2Controller@email');
-    Route::match(['get', 'post'], 'automation2/{uid}/email/{phone_uid?}', 'Automation2Controller@sms');
+    Route::match(['get', 'post'], 'automation2/{uid}/twilio/{twilio_uid?}', 'Automation2Controller@twilio');
+    Route::match(['get', 'post'], 'automation2/{uid}/twilio/{twilio_uid}/confirm', 'Automation2Controller@twilioConfirm');
+    Route::post('automation2/{uid}/email/{email_uid}/delete', 'Automation2Controller@twilioDelete');
 
 
     Route::match(['get', 'post'], 'automation2/{uid}/email/{phone_uid?}', 'Automation2Controller@call');

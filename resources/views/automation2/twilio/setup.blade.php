@@ -2,101 +2,55 @@
 
 @section('content')
         
-    @include('automation2.email._tabs', ['tab' => 'setup'])
+    @include('automation2.twilio._tabs', ['tab' => 'setup'])
         
-    <h5 class="mb-3">Email Setup</h5>    
-    <p>Please fill-up email information below. They will be used to apply to all emails that send to customers.</p>
+    <h5 class="mb-3">Twilo Sms/Call Setup</h5>
+    <p>Please fill-up twilio sms/call information below. They will be used to apply to all calls/sms to customers.</p>
     
-    <form id="emailSetup" action="{{ action('Automation2Controller@emailSetup', $automation->uid) }}" method="POST">
+    <form id="twilioSetup" action="{{ action('Automation2Controller@twilioSetup', $automation->uid) }}" method="POST">
         {{ csrf_field() }}
         
-        <input type="hidden" name="email_uid" value="{{ $email->uid }}" />
-        <input type="hidden" name="action_id" value="{{ $email->action_id }}" />
+        <input type="hidden" name="email_uid" value="{{ $twiliomsg->uid }}" />
+        <input type="hidden" name="action_id" value="{{ $twiliomsg->action_id }}" />
     
         <div class="row">
-            <div class="col-md-6">                                            
-                @include('helpers.form_control', ['type' => 'text',
-                    'name' => 'subject',
-                    'label' => trans('messages.email_subject'),
-                    'value' => $email->subject,
-                    'rules' => $email->rules(),
-                    'help_class' => 'email',
-                    'placeholder' => trans('messages.automation.email.subject.placeholder'), 
-                ])
-                                                
-                @include('helpers.form_control', ['type' => 'text',
+            <div class="col-md-6">
+                @include('helpers.form_control', [
+                    'type' => 'text',
                     'name' => 'from_name',
                     'label' => trans('messages.from_name'),
-                    'value' => $email->from_name,
-                    'rules' => $email->rules(),
-                    'help_class' => 'email',
-                    'placeholder' => trans('messages.automation.email.from_name.placeholder'), 
+                    'value' => $twiliomsg->from_name,
+                    'rules' => $twiliomsg->rules(),
                 ])
-                
+            </div>
+            <div class="col-md-6">
                 @include('helpers.form_control', [
-                    'type' => 'autofill',
-                    'id' => 'sender_from_input',
+                    'type' => 'text',
+                    'name' => 'message',
+                    'label' => trans('messages.twilio_message'),
+                    'value' => $twiliomsg->message,
+                    'rules' => $twiliomsg->rules(),
+                ])
+            </div>
+            <div class="col-md-6">
+                @include('helpers.form_control', [
+                    'type' => 'text',
                     'name' => 'from',
-                    'label' => trans('messages.from_email'),
-                    'value' => $email->from,
-                    'rules' => $email->rules(),
-                    'help_class' => 'email',
-                    'url' => action('SenderController@dropbox'),
-                    'empty' => trans('messages.sender.dropbox.empty'),
-                    'error' => trans('messages.sender.dropbox.error', [
-                        'sender_link' => action('SenderController@index'),
-                    ]),
-                    'header' => trans('messages.verified_senders'),
-                    'placeholder' => trans('messages.automation.email.from.placeholder'), 
+                    'label' => trans('messages.from_number'),
+                    'value' => $twiliomsg->from,
+                    'rules' => $twiliomsg->rules(),
+                    'placeholder' => '+1 343556...',
                 ])
-                                                
+            </div>
+            <div class="col-md-6">
                 @include('helpers.form_control', [
-                    'type' => 'autofill',
-                    'id' => 'sender_reply_to_input',
+                    'type' => 'text',
                     'name' => 'reply_to',
                     'label' => trans('messages.reply_to'),
-                    'value' => $email->reply_to,
-                    'url' => action('SenderController@dropbox'),
-                    'rules' => $email->rules(),
-                    'help_class' => 'email',
-                    'empty' => trans('messages.sender.dropbox.empty'),
-                    'error' => trans('messages.sender.dropbox.reply.error', [
-                        'sender_link' => action('SenderController@index'),
-                    ]),
-                    'header' => trans('messages.verified_senders'),
-                    'placeholder' => trans('messages.automation.email.from.placeholder'), 
+                    'value' => $twiliomsg->reply_to,
+                    'rules' => $twiliomsg->rules(),
+                    'placeholder' => '+1 343556...',
                 ])
-                
-            </div>
-            <div class="col-md-6 segments-select-box">
-                <div class="form-group checkbox-right-switch">
-                    @include('helpers.form_control', ['type' => 'checkbox3',
-                        'name' => 'track_open',
-                        'label' => trans('messages.automation.email.track_open'),
-                        'value' => $email->track_open,
-                        'options' => [false,true],
-                        'help_class' => 'email',
-                        'rules' => $email->rules(),
-                    ])
-                
-                    @include('helpers.form_control', ['type' => 'checkbox3',
-                        'name' => 'track_click',
-                        'label' => trans('messages.automation.email.track_click'),
-                        'value' => $email->track_click,
-                        'options' => [false,true],
-                        'help_class' => 'email',
-                        'rules' => $email->rules(),
-                    ])
-                    
-                    @include('helpers.form_control', ['type' => 'checkbox3',
-                        'name' => 'sign_dkim',
-                        'label' => trans('messages.automation.email.add_sign_dkim'),
-                        'value' => $email->sign_dkim,
-                        'options' => [false,true],
-                        'help_class' => 'email',
-                        'rules' => $email->rules(),
-                    ])
-                </div>
             </div>
         </div>
         
@@ -110,41 +64,17 @@
     </form>
     
     <script>
-        // auto fill
-        var box = $('#sender_from_input').autofill({
-            messages: {
-                header_found: '{{ trans('messages.sending_identity') }}',
-                header_not_found: '{{ trans('messages.sending_identity.not_found.header') }}'
-            }
-        });
-        box.loadDropbox(function() {
-            $('#sender_from_input').focusout();
-            box.updateErrorMessage();
-        })
-
-        // auto fill 2
-        var box2 = $('#sender_reply_to_input').autofill({
-            messages: {
-                header_found: '{{ trans('messages.sending_identity') }}',
-                header_not_found: '{{ trans('messages.sending_identity.reply.not_found.header') }}'
-            }
-        });
-        box2.loadDropbox(function() {
-            $('#sender_reply_to_input').focusout();
-            box2.updateErrorMessage();
-        })
-        
-        $('#emailSetup').submit(function(e) {
+        $('#twilioSetup').submit(function(e) {
             e.preventDefault();
-            
+
             var form = $(this);
             var url = form.attr('action');
-            
+
             console.log(url);
-            
+
             // loading effect
             popup.loading();
-            
+
             $.ajax({
                 url: url,
                 method: 'POST',
@@ -157,21 +87,21 @@
                  },
                  success: function (response) {
                     popup.load(response.url);
-                    
+
                     // set node title
                     tree.getSelected().setTitle(response.title);
                     // merge options with reponse options
-                    tree.getSelected().setOptions($.extend(tree.getSelected().getOptions(), {init: "true"}));
+                    tree.getSelected().setOptions($.extend(tree.getSelected().getOptions(), {init: "true", type: "twilio"}));
                     tree.getSelected().setOptions($.extend(tree.getSelected().getOptions(), response.options));
 
                     doSelect(tree.getSelected());
 
                     // validate
 					tree.getSelected().validate();
-                    
+
                     // save tree
 					saveData();
-                    
+
                     notify('success', '{{ trans('messages.notify.success') }}', response.message);
                  }
             });

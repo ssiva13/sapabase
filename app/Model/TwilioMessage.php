@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class TwilioMessage extends Model
 {
 
-    protected $table = 'twilio_messages';
+    protected $table = 'twilio_mesages';
 
     /**
      * Items per page.
@@ -25,6 +25,8 @@ class TwilioMessage extends Model
      */
     public static $rules = array(
         'message' => 'required',
+        'from' => 'required',
+
     );
 
     /**
@@ -33,9 +35,36 @@ class TwilioMessage extends Model
      * @var array
      */
     protected $fillable = [
-        'message'
+        'message', 'action_id', 'from', 'from_name', 'type',
     ];
 
+    /**
+     * Bootstrap any application services.
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        // Create uid when creating automation.
+        static::creating(function ($item) {
+            // Create new uid
+            $uid = uniqid();
+            while (self::where('uid', '=', $uid)->count() > 0) {
+                $uid = uniqid();
+            }
+            $item->uid = $uid;
+        });
+    }
+
+    /**
+     * Create automation rules.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return self::$rules;
+    }
     /**
      * Filter items.
      *

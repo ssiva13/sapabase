@@ -15,26 +15,26 @@
                         <div class="main">
                             <label class="font-weight-bold">{{ trans('messages.campaign.html_email') }}</label>
                             <p>{{ trans('messages.campaign.html_email.last_edit', [
-                                'date' => Acelle\Library\Tool::formatDateTime($email->updated_at),
+                                'date' => Acelle\Library\Tool::formatDateTime($twiliomsg->updated_at),
                             ]) }}</p>
                             
                             <a href="{{ action('Automation2Controller@templateEdit', [
                                     'uid' => $automation->uid,
-                                    'email_uid' => $email->uid,
+                                    'email_uid' => $twiliomsg->uid,
                                 ]) }}" class="btn btn-secondary mr-1 template-compose"
                             >
                                 {{ trans('messages.campaign.compose_email') }}
                             </a>
                             <a href="{{ action('Automation2Controller@templateEditClassic', [
                                     'uid' => $automation->uid,
-                                    'email_uid' => $email->uid,
+                                    'email_uid' => $twiliomsg->uid,
                                 ]) }}" class="btn btn-outline-secondary mr-1 template-compose-classic"
                             >
                                 {{ trans('messages.campaign.compose_email_classic') }}
                             </a>
                             <a href="{{ action('Automation2Controller@templateRemove', [
                                     'uid' => $automation->uid,
-                                    'email_uid' => $email->uid,
+                                    'email_uid' => $twiliomsg->uid,
                                 ]) }}" class="btn btn-outline-primary template-change"
                             >
                                 {{ trans('messages.campaign.change_template') }}
@@ -45,12 +45,12 @@
                 <div class="template-thumb-container">
                     <img class="automation-template-thumb" src="{{ action('EmailController@image', [
                             'uid' => $automation->uid,
-                            'email_uid' => $email->uid,
+                            'email_uid' => $twiliomsg->uid,
                         ]) }}?v={{ Carbon\Carbon::now() }}"
                     />
                     <a href="{{ action('Automation2Controller@templateEdit', [
                         'uid' => $automation->uid,
-                        'email_uid' => $email->uid,
+                        'email_uid' => $twiliomsg->uid,
                     ]) }}" class="btn btn-primary template-compose" style="display:none">
                         {{ trans('messages.automation.template.edit_with_builder') }}
                     </a>
@@ -70,7 +70,7 @@
                 </a>
                 <a href="javascript:;" onclick="popup.load('{{ action('Automation2Controller@emailConfirm', [
                     'uid' => $automation->uid,
-                    'email_uid' => $email->uid
+                    'email_uid' => $twiliomsg->uid
                 ]) }}')" class="btn btn-secondary">
                     <span class="d-flex align-items-center">
                         <span>{{ trans('messages.automation.email.next_confirm') }}</span> <i class="material-icons">keyboard_arrow_right</i>

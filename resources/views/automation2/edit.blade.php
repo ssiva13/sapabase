@@ -314,7 +314,7 @@
 			});
 		}
 		function TwilioSetup(id, type = 'sms') {
-			var url = '{{ action('Automation2Controller@twilioSetup', $automation->uid) }}' + '?action_id=' + id;
+			var url = '{{ action('Automation2Controller@twilioSetup', $automation->uid) }}' + '?action_id=' + id +'&?type=' + type;
 
 			popup.load(url, function() {
 				// set back event
@@ -544,13 +544,14 @@
 			}
 			// is Email
 			else if (e.getType() == 'ElementAction') {
-
 				if (e.getOptions().init == "true") {
 					var type = $(this).attr('data-type');
-					alert(type)
-					var url = '{{ action('Automation2Controller@email', $automation->uid) }}?email_uid=' + e.getOptions().email_uid;
-					 alert (' iniiiiiiiiiiiiiiiiiit')
-					// Open trigger types select list
+					if (e.getOptions().init == "twilio"){
+						var url = '{{ action('Automation2Controller@email', $automation->uid) }}?twilio_uid=' + e.getOptions().email_uid;
+					}else{
+						var url = '{{ action('Automation2Controller@email', $automation->uid) }}?email_uid=' + e.getOptions().email_uid;
+					}
+					alert(url)
 					EditAction(url);
 				}
 				else {

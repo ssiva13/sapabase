@@ -2,6 +2,7 @@
 
 namespace Acelle\Http\Controllers;
 
+use Acelle\Model\TwilioMessage;
 use Illuminate\Http\Request;
 
 use Validator;
@@ -1743,67 +1744,44 @@ class Automation2Controller extends Controller
         ]);
     }
 
-
-
     /**
      * Email show.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\View\View
      */
-    public function sms(Request $request, $uid)
+    public function twilio(Request $request, $uid)
     {
         // init automation
         $automation = Automation2::findByUid($uid);
-        $email = Email::findByUid($request->email_uid);
+        $twiliomsg = TwilioMessage::findByUid($request->twilio_uid);
 
         // authorize
         if (\Gate::denies('update', $automation)) {
             return $this->notAuthorized();
         }
 
-        return view('automation2.email.index', [
+        return view('automation2.twilio.index', [
             'automation' => $automation,
-            'email' => $email,
+            'twiliomsg' => $twiliomsg,
         ]);
     }
 
     /**
-     * Email show.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function call(Request $request, $uid)
-    {
-        // init automation
-        $automation = Automation2::findByUid($uid);
-        $email = Email::findByUid($request->email_uid);
-
-        // authorize
-        if (\Gate::denies('update', $automation)) {
-            return $this->notAuthorized();
-        }
-
-        return view('automation2.email.index', [
-            'automation' => $automation,
-            'email' => $email,
-        ]);
-    }
-    /**
-     * Email setup.
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     * Twilio sms setup.
+     * @param Request $request
+     * @param $uid
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function twilioSetup(Request $request, $uid)
     {
         // init automation
         $automation = Automation2::findByUid($uid);
-
-        if ($request->email_uid) {
-            $email = Email::findByUid($request->email_uid);
+        $type = $request->type;
+        return $request->twilio_uid;
+        if ($request->twilio_uid) {
+            $twiliomsg = TwilioMessage::findByUid($request->twilio_uid);
+            return $twiliomsg;
         } else {
-            $email = new Email([
-                'sign_dkim' => true,
-                'track_open' => true,
-                'track_click' => true,
+            $twiliomsg = new TwilioMessage([
                 'action_id' => $request->action_id,
             ]);
         }
@@ -1816,41 +1794,65 @@ class Automation2Controller extends Controller
         // saving
         if($request->isMethod('post')) {
             // fill before save
-            $email->fill($request->all());
-
+            $twiliomsg->fill($request->all());
             // make validator
-            $validator = Validator::make($request->all(), $email->rules());
+            $validator = Validator::make($request->all(), $twiliomsg->rules());
 
             // redirect if fails
             if ($validator->fails()) {
-                return response()->view('automation2.email.setup', [
+                return response()->view('automation2.twilio.setup', [
                     'automation' => $automation,
-                    'email' => $email,
+                    'twiliomsg' => $twiliomsg,
                     'errors' => $validator->errors(),
                 ], 400);
             }
 
             // pass validation and save
-            $email->automation2_id = $automation->id;
-            $email->save();
-
+            $twiliomsg->automation2_id = $automation->id;
+            $twiliomsg->save();
             return response()->json([
                 'status' => 'success',
-                'title' => trans('messages.automation.send_a_email', ['title' => $email->subject]),
-                'message' => trans('messages.automation.email.set_up.success'),
-                'url' => action('Automation2Controller@emailTemplate', [
+                'title' => trans('messages.automation.send_a_email', ['title' => $automation->name]),
+                'message' => trans('messages.automation.'.$type.'.set_up.success'),
+                'url' => action('Automation2Controller@twilioConfirm', [
                     'uid' => $automation->uid,
-                    'email_uid' => $email->uid,
+                    'email_uid' => $twiliomsg->uid,
                 ]),
                 'options' => [
-                    'email_uid' => $email->uid,
+                    'email_uid' => $twiliomsg->uid,
                 ],
             ], 201);
         }
 
-        return view('automation2.email.setup', [
+        return view('automation2.twilio.setup', [
             'automation' => $automation,
-            'email' => $email,
+            'twiliomsg' => $twiliomsg,
+        ]);
+    }
+
+    /**
+     * Email confirm.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\View\View
+     */
+    public function twilioConfirm(Request $request, $uid)
+    {
+        // init automation
+        $automation = Automation2::findByUid($uid);
+        $twiliomsg = TwilioMessage::findByUid($request->twilio_uid);
+
+        // authorize
+        if (\Gate::denies('update', $automation)) {
+            return $this->notAuthorized();
+        }
+
+        // saving
+        if($request->isMethod('post')) {
+
+        }
+
+        return view('automation2.twilio.confirm', [
+            'automation' => $automation,
+            'twiliomsg' => $twiliomsg,
         ]);
     }
 }

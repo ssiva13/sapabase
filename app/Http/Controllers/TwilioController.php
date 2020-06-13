@@ -110,7 +110,6 @@ class TwilioController extends Controller
             $twilio_number->fill($request->all());
             if($this->purchaseNumber($twilio_number->number)){
                 $twilio_number->user_id = $customer->user_id;
-                $twilio_number->uid = $customer->uid;
                 $twilio_number->admin_id = $customer->admin_id;
                 if ($twilio_number->save()) {
                     $request->session()->flash('alert-success', trans('messages.twilio.purchased'));

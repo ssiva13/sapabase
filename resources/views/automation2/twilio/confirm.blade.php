@@ -2,7 +2,7 @@
 
 @section('content')
         
-    @include('automation2.email._tabs', ['tab' => 'confirm'])
+    @include('automation2.twilio._tabs', ['tab' => 'confirm'])
         
     <h5 class="mb-3">{{ trans('messages.automation.email.you_are_set_to_send') }}</h5>    
     <p>{{ trans('messages.automation.email.review_email_intro') }}</p>
@@ -12,7 +12,7 @@
         
         <div class="row">
             <div class="col-md-7">
-                @include('automation2.email._summary')
+                @include('automation2.twilio._summary')
             </div>
         </div>                
             

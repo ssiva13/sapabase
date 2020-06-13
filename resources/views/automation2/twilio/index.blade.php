@@ -17,7 +17,7 @@
     <div class="trigger-action mt-4">    
         <span class="btn btn-secondary email-settings-change mr-1"
         >
-            {{ trans('messages.automation.email.settings') }}
+            {{ trans('messages.automation.twilio.settings') }}
         </span>
     </div>
     
@@ -32,7 +32,7 @@
 <div class="mt-3">
     <a href="{{ action('Automation2Controller@emailDelete', [
         'uid' => $automation->uid,
-        'email_uid' => $email->uid,
+        'email_uid' => $twiliomsg->uid,
     ]) }}" data-confirm="{{ trans('messages.automation.email.delete.confirm') }}" class="btn btn-danger email-action-delete">
         <i class='lnr lnr-trash mr-2'></i> {{ trans('messages.automation.delete_this_action') }}
     </a>
@@ -43,7 +43,7 @@
     $('.email-settings-change').click(function(e) {
         e.preventDefault();
         
-        var url = '{{ action('Automation2Controller@emailTemplate', ['uid' => $automation->uid, 'email_uid' => $email->uid]) }}';
+        var url = '{{ action('Automation2Controller@emailTemplate', ['uid' => $automation->uid, 'email_uid' => $twiliomsg->uid]) }}';
         
         popup.load(url);
     });

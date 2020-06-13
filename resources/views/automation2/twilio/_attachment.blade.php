@@ -1,6 +1,6 @@
 <form action="{{ action('Automation2Controller@emailAttachmentUpload', [
   'uid' => $automation->uid,
-  'email_uid' => $email->uid,
+  'email_uid' => $twiliomsg->uid,
 ]) }}" class="dropzone">
   {{ csrf_field() }}
 
@@ -9,13 +9,13 @@
   </div>
 </form>
   
-@if($email->attachments()->count())
+@if($twiliomsg->attachments()->count())
     <h5 class="mt-4 mb-3">{{ trans('messages.automation.email.attached_files') }}</h5>
         
     <div class="row">
         <div class="col-md-12">
             <ul class="key-value-list list-small">
-                @foreach ($email->attachments as $attachment)
+                @foreach ($twiliomsg->attachments as $attachment)
                     <li class="flex">
                         <div class="icon">
                             <i class="lnr lnr-file-empty"></i>
@@ -32,7 +32,7 @@
                             <a                                
                                 href="{{ action('Automation2Controller@emailAttachmentDownload', [
                                     'uid' => $automation->uid,
-                                    'email_uid' => $email->uid,
+                                    'email_uid' => $twiliomsg->uid,
                                     'attachment_uid' => $attachment->uid,
                                 ]) }}"
                                 class=""
@@ -43,7 +43,7 @@
                             <a                                
                                 href="{{ action('Automation2Controller@emailAttachmentRemove', [
                                     'uid' => $automation->uid,
-                                    'email_uid' => $email->uid,
+                                    'email_uid' => $twiliomsg->uid,
                                     'attachment_uid' => $attachment->uid,
                                 ]) }}"
                                 class="attachment-remove"
