@@ -26,6 +26,7 @@ class TwilioMessage extends Model
     public static $rules = array(
         'message' => 'required',
         'from' => 'required',
+        'subject' => 'required',
 
     );
 
@@ -35,7 +36,7 @@ class TwilioMessage extends Model
      * @var array
      */
     protected $fillable = [
-        'message', 'action_id', 'from', 'from_name', 'type',
+        'message', 'action_id', 'from', 'from_name', 'type', 'reply_to', 'subject'
     ];
 
     /**

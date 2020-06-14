@@ -3,19 +3,19 @@
 @include('automation2._tabs', ['tab' => 'settings'])
     
 <h5 class="mb-20 mt-3"h5>
-    {{ trans('messages.automation.action.send-an-email') }}
+    {{ trans('messages.automation.action.twilio') }}
 </h5>
 <p class="mb-10">
-    {{ trans('messages.automation.action.send-an-email.intro') }}
+    {{ trans('messages.automation.action.twilio.intro') }}
 </p>
 
-<form action="{{ action('Automation2Controller@emailSetup', $automation->uid) }}" method="POST" class="form-validate-jqueryz">
+<form action="{{ action('Automation2Controller@twilioSetup', $automation->uid) }}" method="POST" class="form-validate-jqueryz">
     {{ csrf_field() }}
     
-    @include('automation2.email._summary')
+    @include('automation2.twilio._summary')
     
     <div class="trigger-action mt-4">    
-        <span class="btn btn-secondary email-settings-change mr-1"
+        <span class="btn btn-secondary twilio-settings-change mr-1"
         >
             {{ trans('messages.automation.twilio.settings') }}
         </span>
@@ -30,27 +30,26 @@
     {{ trans('messages.automation.action.delete.confirm') }}        
 </p>
 <div class="mt-3">
-    <a href="{{ action('Automation2Controller@emailDelete', [
+    <a href="{{ action('Automation2Controller@twilioDelete', [
         'uid' => $automation->uid,
-        'email_uid' => $twiliomsg->uid,
-    ]) }}" data-confirm="{{ trans('messages.automation.email.delete.confirm') }}" class="btn btn-danger email-action-delete">
+        'twilio_uid' => $twiliomsg->uid,
+    ]) }}" data-confirm="{{ trans('messages.automation.twilio.delete.confirm') }}" class="btn btn-danger twilio-action-delete">
         <i class='lnr lnr-trash mr-2'></i> {{ trans('messages.automation.delete_this_action') }}
     </a>
 </div>
 
 <script>
     // Click on exist action
-    $('.email-settings-change').click(function(e) {
+    $('.twilio-settings-change').click(function(e) {
         e.preventDefault();
-        
-        var url = '{{ action('Automation2Controller@emailTemplate', ['uid' => $automation->uid, 'email_uid' => $twiliomsg->uid]) }}';
-        
+        var url = '{{ action('Automation2Controller@twilioSetup', ['uid' => $automation->uid, 'twilio_uid' => $twiliomsg->uid]) }}';
+
         popup.load(url);
     });
     
-    $('.email-action-delete').click(function(e) {
+    $('.twilio-action-delete').click(function(e) {
         e.preventDefault();
-        
+
         var confirm = $(this).attr('data-confirm');
         var url = $(this).attr('href');
 
@@ -74,17 +73,17 @@
                     success: function (response) {
                         // remove current node
                         tree.getSelected().remove();
-                        
+
                         // save tree
-                        saveData(function() {                            
+                        saveData(function() {
                             // notify
                             notify('success', '{{ trans('messages.notify.success') }}', response.message);
-                            
+
                             // load default sidebar
                             sidebar.load('{{ action('Automation2Controller@settings', $automation->uid) }}');
                         });
                     }
-                });                        
+                });
             },
         });
     });

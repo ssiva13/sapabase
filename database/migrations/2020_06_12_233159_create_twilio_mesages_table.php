@@ -22,6 +22,7 @@ class CreateTwilioMesagesTable extends Migration
             $table->string('from');
             $table->string('from_name');
             $table->text('message');
+            $table->text('subject');
             $table->text('reply_to');
             $table->timestamps();
 

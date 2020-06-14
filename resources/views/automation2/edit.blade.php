@@ -314,7 +314,7 @@
 			});
 		}
 		function TwilioSetup(id, type = 'sms') {
-			var url = '{{ action('Automation2Controller@twilioSetup', $automation->uid) }}' + '?action_id=' + id +'&?type=' + type;
+			var url = '{{ action('Automation2Controller@twilioSetup', $automation->uid) }}' + '?action_id=' + id +'&type=' + type;
 
 			popup.load(url, function() {
 				// set back event
@@ -546,12 +546,11 @@
 			else if (e.getType() == 'ElementAction') {
 				if (e.getOptions().init == "true") {
 					var type = $(this).attr('data-type');
-					if (e.getOptions().init == "twilio"){
-						var url = '{{ action('Automation2Controller@email', $automation->uid) }}?twilio_uid=' + e.getOptions().email_uid;
+					if (e.getOptions().type == "twilio"){
+						var url = '{{ action('Automation2Controller@twilio', $automation->uid) }}?twilio_uid=' + e.getOptions().twilio_uid;
 					}else{
 						var url = '{{ action('Automation2Controller@email', $automation->uid) }}?email_uid=' + e.getOptions().email_uid;
 					}
-					alert(url)
 					EditAction(url);
 				}
 				else {
@@ -641,13 +640,9 @@
 
                     if (e.getType() == 'ElementAction') {
                         if (e.getOptions()['init'] == null || !(e.getOptions()['init'] == "true" || e.getOptions()['init'] == true)) {
-							if(e.getOptions()['type'] == 'sms'){
-								e.showNotice('{{ trans('messages.automation.sms.is_not_setup') }}');
-								e.setTitle('{{ trans('messages.automation.sms.is_not_setup.title') }}');
-							}
-							else if(e.getOptions()['type'] == 'call'){
-								e.showNotice('{{ trans('messages.automation.call.is_not_setup') }}');
-								e.setTitle('{{ trans('messages.automation.call.is_not_setup.title') }}');
+							if(e.getOptions()['type'] == 'twilio' || e.getOptions()['type'] == 'sms' || e.getOptions()['type'] == 'call'){
+								e.showNotice('{{ trans('messages.automation.twilio.is_not_setup') }}');
+								e.setTitle('{{ trans('messages.automation.twilio.is_not_setup.title') }}');
 							}
 							else if(e.getOptions()['type'] == 'send-an-email'){
 								e.showNotice('{{ trans('messages.automation.email.is_not_setup') }}');
@@ -656,11 +651,11 @@
 								e.showNotice('{{ trans('messages.automation.action.is_not_setup') }}');
 								e.setTitle('{{ trans('messages.automation.action.is_not_setup.title') }}');
 							}
-                        } else if (e.getOptions()['template'] == null || !(e.getOptions()['template'] == "true" || e.getOptions()['template'] == true)) {
+                        } else if ((e.getOptions()['type'] == 'send-an-email') && (e.getOptions()['template'] == null || !(e.getOptions()['template'] == "true" || e.getOptions()['template'] == true))) {
 							e.showNotice('{{ trans('messages.automation.email.has_no_content') }}');
                         } else {
-                            e.hideNotice();
-                            // e.setTitle('Correct title goes here');
+							e.hideNotice();
+							// e.setTitle('Correct title goes here');
                         }
                     }
 

@@ -39,7 +39,7 @@
             <div class="card-body">
                 @foreach ($gateways as $name => $gateway)
                     <div class="list-setting bg-{{ $gateway['name'] }} {{ \Acelle\Model\Setting::get('system.payment_gateway') == $name ? 'current' : '' }}">
-                        <div class="list-setting-main">
+                        <div class="list-setting-main w-75">
                             <div class="title">
                                 <label>{{ trans('messages.payments.' . $name) }}</label>
                                 @if (\Acelle\Model\Setting::get('system.payment_gateway') == $name)
@@ -114,7 +114,7 @@
                             </div>
                             <button class="btn btn-primary">
                                 {{ trans('messages.save') }}
-                            </a>
+                            </button>
                         </form>
                     </div>
                 </div>

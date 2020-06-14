@@ -20,7 +20,7 @@
             'email_uid' => $twiliomsg->uid,
         ]) }}')">
             <i class="lnr lnr-cog mr-2"></i>
-            {{ trans('messages.automation.sms.setup') }}
+            {{ trans('messages.automation.twilio.setup') }}
         </a>
     </li>
     <li class="nav-item">

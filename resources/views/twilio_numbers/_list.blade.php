@@ -33,7 +33,7 @@
 				<td class="stat-fix-size-sm">
 					<div class="single-stat-box pull-left">
 						<span class="no-margin stat-num">
-							{{$item->inbound_recording}}
+							{{trans('messages.'.$item->inbound_recording)}}
 						</span>
 						<br/>
 						<span class="text-muted">
@@ -44,7 +44,7 @@
 				<td class="stat-fix-size-sm">
 					<div class="single-stat-box pull-left">
 						<span class="no-margin stat-num">
-							{{$item->outbound_recording}}
+							{{trans('messages.'.$item->outbound_recording)}}
 						</span>
 						<br/>
 						<span class="text-muted">
@@ -79,11 +79,11 @@
 							<li>
 								@if($item->status != 'active')
 									<a title="{{trans('messages.activate')}}" href="{{ action('TwilioController@activate', ['id' => $item->id]) }}">
-										<i class="icon-trash"></i> {{ trans('messages.activate') }}
+										<i class="icon-checkbox-unchecked"></i> {{ trans('messages.activate') }}
 									</a>
 								@else
 									<a title="{{trans('messages.deactivate')}}" href="{{ action('TwilioController@deactivate', ['id' =>$item->id]) }}">
-										<i class="icon-trash"></i> {{ trans('messages.deactivate') }}
+										<i class="icon-checkbox-checked"></i> {{ trans('messages.deactivate') }}
 									</a>
 								@endif
 							</li>

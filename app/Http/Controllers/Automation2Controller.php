@@ -1776,10 +1776,8 @@ class Automation2Controller extends Controller
         // init automation
         $automation = Automation2::findByUid($uid);
         $type = $request->type;
-        return $request->twilio_uid;
         if ($request->twilio_uid) {
             $twiliomsg = TwilioMessage::findByUid($request->twilio_uid);
-            return $twiliomsg;
         } else {
             $twiliomsg = new TwilioMessage([
                 'action_id' => $request->action_id,
@@ -1809,17 +1807,18 @@ class Automation2Controller extends Controller
 
             // pass validation and save
             $twiliomsg->automation2_id = $automation->id;
+
             $twiliomsg->save();
             return response()->json([
                 'status' => 'success',
-                'title' => trans('messages.automation.send_a_email', ['title' => $automation->name]),
-                'message' => trans('messages.automation.'.$type.'.set_up.success'),
+                'title' => trans('messages.automation.send_sms', ['title' => $twiliomsg->subject]),
+                'message' => trans('messages.automation.twilio.set_up.success'),
                 'url' => action('Automation2Controller@twilioConfirm', [
                     'uid' => $automation->uid,
-                    'email_uid' => $twiliomsg->uid,
+                    'twilio_uid' => $twiliomsg->uid,
                 ]),
                 'options' => [
-                    'email_uid' => $twiliomsg->uid,
+                    'twilio_uid' => $twiliomsg->uid,
                 ],
             ], 201);
         }
@@ -1827,6 +1826,7 @@ class Automation2Controller extends Controller
         return view('automation2.twilio.setup', [
             'automation' => $automation,
             'twiliomsg' => $twiliomsg,
+            'type' => $type,
         ]);
     }
 
@@ -1854,5 +1854,32 @@ class Automation2Controller extends Controller
             'automation' => $automation,
             'twiliomsg' => $twiliomsg,
         ]);
+    }
+
+    /**
+     * Delete automation email.
+     * @param Request $request
+     * @param $uid
+     * @param $twilio_uid
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function twilioDelete(Request $request, $uid, $twilio_uid)
+    {
+        // init automation
+        $automation = Automation2::findByUid($uid);
+        $twiliomsg = TwilioMessage::findByUid($twilio_uid);
+
+        // authorize
+        if (\Gate::denies('update', $automation)) {
+            return $this->notAuthorized();
+        }
+
+        // delete email
+        $twiliomsg->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => trans('messages.automation.twilio.deteled'),
+        ], 201);
     }
 }

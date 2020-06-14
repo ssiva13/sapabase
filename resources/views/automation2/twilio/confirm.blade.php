@@ -11,7 +11,7 @@
         {{ csrf_field() }}
         
         <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-12">
                 @include('automation2.twilio._summary')
             </div>
         </div>                

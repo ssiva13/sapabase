@@ -2,22 +2,27 @@
 
 namespace Acelle\Http\Controllers\Admin;
 
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
 use Acelle\Http\Requests;
 use Acelle\Http\Controllers\Controller;
 use Acelle\Model\Setting;
 use Acelle\Model\Plan;
+use Illuminate\Http\Response;
 use Illuminate\Support\MessageBag;
 use Acelle\Cashier\Cashier;
 use Acelle\Cashier\Subscription;
+use Illuminate\View\View;
 
 class PaymentController extends Controller
 {
     /**
      * Display all paymentt.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param MessageBag $message_bag
+     * @return Factory|Application|Response|View
      */
     public function index(Request $request, MessageBag $message_bag)
     {
@@ -31,7 +36,7 @@ class PaymentController extends Controller
      *
      * @param int $name
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($name)
     {
@@ -62,7 +67,7 @@ class PaymentController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int                      $name
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, MessageBag $message_bag, $name)
     {
@@ -112,7 +117,7 @@ class PaymentController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int                      $name
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function setPrimary(Request $request, $name)
     {
@@ -158,7 +163,7 @@ class PaymentController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int                      $name
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function paypalSubscriptionConnectPlan(Request $request, $plan_uid)
     {
@@ -185,7 +190,7 @@ class PaymentController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int                      $name
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function paypalSubscriptionDisconnectPlan(Request $request, $plan_uid)
     {
@@ -212,7 +217,7 @@ class PaymentController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int                      $name
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function paypalSubscriptionConnect(Request $request)
     {
@@ -235,7 +240,7 @@ class PaymentController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int                      $name
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function paypalSubscriptionDisconnect(Request $request)
     {

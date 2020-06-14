@@ -4,16 +4,26 @@
         
     @include('automation2.twilio._tabs', ['tab' => 'setup'])
         
-    <h5 class="mb-3">Twilo Sms/Call Setup</h5>
-    <p>Please fill-up twilio sms/call information below. They will be used to apply to all calls/sms to customers.</p>
+    <h5 class="mb-3"> Sms/Call Setup</h5>
+    <p>Please fill-up sms/call information below. They will be used to apply to all calls/sms to customers.</p>
     
     <form id="twilioSetup" action="{{ action('Automation2Controller@twilioSetup', $automation->uid) }}" method="POST">
         {{ csrf_field() }}
         
-        <input type="hidden" name="email_uid" value="{{ $twiliomsg->uid }}" />
+        <input type="hidden" name="twilio_uid" value="{{ $twiliomsg->uid }}" />
         <input type="hidden" name="action_id" value="{{ $twiliomsg->action_id }}" />
-    
+        <input type="hidden" name="type" value="{{ $type }}" />
+
         <div class="row">
+            <div class="col-md-12">
+                @include('helpers.form_control', [
+                    'type' => 'text',
+                    'name' => 'subject',
+                    'label' => trans('messages.subject'),
+                    'value' => $twiliomsg->subject,
+                    'rules' => $twiliomsg->rules(),
+                ])
+            </div>
             <div class="col-md-6">
                 @include('helpers.form_control', [
                     'type' => 'text',
@@ -23,15 +33,27 @@
                     'rules' => $twiliomsg->rules(),
                 ])
             </div>
-            <div class="col-md-6">
-                @include('helpers.form_control', [
-                    'type' => 'text',
-                    'name' => 'message',
-                    'label' => trans('messages.twilio_message'),
-                    'value' => $twiliomsg->message,
-                    'rules' => $twiliomsg->rules(),
-                ])
-            </div>
+            @if($type == 'sms')
+                <div class="col-md-6">
+                    @include('helpers.form_control', [
+                        'type' => 'textarea',
+                        'name' => 'message',
+                        'label' => trans('messages.automation.sms.body'),
+                        'value' => $twiliomsg->message,
+                        'rules' => $twiliomsg->rules(),
+                    ])
+                </div>
+            @else
+                <div class="col-md-6">
+                    @include('helpers.form_control', [
+                        'type' => 'text',
+                        'name' => 'message',
+                        'label' => trans('messages.automation.call.recording.url'),
+                        'value' => $twiliomsg->message,
+                        'rules' => $twiliomsg->rules(),
+                    ])
+                </div>
+            @endif
             <div class="col-md-6">
                 @include('helpers.form_control', [
                     'type' => 'text',

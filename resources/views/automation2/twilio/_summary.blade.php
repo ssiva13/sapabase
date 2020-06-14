@@ -1,27 +1,6 @@
 <ul class="key-value-list mt-2">
     <li class="d-flex align-items-center">
         <div class="list-media mr-4">
-            <i class="material-icons-outlined text-muted">textsms</i>
-        </div>
-        <div class="values mr-auto">
-            <label>
-                {{ trans('messages.automation.email.subject') }}
-            </label>
-            <div class="value">
-                {{ $twiliomsg->subject }}
-            </div>
-        </div>
-        <div class="list-action">
-            <a href="javascript:;" onclick="popup.load('{{ action('Automation2Controller@twilioSetup', [
-                'uid' => $automation->uid,
-                'email_uid' => $twiliomsg->uid,
-            ]) }}')" class="btn btn-outline-secondary btn-sm">
-                {{ trans('messages.automation.email.setup') }}
-            </a>
-        </div>
-    </li>
-    <li class="d-flex align-items-center">
-        <div class="list-media mr-4">
             <i class="material-icons-outlined text-muted">my_location</i>
         </div>
         <div class="values mr-auto">
@@ -35,7 +14,7 @@
         <div class="list-action">
             <a href="javascript:;" onclick="popup.load('{{ action('Automation2Controller@twilioSetup', [
                 'uid' => $automation->uid,
-                'email_uid' => $twiliomsg->uid,
+                'twilio_uid' => $twiliomsg->uid,
             ]) }}')" class="btn btn-outline-secondary btn-sm">
                 {{ trans('messages.automation.twilio.setup') }}
             </a>
@@ -55,7 +34,7 @@
                 @else
                     <span class="text-warning small">
                         <i class="material-icons-outlined">warning</i>
-                        {{ trans('messages.email.no_reply_to') }}
+                        {{ trans('messages.twilio.no_reply_to') }}
                     </span>
                 @endif
             </div>
@@ -63,9 +42,9 @@
         <div class="list-action">
             <a href="javascript:;" onclick="popup.load('{{ action('Automation2Controller@twilioSetup', [
                 'uid' => $automation->uid,
-                'email_uid' => $twiliomsg->uid,
+                'twilio_uid' => $twiliomsg->uid,
             ]) }}')" class="btn btn-outline-secondary btn-sm">
-                {{ trans('messages.automation.email.setup') }}
+                {{ trans('messages.automation.twilio.setup') }}
             </a>
         </div>
     </li>
@@ -89,15 +68,20 @@
                 @else
                     <span class="text-danger small">
                         <i class="material-icons-outlined">error_outline</i>
-                        {{ trans('messages.automation.email.no_content') }}
+                        {{ trans('messages.automation.twilio.no_content') }}
                     </span>
+                @endif
+            </div>
+            <div class="value">
+                @if($twiliomsg->message)
+                    {{$twiliomsg->message}}
                 @endif
             </div>
         </div>
         <div class="list-action">
-            <a href="javascript:;" onclick="popup.load('{{ action('Automation2Controller@emailTemplate', [
+            <a href="javascript:;" onclick="popup.load('{{ action('Automation2Controller@twilioSetup', [
                 'uid' => $automation->uid,
-                'email_uid' => $twiliomsg->uid,
+                'twilio_uid' => $twiliomsg->uid,
             ]) }}')" class="btn btn-outline-secondary btn-sm">
                 {{ trans('messages.automation.email.summary.content.update') }}
             </a>
@@ -111,9 +95,9 @@
         <div class="list-action">
             <a href="javascript:;" onclick="popup.load('{{ action('Automation2Controller@twilioSetup', [
                 'uid' => $automation->uid,
-                'email_uid' => $twiliomsg->uid,
+                'twilio_uid' => $twiliomsg->uid,
             ]) }}')" class="btn btn-outline-secondary btn-sm">
-                {{ trans('messages.automation.email.setup') }}
+                {{ trans('messages.automation.twilio.setup') }}
             </a>
         </div>
     </li>
