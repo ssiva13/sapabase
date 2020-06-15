@@ -571,10 +571,7 @@
 		}
 
         (function() {
-            //var json = [
-            //    {title: "Click to choose a trigger", id: "trigger", type: "ElementTrigger", options: {init: false}}
-            //];
-			
+
 			@if ($automation->data)
 				var json = {!! $automation->getData() !!};
 			@else
@@ -651,7 +648,7 @@
 								e.showNotice('{{ trans('messages.automation.action.is_not_setup') }}');
 								e.setTitle('{{ trans('messages.automation.action.is_not_setup.title') }}');
 							}
-                        } else if ((e.getOptions()['type'] == 'send-an-email') && (e.getOptions()['template'] == null || !(e.getOptions()['template'] == "true" || e.getOptions()['template'] == true))) {
+                        } else if ((e.getOptions()['template'] == null || !(e.getOptions()['template'] == "true" || e.getOptions()['template'] == true))) {
 							e.showNotice('{{ trans('messages.automation.email.has_no_content') }}');
                         } else {
 							e.hideNotice();

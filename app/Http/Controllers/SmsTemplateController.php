@@ -1,0 +1,282 @@
+<?php
+
+namespace Acelle\Http\Controllers;
+
+use Acelle\Model\SmsTemplate;
+use Illuminate\Http\Request;
+use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
+use Acelle\Model\Template;
+
+class SmsTemplateController extends Controller
+{
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $request->merge(array("customer_id" => $request->user()->customer->id));
+        $templates = SmsTemplate::search($request);
+
+        return view('sms_templates.index', [
+            'templates' => $templates,
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listing(Request $request)
+    {
+        $request->merge(array("customer_id" => $request->user()->customer->id));
+        $templates = SmsTemplate::search($request)->paginate($request->per_page);
+
+        return view('sms_templates._list', [
+            'templates' => $templates,
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource for choose one.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function choosing(Request $request)
+    {
+        $request->merge(array("customer_id" => $request->user()->customer->id));
+        $templates = SmsTemplate::search($request)->paginate($request->per_page);
+        $campaign = \Acelle\Model\Campaign::findByUid($request->campaign_uid);
+
+        return view('sms_templates._list_choose', [
+            'templates' => $templates,
+            'campaign' => $campaign,
+        ]);
+    }
+
+    /**
+     * Content of template.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function content(Request $request)
+    {
+        $template = SmsTemplate::findByUid($request->uid);
+
+        // authorize
+        if (!$request->user()->customer->can('view', $template)) {
+            return $this->notAuthorized();
+        }
+
+        echo $template->content;
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
+    {
+        // Generate info
+        $user = $request->user();
+        $template = new Template();
+
+        // authorize
+        if (!$request->user()->customer->can('create', Template::class)) {
+            return $this->notAuthorized();
+        }
+
+        // Get old post values
+        if (null !== $request->old()) {
+            $template->fill($request->old());
+        }
+
+        return view('sms_templates.create', [
+            'template' => $template,
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        // Generate info
+        $user = $request->user();
+        $customer = $request->user()->customer;
+
+        $template = new SmsTemplate();
+        $template->customer_id = $customer->id;
+        $template->admin_id = $customer->admin_id;
+
+        // validate and save posted data
+        if ($request->isMethod('post')) {
+            $rules = array(
+                'name' => 'required',
+                'content' => 'required',
+            );
+
+            $this->validate($request, $rules);
+
+            // Save template
+            $template->fill($request->all());
+
+            $template->save();
+
+            // Redirect to my lists page
+            $request->session()->flash('alert-success', trans('messages.template.created'));
+
+            return redirect()->action('SmsTemplateController@index');
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Request $request, $uid)
+    {
+        // Generate info
+        $user = $request->user();
+        $template = SmsTemplate::findByUid($uid);
+        // Get old post values
+        if (null !== $request->old()) {
+            $template->fill($request->old());
+        }
+
+        return view('sms_templates.edit', [
+            'template' => $template,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+        // Generate info
+        $user = $request->user();
+        $template = SmsTemplate::findByUid($request->uid);
+
+        // validate and save posted data
+        if ($request->isMethod('patch') || $request->isMethod('post')) {
+            // Save template
+            $template->fill($request->all());
+
+            $rules = array(
+                'name' => 'required',
+                'content' => 'required',
+            );
+
+            // make validator
+            $validator = \Validator::make($request->all(), $rules);
+            
+            // redirect if fails
+            if ($validator->fails()) {
+                // faled
+                return response()->json($validator->errors(), 400);
+            }
+            $template->save();
+
+            // Redirect to my lists page
+            $request->session()->flash('alert-success', trans('messages.template.updated'));
+
+            return redirect()->action('SmsTemplateController@index');
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+    }
+
+    /**
+     * Custom sort items.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function sort(Request $request)
+    {
+        $sort = json_decode($request->sort);
+        foreach ($sort as $row) {
+            $item = SmsTemplate::findByUid($row[0]);
+
+            // authorize
+            if (!$request->user()->customer->can('update', $item)) {
+                return $this->notAuthorized();
+            }
+
+            $item->custom_order = $row[1];
+            $item->untransform();
+            $item->save();
+        }
+
+        echo trans('messages.templates.custom_order.updated');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        if (isSiteDemo()) {
+            return response()->json([
+                'status' => 'notice',
+                'message' => trans('messages.operation_not_allowed_in_demo'),
+            ]);
+        }
+
+        $items = SmsTemplate::whereIn('uid', explode(',', $request->uids));
+
+        foreach ($items->get() as $item) {
+            // authorize
+            if ($request->user()->customer->can('delete', $item)) {
+                $item->delete();
+            }
+        }
+
+        // Redirect to my lists page
+        echo trans('messages.templates.deleted');
+    }
+
+    public function get(Request $request)
+    {
+        $template = SmsTemplate::where('uid',$request->template_uid)->first();
+        return $template->content;
+    }
+}

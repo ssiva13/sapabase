@@ -59,36 +59,10 @@
 						<i class="icon-paperplane"></i> {{ trans('messages.campaigns') }}
 					</a>
 				</li>
-				<li class="dropdown language-switch"
-					rel0="Automation2Controller"
-					rel1="TwilioController"
-				>
-					<a class="dropdown-toggle" data-toggle="dropdown">
+				<li rel0="Automation2Controller">
+					<a href="{{ action('Automation2Controller@index') }}">
 						<i class="icon-alarm-check"></i> {{ trans('messages.Automations') }}
-						<span class="caret"></span>
 					</a>
-					<ul class="dropdown-menu">
-						<li rel0="Automation2Controller">
-							<a href="{{ action('Automation2Controller@index') }}">
-								<i class="glyphicon-envelope"></i> {{ trans('messages.email') }}
-							</a>
-						</li>
-						<li rel0="TwilioController">
-							<a href="{{ action('TwilioController@index') }}">
-								<i class="icon-phone-incoming"></i> {{ trans('messages.voice') }}
-							</a>
-						</li>
-						<li rel0="TwilioController">
-							<a href="{{ action('TwilioController@index') }}">
-								<i class="icon-envelop2"></i> {{ trans('messages.sms') }}
-							</a>
-						</li>
-						<li rel0="TwilioController">
-							<a href="{{ action('TwilioController@index') }}">
-								<i class="icon-phone"></i> {{ trans('messages.fax') }}
-							</a>
-						</li>
-					</ul>
 				</li>
 				<li
 					rel0="MailListController"
@@ -98,10 +72,26 @@
 				>
 					<a href="{{ action('MailListController@index') }}"><i class="icon-address-book2"></i> {{ trans('messages.lists') }}</a>
 				</li>
-                <li rel0="TemplateController">
-					<a href="{{ action('TemplateController@index') }}">
+				<li class="dropdown language-switch"
+					rel0="TemplateController"
+					rel1="SmsTemplateController"
+				>
+					<a class="dropdown-toggle" data-toggle="dropdown">
 						<i class="icon-magazine"></i> {{ trans('messages.templates') }}
+						<span class="caret"></span>
 					</a>
+					<ul class="dropdown-menu">
+						<li rel0="TemplateController">
+							<a href="{{ action('TemplateController@index') }}">
+								<i class="icon-envelop4"></i> {{ trans('messages.email_templates') }}
+							</a>
+						</li>
+						<li rel0="SmsTemplateController">
+							<a href="{{ action('SmsTemplateController@index') }}">
+								<i class="icon-envelop5"></i> {{ trans('messages.sms_templates') }}
+							</a>
+						</li>
+					</ul>
 				</li>
 				@if (
 					Auth::user()->customer->can("read", new Acelle\Model\SendingServer()) ||					

@@ -31,6 +31,8 @@
   'confirm_password' => 'Confirm password',
   'campaigns' => 'Campaigns',
   'templates' => 'Templates',
+  'email_templates' => 'Email Templates',
+  'sms_templates' => 'SMS Templates',
   'lists' => 'Lists',
   'reports' => 'Reports',
   'servers' => 'Servers',

@@ -1586,6 +1586,23 @@ class Customer extends Model implements BillableUserInterface
     }
 
     /**
+     * Get the list of available mail lists, used for populating select box.
+     *
+     * @return array
+     */
+    public function getTemplateSelectOptions($options = [], $cache = false)
+    {
+        $query = SmsTemplate::getAll();
+        $query->where('customer_id', '=', $this->id);
+
+        $result = $query->orderBy('name')->get()->map(function ($item) use ($cache) {
+            return ['id' => $item->id, 'value' => $item->uid, 'text' => $item->name];
+        });
+
+        return $result;
+    }
+
+    /**
      * Get email verification servers select options.
      *
      * @return array

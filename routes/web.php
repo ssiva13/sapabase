@@ -343,6 +343,16 @@ Route::group(['middleware' => ['not_installed', 'auth', 'frontend', 'subscriptio
     Route::get('templates/{uid}/edit', 'TemplateController@edit');
     Route::patch('templates/{uid}/update', 'TemplateController@update');
 
+    //sms templates
+    Route::get('smstemplates/sort', 'SmsTemplateController@sort');
+    Route::get('smstemplates/listing/{page?}', 'SmsTemplateController@listing');
+    Route::get('smstemplates/{uid}/preview', 'SmsTemplateController@preview');
+    Route::get('smstemplates/delete', 'SmsTemplateController@delete');
+    Route::get('smstemplates/get', 'SmsTemplateController@get');
+    Route::resource('smstemplates', 'SmsTemplateController');
+    Route::get('smstemplates/{uid}/edit', 'SmsTemplateController@edit');
+    Route::post('smstemplates/{uid}/update', 'SmsTemplateController@update');
+
     // Campaign
     Route::get('campaigns/{uid}/template/builder-select', 'CampaignController@templateBuilderSelect');
 

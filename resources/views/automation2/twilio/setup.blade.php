@@ -15,13 +15,24 @@
         <input type="hidden" name="type" value="{{ $type }}" />
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 @include('helpers.form_control', [
                     'type' => 'text',
                     'name' => 'subject',
                     'label' => trans('messages.subject'),
                     'value' => $twiliomsg->subject,
                     'rules' => $twiliomsg->rules(),
+                ])
+            </div>
+            <div class="col-md-6">
+                @include('helpers.form_control', [
+                    'type' => 'select',
+                    'name' => 'template',
+                    'id' => 'sms_template',
+                    'include_blank' => trans('messages.automation.choose_list'),
+                    'label' => trans('messages.sms_templates'),
+                    'value' => '',
+                    'options' => Auth::user()->customer->getTemplateSelectOptions(),
                 ])
             </div>
             <div class="col-md-6">
@@ -58,6 +69,7 @@
                 @include('helpers.form_control', [
                     'type' => 'text',
                     'name' => 'from',
+                    'id' => 'from',
                     'label' => trans('messages.from_number'),
                     'value' => $twiliomsg->from,
                     'rules' => $twiliomsg->rules(),
@@ -129,8 +141,25 @@
             });
         });
 
-        $('[name="from"]').blur(function() {
+        $('[name="from"]').keyup(function() {
             $('[name="reply_to"]').val($(this).val());
+        });
+
+        $('#sms_template').change(function() {
+            var uri = '{{ action('SmsTemplateController@get') }}';
+            $.ajax({
+                url: uri,
+                method: 'GET',
+                data: {template_uid : $(this).val()},
+                statusCode: {
+                    // validate error
+                    400: function (res) {
+                    }
+                },
+                success: function (response) {
+                    $('[name="message"]').val(response);
+                }
+            });
         });
     </script>
 @endsection
