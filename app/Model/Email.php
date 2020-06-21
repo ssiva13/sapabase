@@ -513,8 +513,7 @@ class Email extends Model
 
     /**
      * Build Email Custom Headers.
-     *
-     * @return Hash list of custom headers
+     * @return Hash|array
      */
     public function getCustomHeaders($subscriber, $server)
     {

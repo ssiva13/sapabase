@@ -1,8 +1,7 @@
 <div class="row w-100 m-3" >
-	<div class="col-xl-12">
+	<div class="col-xl-12" >
 		@if ($customers->count() > 0)
-			<div class="table-responsive mb-0" data-pattern="priority-columns">
-				<table id="tech-companies-1" class="table table-striped" current-page="{{ empty(request()->page) ? 1 : empty(request()->page) }}">
+			<table id="tech-companies-1" class="table table-striped" current-page="{{ empty(request()->page) ? 1 : empty(request()->page) }}">
 					<tbody>
 					@foreach ($customers as $key => $item)
 							<tr>
@@ -82,7 +81,7 @@
 														<ol class="activity-feed mb-0">
 															@can('assignPlan', $item)
 																<li class="dropdown-item">
-																	<a href="{{ action('Admin\CustomerController@assignPlan', [ "uid" => $item->uid,]) }}" class="dropdown-item assign_plan_button">
+																	<a href="{{ action('Admin\CustomerController@assignPlan', [ "uid" => $item->uid,]) }}" class="assign_plan_button">
 																	<div class="text-muted">
 																		<p class="mb-1">
 																			<i class="icon-clipboard2"></i>{{ trans('messages.customer.assign_plan') }}
@@ -93,7 +92,7 @@
 															@endcan
 															@can('enable', $item)
 																<li class="dropdown-item">
-																	<a link-confirm="{{ trans('messages.enable_customers_confirm') }}" class="dropdown-item"
+																	<a link-confirm="{{ trans('messages.enable_customers_confirm') }}"
 																	   href="{{ action('Admin\CustomerController@enable', ["uids" => $item->uid]) }}">
 																		<div class="text-muted">
 																			<p class="mb-1">
@@ -105,7 +104,7 @@
 															@endcan
 															@can('disable', $item)
 																<li class="dropdown-item">
-																	<a link-confirm="{{ trans('messages.disable_customers_confirm') }}" class="dropdown-item"
+																	<a link-confirm="{{ trans('messages.disable_customers_confirm') }}"
 																	   href="{{ action('Admin\CustomerController@disable', ["uids" => $item->uid]) }}">
 																		<div class="text-muted">
 																			<p class="mb-1">
@@ -117,7 +116,7 @@
 															@endcan
 															@can('read', $item)
 																<li class="dropdown-item">
-																	<a href="{{ action('Admin\CustomerController@subscriptions', $item->uid) }}" class="dropdown-item">
+																	<a href="{{ action('Admin\CustomerController@subscriptions', $item->uid) }}">
 																		<div class="text-muted">
 																			<p class="mb-1">
 																				<i class="icon-quill4"></i> {{ trans('messages.subscriptions') }}
@@ -127,7 +126,7 @@
 																</li>
 															@endcan
 															<li class="dropdown-item">
-																<a delete-confirm="{{ trans('messages.delete_users_confirm') }}" class="dropdown-item"
+																<a delete-confirm="{{ trans('messages.delete_users_confirm') }}"
 																   href="{{ action('Admin\CustomerController@delete', ['uids' => $item->uid]) }}">
 																	<div class="text-muted">
 																		<p class="mb-1">
@@ -146,7 +145,6 @@
 						@endforeach
 					</tbody>
 				</table>
-			</div>
 
 			@include('elements/_per_page_select', ["items" => $customers])
 			{{ $customers->links() }}

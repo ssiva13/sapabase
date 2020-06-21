@@ -78,16 +78,16 @@
 										@include('helpers.form_control', ['disabled' => $item->tag == 'EMAIL', 'type' => 'checkbox', 'name' => 'fields[' . $item->uid . '][required]', 'label' => '', 'value' => $item->required, 'options' => [false,true], 'help_class' => 'field'])
 									</td>
                                     <td class="text-nowrap">
-										@include('helpers.form_control', ['disabled' => $item->tag == 'EMAIL', 'type' => 'checkbox', 'name' => 'fields[' . $item->uid . '][visible]', 'label' => '', 'value' => $item->visible, 'options' => [false,true], 'help_class' => 'field'])
+										@include('helpers.form_control', ['disabled' => $item->tag == 'EMAIL' || $item->tag == 'PHONE', 'type' => 'checkbox', 'name' => 'fields[' . $item->uid . '][visible]', 'label' => '', 'value' => $item->visible, 'options' => [false,true], 'help_class' => 'field'])
 									</td>
                                     <td class="text-nowrap">
-										@include('helpers.form_control', ['disabled' => $item->tag == 'EMAIL', 'type' => 'text', 'name' => 'fields[' . $item->uid . '][tag]', 'label' => '', 'value' => $item->tag, 'help_class' => 'field', 'prefix' => "[", 'subfix' => "]"])
+										@include('helpers.form_control', ['disabled' => $item->tag == 'EMAIL' || $item->tag == 'PHONE', 'type' => 'text', 'name' => 'fields[' . $item->uid . '][tag]', 'label' => '', 'value' => $item->tag, 'help_class' => 'field', 'prefix' => "[", 'subfix' => "]"])
 									</td>
                                     <td class="text-nowrap">
 										@include('helpers.form_control', ['type' => Acelle\Model\Field::getControlNameByType($item->type), 'name' => 'fields[' . $item->uid . '][default_value]', 'label' => '', 'value' => $item->default_value, 'help_class' => 'field'])
 									</td>
 									<td>
-										@if ($item->tag != 'EMAIL')
+										@if ($item->tag != 'EMAIL' && $item->tag != 'PHONE')
 											@if (is_object(Acelle\Model\Field::findByUid($item->uid)))
 												<a no-ajax="true" href="{{ action('FieldController@delete', ['list_uid' => $list->uid, 'uid' => $item->uid]) }}" delete-confirm="{!! trans('messages.delete_field_alert') !!}" class="btn bg-danger-400 remove-field-button">
 													<i class="icon-trash"></i>

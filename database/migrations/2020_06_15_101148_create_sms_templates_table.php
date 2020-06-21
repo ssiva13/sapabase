@@ -20,6 +20,7 @@ class CreateSmsTemplatesTable extends Migration
             $table->integer('admin_id')->unsigned()->nullable();
             $table->string('name');
             $table->longtext('content');
+            $table->string('type')->default('sms');
             $table->integer('custom_order');
             $table->boolean('shared');
 

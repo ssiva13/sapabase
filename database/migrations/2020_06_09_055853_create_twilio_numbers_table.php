@@ -20,6 +20,7 @@ class CreateTwilioNumbersTable extends Migration
             $table->string('number')->nullable()->default(null);
             $table->integer('user_id')->unsigned();
             $table->integer('admin_id')->unsigned()->nullable();
+            $table->decimal('charges', 11,5)->nullable();
             $table->string('inbound_recording', 60)->default('do-not-record');
             $table->string('outbound_recording', 60)->default('do-not-record');
             $table->string('status')->nullable()->default('active');

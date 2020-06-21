@@ -1586,14 +1586,31 @@ class Customer extends Model implements BillableUserInterface
     }
 
     /**
-     * Get the list of available mail lists, used for populating select box.
+     * Get the list of available call templates, used for populating select box.
      *
      * @return array
      */
-    public function getTemplateSelectOptions($options = [], $cache = false)
+    public function getCallTemplateSelectOptions($options = [], $cache = false)
     {
         $query = SmsTemplate::getAll();
-        $query->where('customer_id', '=', $this->id);
+        $query->where('customer_id',$this->id)->where('type', 'call');
+
+        $result = $query->orderBy('name')->get()->map(function ($item) use ($cache) {
+            return ['id' => $item->id, 'value' => $item->uid, 'text' => $item->name];
+        });
+
+        return $result;
+    }
+
+    /**
+     * Get the list of available sms templates, used for populating select box.
+     *
+     * @return array
+     */
+    public function getSmsTemplateSelectOptions($options = [], $cache = false)
+    {
+        $query = SmsTemplate::getAll();
+        $query->where('customer_id',$this->id)->where('type', 'sms');
 
         $result = $query->orderBy('name')->get()->map(function ($item) use ($cache) {
             return ['id' => $item->id, 'value' => $item->uid, 'text' => $item->name];

@@ -819,10 +819,8 @@ class Automation2Controller extends Controller
 
     /**
      * Edit campaign template.
-     *
      * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function templateEdit(Request $request, $uid, $email_uid)
     {
@@ -869,8 +867,7 @@ class Automation2Controller extends Controller
      * Upload asset to builder.
      *
      * @param int $id
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function templateAsset(Request $request, $uid, $email_uid)
     {
@@ -888,8 +885,7 @@ class Automation2Controller extends Controller
      * Campaign html content.
      *
      * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function templateContent(Request $request, $uid, $email_uid)
     {

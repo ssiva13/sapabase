@@ -520,6 +520,12 @@ class Setting extends Model
                 'type' => 'text',
                 'not_required' => true,
             ],
+            'purchase_charge' => [
+                'cat' => 'general',
+                'value' => '2',
+                'type' => 'text',
+                'not_required' => true,
+            ],
             'twilio_enabled' => [
                 'cat' => 'general',
                 'value' => 'yes',

@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title', trans('messages.sms_templates'))
+@section('title', trans('messages.call_sms_templates'))
 
 @section('page_script')
     <script type="text/javascript" src="{{ URL::asset('assets/js/core/libraries/jquery_ui/interactions.min.js') }}"></script>
@@ -75,9 +75,12 @@
 							@endif
 						</div>
 						<div class="col-md-3 text-right">
-                            <a href="#" onclick="SmsTemplateSetup()" type="button" class="btn bg-info-800">
+                            <button onclick="SmsTemplateSetup()" type="button" class="btn bg-info-800">
 								<i class="icon icon-plus2"></i> {{ trans('messages.create') }}
-							</a>
+							</button>
+							<button onclick="CallTemplateSetup()" type="button" class="btn bg-grey-800">
+								<i class="icon icon-upload4"></i> {{ trans('messages.upload_audio') }}
+							</button>
 						</div>
 					</div>
 					
@@ -110,6 +113,17 @@
 							};
 						});
 					}
+
+					function CallTemplateSetup() {
+						var urll = '{{ action('SmsTemplateController@create',['call' => 'call']) }}';
+						popup.load(urll, function() {
+							// set back event
+							popup.back = function() {
+								Popup.hide();
+							};
+						});
+					}
+
 					function hidePopUp() {
 						Popup.hide();
 					}

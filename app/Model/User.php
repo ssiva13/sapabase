@@ -62,7 +62,10 @@ class User extends Authenticatable
     {
         return $this->hasOne('Acelle\Model\Admin');
     }
-
+    public function phoneNumbers()
+    {
+        return $this->hasMany('Acelle\Model\TwilioNumber')->orderBy('created_at', 'desc');
+    }
     public function systemJobs()
     {
         return $this->hasMany('Acelle\Model\SystemJob')->orderBy('created_at', 'desc');

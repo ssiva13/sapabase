@@ -44,4 +44,14 @@ class SubscriberField extends Model
     {
         return $this->belongsTo('Acelle\Model\Field');
     }
+
+//    /**
+//     * Associations.
+//     *
+//     * @var object | collect
+//     */
+//    public function trackingLog()
+//    {
+//        return $this->belongsTo('Acelle\Model\', 'message_id', 'message_id');
+//    }
 }

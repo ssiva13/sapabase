@@ -14,7 +14,7 @@ class SettingController extends Controller
 {
     /**
      * Display and update all settings.
-     *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -27,8 +27,6 @@ class SettingController extends Controller
             return redirect()->action('Admin\SettingController@urls');
         } elseif ($request->user()->admin->getPermission('setting_background_job') == 'yes') {
             return redirect()->action('Admin\SettingController@cronjob');
-        } elseif ($request->user()->admin->getPermission('setting_twilio_manager') == 'yes') {
-            return redirect()->action('Admin\TwilioIntegrationController@index');
         }
     }
 

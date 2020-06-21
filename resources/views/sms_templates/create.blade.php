@@ -26,9 +26,17 @@
     
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="{{ action('SmsTemplateController@store') }}" method="POST" class="ajax_upload_form form-validate-jquery">
+                        @if($template->type == 'call')
+                            <form enctype="multipart/form-data" action="{{ action('SmsTemplateController@store') }}" method="POST" class="ajax_upload_form form-validate-jquery">
+                        @else
+                            <form action="{{ action('SmsTemplateController@store') }}" method="POST" class="ajax_upload_form form-validate-jquery">
+                        @endif
                             {{ csrf_field() }}
-                            @include('sms_templates._form')
+                            @if($template->type == 'call')
+                                @include('sms_templates._callform')
+                            @else
+                                @include('sms_templates._form')
+                            @endif
 							<hr>
                             <div class="text-right">
                                 <button class="btn bg-teal mr-10"><i class="icon-check"></i> {{ trans('messages.save') }}</button>

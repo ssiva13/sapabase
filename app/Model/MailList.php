@@ -247,6 +247,14 @@ class MailList extends Model
                             'required' => true,
                             'visible' => true,
                         ]);
+        $this->fields()->create([
+                        'mail_list_id' => $this->id,
+                        'type' => 'text',
+                        'label' => trans('messages.phone_number'),
+                        'tag' => 'PHONE',
+                        'required' => false,
+                        'visible' => true,
+                    ]);
 
         $this->fields()->create([
                             'mail_list_id' => $this->id,
@@ -403,8 +411,7 @@ class MailList extends Model
 
     /**
      * Unsubscribe rate.
-     *
-     * @return array
+     * @return array|false|float
      */
     public function subscribeRate($cache = false)
     {

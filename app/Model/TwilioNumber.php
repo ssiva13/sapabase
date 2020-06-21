@@ -110,8 +110,11 @@ class TwilioNumber extends Model
         return $query;
     }
 
+    /** @noinspection PhpUndefinedMethodInspection */
     public static function findByUid($uid)
     {
         return self::where('uid', '=', $uid)->first();
     }
+
+
 }

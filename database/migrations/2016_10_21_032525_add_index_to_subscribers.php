@@ -13,7 +13,7 @@ class AddIndexToSubscribers extends Migration
     public function up()
     {
         Schema::table('subscribers', function (Blueprint $table) {
-            $table->index(['mail_list_id', 'email']);
+            $table->index(['mail_list_id', 'email', 'phone']);
         });
     }
 

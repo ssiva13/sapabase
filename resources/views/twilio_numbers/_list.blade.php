@@ -72,7 +72,7 @@
 							<span class="caret ml-0"></span></button>
 						<ul class="dropdown-menu dropdown-menu-right">
 							<li>
-								<a href="{{ action('TwilioController@statitics', [$item->uid, $item->id]) }}">
+								<a class="modal_link" href="{{ action('TwilioController@fetchCallLog', $item->uid) }}">
 									<i class="icon-phone-incoming"></i>{{ trans('messages.twilio.overview_statistics') }}
 								</a>
 							</li>

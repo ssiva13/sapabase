@@ -88,7 +88,7 @@
 						</li>
 						<li rel0="SmsTemplateController">
 							<a href="{{ action('SmsTemplateController@index') }}">
-								<i class="icon-envelop5"></i> {{ trans('messages.sms_templates') }}
+								<i class="icon-envelop5"></i> {{ trans('messages.call_sms_templates') }}
 							</a>
 						</li>
 					</ul>
@@ -148,7 +148,12 @@
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
-				<!--<li class="dropdown language-switch">
+				<li rel0="TwilioController">
+					<a href="{{ action('TwilioController@updateTwilioCost') }}" >
+						<i class="icon-reload-alt"></i><span></span>
+					</a>
+				</li>
+				<!-- <li class="dropdown language-switch">
 					<a class="dropdown-toggle" data-toggle="dropdown">
 						{{ Acelle\Model\Language::getByCode(Config::get('app.locale'))->name }}
 						<span class="caret"></span>
@@ -161,14 +166,14 @@
 							</li>
 						@endforeach
 					</ul>
-                </li>-->
+                </li> -->
 
-				<!--<li class="dropdown">
+				<li class="dropdown">
 					<a href="#" class="dropdown-toggle top-quota-button" data-toggle="dropdown" data-url="{{ action("AccountController@quotaLog") }}">
 						<i class="icon-stats-bars4"></i>
 						<span class="visible-xs-inline-block position-right">{{ trans('messages.used_quota') }}</span>
 					</a>
-				</li>-->
+				</li>
 
 				@include('layouts._top_activity_log')
 

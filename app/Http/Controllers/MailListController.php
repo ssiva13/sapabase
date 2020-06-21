@@ -737,6 +737,7 @@ class MailListController extends Controller
             }
 
             $subscriber->email = $request->EMAIL;
+            $subscriber->phone = $request->PHONE;
             $subscriber->ip = $request->ip();
             $subscriber->save();
             // Update field

@@ -31,13 +31,6 @@
 						</a>
 					</li>
 				@endif
-				@if (Auth::user()->admin->getPermission("setting_twilio_manager") == 'yes')
-					<li class="nav-item {{ $action == "cronjob" ? "active" : "" }} text-semibold">
-						<a class="nav-link" href="{{ action('Admin\TwilioIntegrationController@index') }}">
-							<i class="icon-gear"></i> {{ trans('messages.twilio_settings') }}
-						</a>
-					</li>
-				@endif
 				@if (Auth::user()->admin->getPermission("setting_background_job") == 'yes')
 					<li class="nav-item {{ $action == "cronjob" ? "active" : "" }} text-semibold">
 						<a class="nav-link" href="{{ action('Admin\SettingController@cronjob') }}">

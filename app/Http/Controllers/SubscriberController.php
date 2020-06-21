@@ -126,6 +126,7 @@ class SubscriberController extends Controller
 
             // Save subscriber
             $subscriber->email = $request->EMAIL;
+            $subscriber->phone = $request->PHONE;
             $subscriber->save();
             // Update field
             $subscriber->updateFields($request->all());

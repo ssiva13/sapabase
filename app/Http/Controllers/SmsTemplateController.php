@@ -3,7 +3,11 @@
 namespace Acelle\Http\Controllers;
 
 use Acelle\Model\SmsTemplate;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 use Acelle\Model\Template;
 
@@ -13,7 +17,7 @@ class SmsTemplateController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -28,7 +32,7 @@ class SmsTemplateController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function listing(Request $request)
     {
@@ -43,7 +47,7 @@ class SmsTemplateController extends Controller
     /**
      * Display a listing of the resource for choose one.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function choosing(Request $request)
     {
@@ -59,8 +63,8 @@ class SmsTemplateController extends Controller
 
     /**
      * Content of template.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function content(Request $request)
     {
@@ -76,14 +80,16 @@ class SmsTemplateController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return Factory|Application|Response|View
      */
     public function create(Request $request)
     {
         // Generate info
         $user = $request->user();
         $template = new Template();
+        if($request->call){
+            $template->type = 'call';
+        }
 
         // authorize
         if (!$request->user()->customer->can('create', Template::class)) {
@@ -102,10 +108,8 @@ class SmsTemplateController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
      * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|Response
      */
     public function store(Request $request)
     {
@@ -128,14 +132,23 @@ class SmsTemplateController extends Controller
 
             // Save template
             $template->fill($request->all());
+            if ($request->hasFile('content')) {
+                $audio_file = $request->file('content');
+                $filename = $audio_file->getClientOriginalName();
+                $location = public_path('files/audio');
+                $path = 'files/audio/'.$filename;
+                $audio_file->move($location,$filename);
+                $template->content = \URL::asset($path);
+                $template->type = 'call';
+            }
 
             $template->save();
 
             // Redirect to my lists page
             $request->session()->flash('alert-success', trans('messages.template.created'));
 
-            return redirect()->action('SmsTemplateController@index');
         }
+        return redirect()->action('SmsTemplateController@index');
     }
 
     /**
@@ -143,7 +156,7 @@ class SmsTemplateController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -151,10 +164,8 @@ class SmsTemplateController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
      * @param int $id
-     *
-     * @return \Illuminate\Http\Response
+     * @return Factory|Application|Response|View
      */
     public function edit(Request $request, $uid)
     {
@@ -174,8 +185,7 @@ class SmsTemplateController extends Controller
     /**
      * Update the specified resource in storage.
      * @param \Illuminate\Http\Request $request
-     * @param int                      $id
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|Response
      */
     public function update(Request $request)
     {
@@ -201,13 +211,21 @@ class SmsTemplateController extends Controller
                 // faled
                 return response()->json($validator->errors(), 400);
             }
+            if ($request->hasFile('content')) {
+                $audio_file = $request->file('content');
+                $filename = $audio_file->getClientOriginalName();
+                $location = public_path('files/audio');
+                $path = 'files/audio/'.$filename;
+                $audio_file->move($location,$filename);
+                $template->content = \URL::asset($path);
+            }
             $template->save();
 
             // Redirect to my lists page
             $request->session()->flash('alert-success', trans('messages.template.updated'));
 
-            return redirect()->action('SmsTemplateController@index');
         }
+        return redirect()->action('SmsTemplateController@index');
     }
 
     /**
@@ -215,7 +233,7 @@ class SmsTemplateController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
@@ -226,7 +244,7 @@ class SmsTemplateController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function sort(Request $request)
     {
@@ -250,7 +268,7 @@ class SmsTemplateController extends Controller
     /**
      * Remove the specified resource from storage.
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|Response
      */
     public function delete(Request $request)
     {

@@ -44,6 +44,12 @@
                 </td>
                 <td>
                     <h5 class="no-margin text-teal-800 stat-num">
+                        {{ $automation->countNumbers() }}
+                    </h5>
+                    <span class="text-muted2">{{ trans('messages.phone_numbers') }}</span>
+                </td>
+                <td>
+                    <h5 class="no-margin text-teal-800 stat-num">
                         {{ number_to_percentage($automation->getSummaryStats()['complete']) }}
                     </h5>
                     <span class="text-muted2">{{ trans('messages.complete') }}</span>

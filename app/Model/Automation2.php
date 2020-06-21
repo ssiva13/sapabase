@@ -149,11 +149,8 @@ class Automation2 extends Model
 
     public function getElementById($id)
     {
-        $data = $this->getElements()[$id];
-
         // search by id
-
-        return $element;
+        return $this->getElements()[$id];
     }
 
     /**
@@ -753,11 +750,21 @@ class Automation2 extends Model
     {
         $count = 0;
         $this->getActions(function ($e) use (&$count) {
-            if ($e->getType() == 'ElementAction') {
+            if (($e->getType() == 'ElementAction') && ($e->getOption('type') == 'send-an-email')) {
                 $count += 1;
             }
         });
+        return $count;
+    }
 
+    public function countNumbers()
+    {
+        $count = 0;
+        $this->getActions(function ($e) use (&$count) {
+            if (($e->getType() == 'ElementAction') && ($e->getOption('type') == 'twilio')) {
+                $count += 1;
+            }
+        });
         return $count;
     }
 

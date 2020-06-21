@@ -24,17 +24,31 @@
                     'rules' => $twiliomsg->rules(),
                 ])
             </div>
-            <div class="col-md-6">
-                @include('helpers.form_control', [
-                    'type' => 'select',
-                    'name' => 'template',
-                    'id' => 'sms_template',
-                    'include_blank' => trans('messages.automation.choose_list'),
-                    'label' => trans('messages.sms_templates'),
-                    'value' => '',
-                    'options' => Auth::user()->customer->getTemplateSelectOptions(),
-                ])
-            </div>
+            @if($type == 'sms')
+                <div class="col-md-6">
+                    @include('helpers.form_control', [
+                        'type' => 'select',
+                        'name' => 'template',
+                        'id' => 'sms_template',
+                        'include_blank' => trans('messages.choose_template'),
+                        'label' => trans('messages.sms_templates'),
+                        'value' => '',
+                        'options' => Auth::user()->customer->getSmsTemplateSelectOptions(),
+                    ])
+                </div>
+            @else
+                <div class="col-md-6">
+                    @include('helpers.form_control', [
+                        'type' => 'select',
+                        'name' => 'template',
+                        'id' => 'sms_template',
+                        'include_blank' => trans('messages.choose_template'),
+                        'label' => trans('messages.call_templates'),
+                        'value' => '',
+                        'options' => Auth::user()->customer->getCallTemplateSelectOptions(),
+                    ])
+                </div>
+            @endif
             <div class="col-md-6">
                 @include('helpers.form_control', [
                     'type' => 'text',

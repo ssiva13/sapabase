@@ -2,7 +2,11 @@
 	@if ($field->visible || !isset($is_page))
 		@if ($field->tag != 'EMAIL')
 			@if ($field->type == "text")
-				@include('helpers.form_control', ['type' => $field->type, 'name' => $field->tag, 'label' => $field->label, 'value' => (isset($values[$field->tag]) ? $values[$field->tag] : $field->default_value), 'rules' => $list->getFieldRules()])
+                @if ($field->tag == 'PHONE')
+				    @include('helpers.form_control', ['type' => $field->type, 'name' => $field->tag, 'label' => $field->label, 'value' => (isset($values[$field->tag]) ? $values[$field->tag] : $field->default_value), 'rules' => $list->getFieldRules(), 'placeholder' => '+1 343556...'])
+                @else
+                    @include('helpers.form_control', ['type' => $field->type, 'name' => $field->tag, 'label' => $field->label, 'value' => (isset($values[$field->tag]) ? $values[$field->tag] : $field->default_value), 'rules' => $list->getFieldRules()])
+                @endif
 			@elseif ($field->type == "number")
 				@include('helpers.form_control', ['type' => 'number', 'name' => $field->tag, 'label' => $field->label, 'value' => (isset($values[$field->tag]) ? $values[$field->tag] : $field->default_value), 'rules' => $list->getFieldRules()])
 			@elseif ($field->type == "textarea")
