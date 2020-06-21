@@ -126,9 +126,9 @@
             @include('helpers.form_control', [
                 'type' => 'select',
                 'name' => 'mail_driver',
-								'label' => trans('messages.mail_driver'),
+				'label' => trans('messages.mail_driver'),
                 'value' => (isset($site_info["mail_driver"]) ? $site_info["mail_driver"] : ""),
-								'options' => [["value" => "sendmail", "text" => trans('messages.sendmail')],["value" => "smtp", "text" => trans('messages.smtp')]],
+				'options' => [["value" => "sendmail", "text" => trans('messages.sendmail')],["value" => "smtp", "text" => trans('messages.smtp')]],
                 'help_class' => 'install',
                 'rules' => $rules
             ])
@@ -217,7 +217,66 @@
 			</div>
 		</div>
 	</div>
-	
+
+	<hr />
+	<h3 class="text-teal-800"><i class="icon-phone2"></i> {{ trans('messages.system_twilio_configuration') }}</h3>
+	<div class="row">
+		<div class="col-md-6">
+			@include('helpers.form_control', [
+                'type' => 'select',
+                'name' => 'twilio_enabled',
+				'label' => trans('messages.twilio_enabled'),
+                'value' => (isset($site_info["mail_driver"]) ? $site_info["mail_driver"] : ""),
+				'options' => [["value" => "no", "text" => trans('messages.no')],["value" => "yes", "text" => trans('messages.yes')]],
+                'help_class' => 'install',
+                'rules' => $rules
+            ])
+		</div>
+	</div>
+
+	<div class="twilio_box">
+		<div class="row">
+			<div class="col-md-6">
+				@include('helpers.form_control', [
+					'type' => 'text',
+					'name' => 'twilio_application_sid',
+					'label' => trans('messages.twilio_application_sid'),
+					'value' => (isset($site_info["twilio_application_sid"]) ? $site_info["twilio_application_sid"] : ""),
+					'help_class' => 'install'
+				])
+			</div>
+			<div class="col-md-6">
+				@include('helpers.form_control', [
+					'type' => 'text',
+					'name' => 'twilio_auth_token',
+					'label' => trans('messages.twilio_auth_token'),
+					'value' => (isset($site_info["twilio_auth_token"]) ? $site_info["twilio_auth_token"] : ""),
+					'help_class' => 'install'
+				])
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				@include('helpers.form_control', [
+					'type' => 'text',
+					'name' => 'twilio_account_sid',
+					'label' => trans('messages.twilio_account_sid'),
+					'value' => (isset($site_info["twilio_account_sid"]) ? $site_info["twilio_account_sid"] : ""),
+					'help_class' => 'install'
+				])
+			</div>
+			<div class="col-md-6">
+				@include('helpers.form_control', [
+					'type' => 'text',
+					'name' => 'purchase_charge',
+					'label' => trans('messages.purchase_charge'),
+					'value' => (isset($site_info["purchase_charge"]) ? $site_info["purchase_charge"] : ""),
+					'help_class' => 'install'
+				])
+			</div>
+		</div>
+	</div>
+
 	<hr >
 	<div class="text-right">                                    
 		<button data-wait="{{ trans('messages.button_processing') }}" type="submit" class="btn btn-primary bg-teal">{!! trans('messages.next') !!} <i class="icon-arrow-right14 position-right"></i></button>
@@ -233,10 +292,22 @@
 			$('.smtp_box').show();
 		}
 	}
+	function toogleTwilio() {
+		var value = $("select[name='twilio_enabled']").val();
+		if(value == 'yes') {
+			$('.twilio_box').show();
+		} else {
+			$('.twilio_box').hide();
+		}
+	}
 	$(document).ready(function() {	
 		toogleMailer();
+		toogleTwilio();
 		$("select[name='mail_driver']").change(function() {
 			toogleMailer();
+		});
+		$("select[name='twilio_enabled']").change(function() {
+			toogleTwilio();
 		});
 	});
 </script>

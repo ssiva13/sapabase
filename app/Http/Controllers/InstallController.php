@@ -426,6 +426,20 @@ class InstallController extends Controller
         $mysqli->query('INSERT INTO `'.$database['tables_prefix']."settings` (`name`, `value`, `created_at`, `updated_at`) VALUES
                         ('license_type', '".$site_info['license_type']."', '".$date."', '".$date."');");
 
+        $mysqli->query('INSERT INTO `'.$database['tables_prefix']."settings` (`name`, `value`, `created_at`, `updated_at`) VALUES
+                        ('twilio_enabled', '".$site_info['twilio_enabled']."', '".$date."', '".$date."');");
+
+        if($site_info['twilio_enabled'] == 'yes'){
+            $mysqli->query('INSERT INTO `'.$database['tables_prefix']."settings` (`name`, `value`, `created_at`, `updated_at`) VALUES
+                        ('twilio_application_sid', '".$site_info['twilio_application_sid']."', '".$date."', '".$date."');");
+            $mysqli->query('INSERT INTO `'.$database['tables_prefix']."settings` (`name`, `value`, `created_at`, `updated_at`) VALUES
+                        ('twilio_auth_token', '".$site_info['twilio_auth_token']."', '".$date."', '".$date."');");
+            $mysqli->query('INSERT INTO `'.$database['tables_prefix']."settings` (`name`, `value`, `created_at`, `updated_at`) VALUES
+                        ('twilio_account_sid', '".$site_info['twilio_account_sid']."', '".$date."', '".$date."');");
+            $mysqli->query('INSERT INTO `'.$database['tables_prefix']."settings` (`name`, `value`, `created_at`, `updated_at`) VALUES
+                        ('purchase_charge', '".$site_info['purchase_charge']."', '".$date."', '".$date."');");
+        }
+
         $request->session()->flash('alert-success', trans('messages.install.database_import.success'));
 
         return redirect()->away($next_page);

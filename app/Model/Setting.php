@@ -522,7 +522,7 @@ class Setting extends Model
             ],
             'purchase_charge' => [
                 'cat' => 'general',
-                'value' => '2',
+                'value' => '',
                 'type' => 'text',
                 'not_required' => true,
             ],
