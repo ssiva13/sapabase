@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title', trans('messages.call_sms_templates'))
+@section('title', trans('messages.'.$type.'_templates'))
 
 @section('page_script')
     <script type="text/javascript" src="{{ URL::asset('assets/js/core/libraries/jquery_ui/interactions.min.js') }}"></script>
@@ -16,7 +16,7 @@
 					<li><a href="{{ action("HomeController@index") }}">{{ trans('messages.home') }}</a></li>
 				</ul>
 				<h1>
-					<span class="text-semibold"><i class="icon-list2"></i> {{ trans('messages.sms_templates') }}</span>
+					<span class="text-semibold"><i class="icon-list2"></i> {{ trans('messages.'.$type.'_templates') }}</span>
 				</h1>				
 			</div>
 
@@ -25,7 +25,7 @@
 @section('content')
 				<form class="listing-form"
 					sort-url="{{ action('SmsTemplateController@sort') }}"
-					data-url="{{ action('SmsTemplateController@listing') }}"
+					data-url="{{ action('SmsTemplateController@listing',$type ) }}"
 					per-page="{{ Acelle\Model\Template::$itemsPerPage }}"					
 				>				
 					<div class="row top-list-controls">
@@ -75,12 +75,15 @@
 							@endif
 						</div>
 						<div class="col-md-3 text-right">
-                            <button onclick="SmsTemplateSetup()" type="button" class="btn bg-info-800">
-								<i class="icon icon-plus2"></i> {{ trans('messages.create') }}
-							</button>
-							<button onclick="CallTemplateSetup()" type="button" class="btn bg-grey-800">
-								<i class="icon icon-upload4"></i> {{ trans('messages.upload_audio') }}
-							</button>
+							@if($type == 'call')
+								<button onclick="CallTemplateSetup()" type="button" class="btn bg-grey-800">
+									<i class="icon icon-upload4"></i> {{ trans('messages.upload_audio') }}
+								</button>
+							@elseif($type == 'sms')
+								<button onclick="SmsTemplateSetup()" type="button" class="btn bg-info-800">
+									<i class="icon icon-plus2"></i> {{ trans('messages.create') }}
+								</button>
+							@endif()
 						</div>
 					</div>
 					

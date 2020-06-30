@@ -16,8 +16,7 @@ class SmsTemplateController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
+     * @return Factory|Application|Response|View
      */
     public function index(Request $request)
     {
@@ -26,21 +25,22 @@ class SmsTemplateController extends Controller
 
         return view('sms_templates.index', [
             'templates' => $templates,
+            'type' => $request->type,
         ]);
     }
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
+     * @return Factory|Application|Response|View
      */
-    public function listing(Request $request)
+    public function listing(Request $request, $type)
     {
         $request->merge(array("customer_id" => $request->user()->customer->id));
         $templates = SmsTemplate::search($request)->paginate($request->per_page);
 
         return view('sms_templates._list', [
             'templates' => $templates,
+            'type' => $type,
         ]);
     }
 

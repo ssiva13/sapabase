@@ -81,14 +81,19 @@
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li rel0="TemplateController">
+						<li>
 							<a href="{{ action('TemplateController@index') }}">
 								<i class="icon-envelop4"></i> {{ trans('messages.email_templates') }}
 							</a>
 						</li>
-						<li rel0="SmsTemplateController">
-							<a href="{{ action('SmsTemplateController@index') }}">
-								<i class="icon-envelop5"></i> {{ trans('messages.call_sms_templates') }}
+						<li>
+							<a href="{{ action('SmsTemplateController@index', ['type' => 'call']) }}">
+								<i class="icon-phone2"></i> {{ trans('messages.call_templates') }}
+							</a>
+						</li>
+						<li>
+							<a href="{{ action('SmsTemplateController@index', ['type' => 'sms']) }}">
+								<i class="icon-envelop5"></i> {{ trans('messages.sms_templates') }}
 							</a>
 						</li>
 					</ul>
