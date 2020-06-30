@@ -78,11 +78,12 @@ class AutomationElement
                 ]);
                 break;
             case 'ElementAction':
-                $email = Email::findByUid($this->getOption('email_uid'));
-                if ($email) {
+                if($this->getOption('type') != 'twilio'){
+                    $email = Email::findByUid($this->getOption('email_uid'));
                     return trans('messages.automation.send_a_email', ['title' => $email->subject]);
-                } else {
-                    return trans('messages.automation.no_email');
+                }else{
+                    $twiliomsg = TwilioMessage::findByUid($this->getOption('twilio_uid'));
+                    return trans('messages.automation.send_'.$twiliomsg->type, ['title' => $twiliomsg->subject]);
                 }
 
                 break;

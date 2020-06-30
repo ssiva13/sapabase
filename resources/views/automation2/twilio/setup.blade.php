@@ -4,8 +4,8 @@
         
     @include('automation2.twilio._tabs', ['tab' => 'setup'])
         
-    <h5 class="mb-3"> Sms/Call Setup</h5>
-    <p>Please fill-up sms/call information below. They will be used to apply to all calls/sms to customers.</p>
+    <h5 class="mb-3"> {{ucfirst($type)}} Setup</h5>
+    <p>Please fill-up {{$type}} information below. They will be used to apply to all {{$type}} to customers.</p>
     
     <form id="twilioSetup" action="{{ action('Automation2Controller@twilioSetup', $automation->uid) }}" method="POST">
         {{ csrf_field() }}

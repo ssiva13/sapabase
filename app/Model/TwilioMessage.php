@@ -41,18 +41,6 @@ class TwilioMessage extends Model
     protected $fillable = [
         'message', 'action_id', 'from', 'from_name', 'type', 'reply_to', 'subject'
     ];
-    /**
-     * @var mixed
-     */
-    public $type;
-    /**
-     * @var mixed
-     */
-    public $message;
-    /**
-     * @var mixed
-     */
-    public $from;
 
     /**
      * Bootstrap any application services.

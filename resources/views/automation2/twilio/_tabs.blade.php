@@ -1,7 +1,7 @@
 <div class="d-flex align-items-center mb-4">
     <div style="width: 70%" class="mr-auto">
-        <h2 class="mb-2">{{ trans('messages.automation.automation_twilio') }}</h2>
-        <p>{{ trans('messages.automation.automation_twilio.intro') }}</p>
+        <h2 class="mb-2">{{ trans('messages.automation.automation_twilio', ['type' => ucfirst($type)]) }}</h2>
+        <p>{{ trans('messages.automation.automation_twilio.intro', ['type' => ucfirst($type)]) }}</p>
     </div>    
     <div class="header-action">
         <button class="btn btn-secondary d-flex align-items-center" onclick="sidebar.load(); popup.hide()">
@@ -20,7 +20,7 @@
             'email_uid' => $twiliomsg->uid,
         ]) }}')">
             <i class="lnr lnr-cog mr-2"></i>
-            {{ trans('messages.automation.twilio.setup') }}
+            {{ trans('messages.automation.twilio.setup', ['type' => ucfirst($type)]) }}
         </a>
     </li>
     <li class="nav-item">
@@ -33,7 +33,7 @@
             @endif
         >
             <i class="lnr lnr-cog mr-2"></i>
-            {{ trans('messages.automation.twilio.confirm') }}
+            {{ trans('messages.automation.twilio.confirm', ['type' => ucfirst($type)]) }}
         </a>
     </li>
 </ul>

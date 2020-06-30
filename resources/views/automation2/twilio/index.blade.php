@@ -3,11 +3,8 @@
 @include('automation2._tabs', ['tab' => 'settings'])
     
 <h5 class="mb-20 mt-3"h5>
-    {{ trans('messages.automation.action.twilio') }}
+    {{ trans('messages.automation.action.twilio.'.$twiliomsg->type) }}
 </h5>
-<p class="mb-10">
-    {{ trans('messages.automation.action.twilio.intro') }}
-</p>
 
 <form action="{{ action('Automation2Controller@twilioSetup', $automation->uid) }}" method="POST" class="form-validate-jqueryz">
     {{ csrf_field() }}
@@ -17,7 +14,7 @@
     <div class="trigger-action mt-4">    
         <span class="btn btn-secondary twilio-settings-change mr-1"
         >
-            {{ trans('messages.automation.twilio.settings') }}
+            {{ trans('messages.automation.twilio.settings', ['type' => ucfirst($twiliomsg->type)]) }}
         </span>
     </div>
     

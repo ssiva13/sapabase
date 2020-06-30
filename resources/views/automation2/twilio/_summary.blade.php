@@ -16,7 +16,7 @@
                 'uid' => $automation->uid,
                 'twilio_uid' => $twiliomsg->uid,
             ]) }}')" class="btn btn-outline-secondary btn-sm">
-                {{ trans('messages.automation.twilio.setup') }}
+                {{ trans('messages.automation.twilio.setup', ['type' => ucfirst($twiliomsg->type)]) }}
             </a>
         </div>
     </li>
@@ -44,7 +44,7 @@
                 'uid' => $automation->uid,
                 'twilio_uid' => $twiliomsg->uid,
             ]) }}')" class="btn btn-outline-secondary btn-sm">
-                {{ trans('messages.automation.twilio.setup') }}
+                {{ trans('messages.automation.twilio.setup', ['type' => ucfirst($twiliomsg->type)]) }}
             </a>
         </div>
     </li>
@@ -68,7 +68,7 @@
                 @else
                     <span class="text-danger small">
                         <i class="material-icons-outlined">error_outline</i>
-                        {{ trans('messages.automation.twilio.no_content') }}
+                        {{ trans('messages.automation.twilio.no_content', ['type' => ucfirst($twiliomsg->type)]) }}
                     </span>
                 @endif
             </div>
@@ -97,7 +97,7 @@
                 'uid' => $automation->uid,
                 'twilio_uid' => $twiliomsg->uid,
             ]) }}')" class="btn btn-outline-secondary btn-sm">
-                {{ trans('messages.automation.twilio.setup') }}
+                {{ trans('messages.automation.twilio.setup', ['type' => ucfirst($twiliomsg->type)]) }}
             </a>
         </div>
     </li>

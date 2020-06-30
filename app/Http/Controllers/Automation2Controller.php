@@ -3,8 +3,13 @@
 namespace Acelle\Http\Controllers;
 
 use Acelle\Model\TwilioMessage;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 use Validator;
 use Acelle\Http\Requests;
 use Acelle\Model\Automation2;
@@ -20,7 +25,7 @@ class Automation2Controller extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -35,7 +40,7 @@ class Automation2Controller extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function listing(Request $request)
     {
@@ -49,7 +54,7 @@ class Automation2Controller extends Controller
     /**
      * Creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create(Request $request)
     {
@@ -103,7 +108,7 @@ class Automation2Controller extends Controller
     /**
      * Update automation.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $uid)
     {
@@ -146,7 +151,7 @@ class Automation2Controller extends Controller
     /**
      * Update automation.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function saveData(Request $request, $uid)
     {
@@ -158,7 +163,7 @@ class Automation2Controller extends Controller
     /**
      * Creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Request $request, $uid)
     {
@@ -178,7 +183,7 @@ class Automation2Controller extends Controller
     /**
      * Automation settings in sidebar.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function settings(Request $request, $uid)
     {
@@ -198,7 +203,7 @@ class Automation2Controller extends Controller
     /**
      * Select trigger type popup.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function triggerSelectPupop(Request $request, $uid)
     {
@@ -229,7 +234,7 @@ class Automation2Controller extends Controller
     /**
      * Select trigger type confirm.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function triggerSelectConfirm(Request $request, $uid)
     {
@@ -280,7 +285,7 @@ class Automation2Controller extends Controller
     /**
      * Select trigger type.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function triggerSelect(Request $request, $uid)
     {
@@ -321,7 +326,7 @@ class Automation2Controller extends Controller
     /**
      * Select action type popup.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function actionSelectPupop(Request $request, $uid)
     {
@@ -351,7 +356,7 @@ class Automation2Controller extends Controller
     /**
      * Select action type confirm.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function actionSelectConfirm(Request $request, $uid)
     {
@@ -373,7 +378,7 @@ class Automation2Controller extends Controller
     /**
      * Select trigger type.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function actionSelect(Request $request, $uid)
     {
@@ -437,7 +442,7 @@ class Automation2Controller extends Controller
     /**
      * Edit trigger.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function triggerEdit(Request $request, $uid)
     {
@@ -486,8 +491,7 @@ class Automation2Controller extends Controller
     
     /**
      * Edit action.
-     *
-     * @return \Illuminate\Http\Response
+     * @return Factory|Application|JsonResponse|Response|View
      */
     public function actionEdit(Request $request, $uid)
     {
@@ -559,7 +563,7 @@ class Automation2Controller extends Controller
     
     /**
      * Email setup.
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     * @return JsonResponse|Response
      */
     public function emailSetup(Request $request, $uid)
     {
@@ -626,7 +630,7 @@ class Automation2Controller extends Controller
     /**
      * Delete automation email.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function emailDelete(Request $request, $uid, $email_uid)
     {
@@ -651,7 +655,7 @@ class Automation2Controller extends Controller
     /**
      * Email template.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function emailTemplate(Request $request, $uid, $email_uid)
     {
@@ -680,7 +684,7 @@ class Automation2Controller extends Controller
     /**
      * Email show.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function email(Request $request, $uid)
     {
@@ -702,7 +706,7 @@ class Automation2Controller extends Controller
     /**
      * Email confirm.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function emailConfirm(Request $request, $uid)
     {
@@ -731,7 +735,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function templateCreate(Request $request, $uid, $email_uid)
     {
@@ -754,7 +758,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function templateLayout(Request $request, $uid, $email_uid)
     {
@@ -799,7 +803,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function templateBuilderSelect(Request $request, $uid, $email_uid)
     {
@@ -820,7 +824,7 @@ class Automation2Controller extends Controller
     /**
      * Edit campaign template.
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Illuminate\View\View
+     * @return Factory|Application|JsonResponse|Response|View
      */
     public function templateEdit(Request $request, $uid, $email_uid)
     {
@@ -865,9 +869,8 @@ class Automation2Controller extends Controller
 
     /**
      * Upload asset to builder.
-     *
      * @param int $id
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     * @return JsonResponse|Response
      */
     public function templateAsset(Request $request, $uid, $email_uid)
     {
@@ -883,9 +886,8 @@ class Automation2Controller extends Controller
 
     /**
      * Campaign html content.
-     *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\View\View
+     * @return Factory|Application|Response|View
      */
     public function templateContent(Request $request, $uid, $email_uid)
     {
@@ -907,7 +909,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function templateTheme(Request $request, $uid, $email_uid)
     {
@@ -945,7 +947,7 @@ class Automation2Controller extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function templateThemeList(Request $request, $uid, $email_uid)
     {
@@ -973,7 +975,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function templateUpload(Request $request, $uid, $email_uid)
     {
@@ -1021,7 +1023,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function templateRemove(Request $request, $uid, $email_uid)
     {
@@ -1046,7 +1048,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function templatePreview(Request $request)
     {
@@ -1071,7 +1073,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function emailAttachmentUpload(Request $request, $uid, $email_uid)
     {
@@ -1093,7 +1095,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function emailAttachmentRemove(Request $request, $uid, $email_uid, $attachment_uid)
     {
@@ -1119,7 +1121,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function emailAttachmentDownload(Request $request, $uid, $email_uid, $attachment_uid)
     {
@@ -1141,7 +1143,7 @@ class Automation2Controller extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int                      $id
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function enable(Request $request)
     {
@@ -1166,7 +1168,7 @@ class Automation2Controller extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int                      $id
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function disable(Request $request)
     {
@@ -1190,7 +1192,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function delete(Request $request)
     {
@@ -1221,7 +1223,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function insight(Request $request, $uid)
     {
@@ -1244,7 +1246,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function contacts(Request $request, $uid)
     {
@@ -1271,7 +1273,7 @@ class Automation2Controller extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function contactsList(Request $request, $uid)
     {
@@ -1303,7 +1305,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function timeline(Request $request, $uid)
     {
@@ -1322,7 +1324,7 @@ class Automation2Controller extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function timelineList(Request $request, $uid)
     {
@@ -1347,7 +1349,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function profile(Request $request, $uid, $contact_uid)
     {
@@ -1370,7 +1372,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function removeContact(Request $request, $uid, $contact_uid)
     {
@@ -1393,7 +1395,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function tagContact(Request $request, $uid, $contact_uid)
     {
@@ -1428,7 +1430,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function tagContacts(Request $request, $uid)
     {
@@ -1486,7 +1488,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function removeTag(Request $request, $uid, $contact_uid)
     {
@@ -1513,7 +1515,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function exportContacts(Request $request, $uid)
     {
@@ -1545,7 +1547,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function copyToNewList(Request $request, $uid)
     {
@@ -1610,7 +1612,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function templateEditClassic(Request $request, $uid, $email_uid)
     {
@@ -1658,7 +1660,7 @@ class Automation2Controller extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function templateEditPlain(Request $request, $uid, $email_uid)
     {
@@ -1707,8 +1709,7 @@ class Automation2Controller extends Controller
 
     /**
      * Segment select.
-     *
-     * @return \Illuminate\Http\Response
+     * @return Factory|Application|Response|View
      */
     public function segmentSelect(Request $request)
     {
@@ -1742,7 +1743,9 @@ class Automation2Controller extends Controller
 
     /**
      * Email show.
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\View\View
+     * @param Request $request
+     * @param $uid
+     * @return Factory|Application|Response|View
      */
     public function twilio(Request $request, $uid)
     {
@@ -1757,7 +1760,7 @@ class Automation2Controller extends Controller
 
         return view('automation2.twilio.index', [
             'automation' => $automation,
-            'twiliomsg' => $twiliomsg,
+            'twiliomsg' => $twiliomsg
         ]);
     }
 
@@ -1765,7 +1768,7 @@ class Automation2Controller extends Controller
      * Twilio sms setup.
      * @param Request $request
      * @param $uid
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Illuminate\View\View
+     * @return Factory|Application|JsonResponse|Response|View
      */
     public function twilioSetup(Request $request, $uid)
     {
@@ -1774,9 +1777,11 @@ class Automation2Controller extends Controller
         $type = $request->type;
         if ($request->twilio_uid) {
             $twiliomsg = TwilioMessage::findByUid($request->twilio_uid);
+            $type = $twiliomsg->type;
         } else {
             $twiliomsg = new TwilioMessage([
                 'action_id' => $request->action_id,
+                'type' => $request->type,
             ]);
         }
 
@@ -1807,7 +1812,7 @@ class Automation2Controller extends Controller
             $twiliomsg->save();
             return response()->json([
                 'status' => 'success',
-                'title' => trans('messages.automation.send_sms', ['title' => $twiliomsg->subject]),
+                'title' => trans('messages.automation.send_'.$twiliomsg->type, ['title' => $twiliomsg->subject]),
                 'message' => trans('messages.automation.twilio.set_up.success'),
                 'url' => action('Automation2Controller@twilioConfirm', [
                     'uid' => $automation->uid,
@@ -1828,7 +1833,7 @@ class Automation2Controller extends Controller
 
     /**
      * Email confirm.
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\View\View
+     * @return Factory|Application|Response|View
      */
     public function twilioConfirm(Request $request, $uid)
     {
@@ -1849,6 +1854,7 @@ class Automation2Controller extends Controller
         return view('automation2.twilio.confirm', [
             'automation' => $automation,
             'twiliomsg' => $twiliomsg,
+            'type' => $twiliomsg->type,
         ]);
     }
 
@@ -1857,7 +1863,7 @@ class Automation2Controller extends Controller
      * @param Request $request
      * @param $uid
      * @param $twilio_uid
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     * @return JsonResponse|Response
      */
     public function twilioDelete(Request $request, $uid, $twilio_uid)
     {

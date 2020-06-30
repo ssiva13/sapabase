@@ -1,7 +1,7 @@
 @include('automation2._info')
 				
 @include('automation2._tabs', ['tab' => 'settings'])
-    
+
 <p class="mt-3">
     {!! trans('messages.automation.settings.intro') !!}
 </p>

@@ -26,6 +26,7 @@
         <div class="dropdown-divider"></div>
         @foreach ($automation->getInsight() as $key => $element)
             @php
+                /** @var TYPE_NAME $automation */
                 $action = $automation->getElement($key);
             @endphp
 
