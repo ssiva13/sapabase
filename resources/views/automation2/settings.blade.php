@@ -27,7 +27,7 @@
                 'type' => 'select',
                 'label' => trans('messages.automation.change_mail_list'),
                 'value' => (is_object($automation->mailList) ? $automation->mailList->uid : ''),
-                'options' => Auth::user()->customer->readCache('MailListSelectOptions', []),
+                'options' => Auth::user()->customer->getMailListSelectOptions(),
                 'rules' => $automation->rules(),
             ])
 
@@ -54,7 +54,7 @@
     {{ trans('messages.automation.dangerous_zone') }}
 </h6>
 <p class="">
-    {{ trans('messages.automation.delete.wording') }}        
+    {{ trans('messages.automation.delete.wording') }}
 </p>
 <div class="mt-3">
     <a href="{{ action('Automation2Controller@delete', ['uids' => $automation->uid]) }}"

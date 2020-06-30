@@ -142,7 +142,7 @@ class TwilioController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
+     * @param Request $request
      * @param int $id
      *
      * @return Factory|Application|Response|View
@@ -189,8 +189,8 @@ class TwilioController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function deactivate(Request $request)
     {
@@ -199,8 +199,10 @@ class TwilioController extends Controller
         if ($twilio_number->save()) {
             // Redirect to my numbers page
             $request->session()->flash('alert-success', trans('messages.twilio.deactivated'));
-            return redirect()->action('TwilioController@index');
+        }else{
+            $request->session()->flash('alert-success', trans('messages.failed'));
         }
+        return redirect()->action('TwilioController@index');
     }
 
     /**
@@ -245,25 +247,51 @@ class TwilioController extends Controller
     public function searchCountryResource(Request $request){
         $country =  $request->country;
         try {
-            $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->fetch();
-            $response = array(
-                'code' => 200,
-                'body' => $availablePhoneNumbers->uri
-            );
-        } catch (TwilioException $e) {
-            $response = array(
-                'code' => $e->getCode(),
-                'body' => $e->getMessage()
-            );
-        }
-        if($response['code'] == 200){
+            if($request->number_type){
+                $number_type = $request->number_type;
+                $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->$number_type->read();
+                $localPhoneNumbers = [];
+                $response = [];
+                foreach ($availablePhoneNumbers as $record) {
+
+                    $localPhoneNumbers[$record->friendlyName] = array(
+                        'number' => $record->phoneNumber,
+                        'capabilities' => $record->capabilities
+                    );
+                    $capabality = $this->filterNumberCapabilities(
+                        $localPhoneNumbers[$record->friendlyName]['number'],
+                        $localPhoneNumbers[$record->friendlyName]['capabilities'],
+                        $request->sms_enabled,
+                        $request->mms_enabled,
+                        $request->call_enabled,
+                        $request->fax_enabled
+                    );
+                    if($capabality){
+                        $response[$record->friendlyName] = ($record->phoneNumber);
+                    }
+                }
+
+            }else{
+                $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->fetch();
+                $response = array(
+                    'code' => 200,
+                    'body' => $availablePhoneNumbers->uri
+                );
+            }
+
             return $response;
-        }else{
-            $request->session()->flash('alert-danger', trans('messages.twilio.no_numbers'));
-            return redirect()->action('TwilioController@index');
+
+        } catch (TwilioException $e) {
+            $request->session()->flash('alert-danger', $e->getMessage());
+            return $e->getCode();
         }
     }
 
+    /**
+     * get numbers in country resource
+     * @param Request $request
+     * @return array|int|mixed
+     */
     public function readCountryResources(Request $request){
         $uri =  $request->uri;
         $guzzle = new Guzzle();
@@ -458,4 +486,35 @@ class TwilioController extends Controller
 
     }
 
+    /**
+     * Function that handles the purchase of a mobile number from twilio
+     * @param $number
+     * @return string|TwilioException
+     */
+    public function purchaseNumber($number){
+        $number = '+15005550006';
+        $twilio = new Twilio('ACfdf30451329bf8936ee07edeb909d7b0', '3662bd5d9d6fcd58b49e25d4f31550fd');
+        $purchase_number = $twilio->incomingPhoneNumbers->create(
+        //$purchase_number = $this->twilio->incomingPhoneNumbers->create(
+            [
+                "phoneNumber" => $number,
+            ]);
+
+        return $purchase_number->sid;
+    }
+
+
+    /**
+     * filter number by capabilities
+     * @param $number
+     * @param $capabilities
+     * @param $sms
+     * @param $mms
+     * @param $call
+     * @param $fax
+     */
+    private function filterNumberCapabilities($number, $capabilities, $sms, $mms, $call,$fax){
+        $phoneNumber = ($call && $capabilities['voice']) || ($mms  && $capabilities['MMS']) || ($fax  && $capabilities['fax']) || ($sms && $capabilities['SMS']);
+        return $phoneNumber ? true : false;
+    }
 }

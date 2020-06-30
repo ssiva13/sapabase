@@ -452,48 +452,9 @@ function updateEmbeddedForm(form, url) {
 
 
 
-function LoadPhoneNumbers(country) {
-    var url1 = 'twilio/country';
-    var url2 = 'country/numbers';
-    var url3 = 'country/numbers/list';
-    var twilio_url = 'https://api.twilio.com';
-    $.ajax({
-        method: "GET",
-        url: url1,
-        data: { 'country' : country },
-    })
-    .done(function( msg ) {
-        if(msg.body !== undefined){
-            let uri = twilio_url + msg.body;
-            console.log(uri)
-            $.ajax({
-                method: "GET",
-                url: url2,
-                data: {'uri': uri},
-            })
-            .done(function (resp) {
-                $('#phone_numbers').prop('disabled', false)
-                $('#phone_numbers').empty();
-                $('#phone_numbers').append(`<option value="">Select</option>`);
-                $.each(resp, function( index, value ) {
-                    let data = $.parseJSON(value);
-                    let numbers = data.available_phone_numbers;
-                    $('#phone_numbers').append(`<optgroup label="${index}"></optgroup>`);
-                    $.each(numbers, function( index, value ) {
-                        $('#phone_numbers').append(`<option value="${value.phone_number}"> ${value.friendly_name} </option>`);
-                    })
-                });
-                $('#phone_numbers').select({
-                    minimumSelectionLength: 5
-                });
-                $('#phone_numbers').select2({
-                    minimumSelectionLength: 3
-                });
-            });
-        }
 
-    });
-}
+
+
 
 function dashboardQuickview(item, box) {
     var id = item.val();
@@ -2507,12 +2468,5 @@ $(function() {
         var url = $(this).attr('href');
 
         openBuilderClassic(url);
-    });
-
-    $('#countries').change(function(e) {
-        e.preventDefault();
-        if($(this).val() != null || $(this).val() != undefined){
-            LoadPhoneNumbers($(this).val());
-        }
     });
 });
