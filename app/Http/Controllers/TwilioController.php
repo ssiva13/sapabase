@@ -6,9 +6,12 @@ namespace Acelle\Http\Controllers;
 
 use Acelle\Model\Automation2;
 use Acelle\Model\Setting;
+use Acelle\Model\SmsTemplate;
 use Acelle\Model\Subscriber;
+use Acelle\Model\TwilioCallLogs;
 use Acelle\Model\TwilioMessage;
 use Acelle\Model\TwilioNumber;
+use Acelle\Model\TwilioSmsLogs;
 use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client as Guzzle;
@@ -65,7 +68,7 @@ class TwilioController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
+     * @param Request $request
      * @return Factory|Application|Response|View
      */
     public function index(Request $request)
@@ -81,7 +84,7 @@ class TwilioController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
+     * @param Request $request
      * @return Factory|Application|Response|View
      */
     public function listing(Request $request)
@@ -96,7 +99,7 @@ class TwilioController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
+     * @param Request $request
      * @return Factory|Application|Response|View
      */
     public function create(Request $request)
@@ -342,41 +345,16 @@ class TwilioController extends Controller
 
     /**
      * Function to fetch all call logs associated with number
-     * @param string $starttime
-     * @param string $endtime
+     * @param Request $request
+     * @param $uid
      * @return Factory|Application|View
      */
     public function fetchCallLog(Request $request, $uid){
         $twilioNumber = TwilioNumber::findByUid($uid);
-        $call_log = array();
-        $sms_log = array();
-        foreach ($this->twilio->account->calls->read() as $key => $call) {
-            $time = $call->startTime->format("Y-m-d H:i:s");
-            if($call->from == $twilioNumber->number){
-                $call_log[$key] = array(
-                    'from' => $call->from,
-                    'to' => $call->to,
-                    'duration' => $call->duration,
-                    'price' => $call->price ? $call->price : 'N/A',
-                    'status' => $call->status,
-                    'direction' => $call->direction,
-                    'time' => $time,
-                );
-            }
-        }
-        foreach ($this->twilio->account->messages->read() as $key => $sms) {
-            if($sms->from == $twilioNumber->number){
-                $sms_log[$key] = array(
-                    'from' => $sms->from,
-                    'to' => $sms->to,
-                    'price' => $sms->price ? $sms->price : 'N/A',
-                    'status' => $sms->status,
-                    'direction' => $sms->direction,
-                );
-            }
-        }
+        $sms_log = TwilioSmsLogs::where('from', $twilioNumber->number)->get();
+        $call_log = TwilioCallLogs::where('from', $twilioNumber->number)->get();
 
-        return view('twilio_numbers.call_logs', [
+        return view('twilio_numbers.twilio_logs', [
             'call_log' => $call_log,
             'sms_log' => $sms_log,
         ]);
@@ -492,10 +470,10 @@ class TwilioController extends Controller
      * @return string|TwilioException
      */
     public function purchaseNumber($number){
-        $number = '+15005550006';
-        $twilio = new Twilio('ACfdf30451329bf8936ee07edeb909d7b0', '3662bd5d9d6fcd58b49e25d4f31550fd');
-        $purchase_number = $twilio->incomingPhoneNumbers->create(
-        //$purchase_number = $this->twilio->incomingPhoneNumbers->create(
+//        $number = '+15005550006';
+//        $twilio = new Twilio('ACfdf30451329bf8936ee07edeb909d7b0', '3662bd5d9d6fcd58b49e25d4f31550fd');
+//        $purchase_number = $twilio->incomingPhoneNumbers->create(
+        $purchase_number = $this->twilio->incomingPhoneNumbers->create(
             [
                 "phoneNumber" => $number,
             ]);
@@ -516,5 +494,37 @@ class TwilioController extends Controller
     private function filterNumberCapabilities($number, $capabilities, $sms, $mms, $call,$fax){
         $phoneNumber = ($call && $capabilities['voice']) || ($mms  && $capabilities['MMS']) || ($fax  && $capabilities['fax']) || ($sms && $capabilities['SMS']);
         return $phoneNumber ? true : false;
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     * @param Request $request
+     * @param $phone
+     * @return Factory|Application|Response|View
+     */
+    public function createRequest(Request $request, $phone)
+    {
+        $twiliomsg = new TwilioMessage();
+        $customer = $request->user()->customer;
+        $numbers = $customer->getPhoneNumberSelectOptions($customer->user_id);
+
+        return view('leads.send_sms', [
+            'twiliomsg' => $twiliomsg,
+            'numbers' => $numbers,
+            'phone' => $phone,
+            'type' => $request->type,
+        ]);
+    }
+
+    public function processRequest(Request $request, $phone){
+        return $this->sendMessage($request, $request);
+    }
+
+    public function processedRequest(Request $request){
+
+        return view('leads.processing', [
+//            'phone' => $request->phone,
+//            'type' => $request->type,
+        ]);
     }
 }

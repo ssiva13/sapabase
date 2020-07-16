@@ -14,6 +14,7 @@ class CreateSubscribersTable extends Migration
             $table->increments('id');
             $table->uuid('uid');
             $table->integer('mail_list_id')->unsigned();
+            $table->integer('customer_id')->unsigned();
             $table->string('email');
             $table->string('phone')->nullable();
             $table->string('status');

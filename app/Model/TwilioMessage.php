@@ -77,7 +77,7 @@ class TwilioMessage extends Model
     public static function filter($request)
     {
         $user = $request->user();
-        $query = self::select('twiliomessages.*');
+        $query = self::select('twilio_messages.*');
 
         // Keyword
         if (!empty(trim($request->keyword))) {
@@ -90,9 +90,10 @@ class TwilioMessage extends Model
 
         return $query;
     }
+
     /**
      * Search items.
-     *
+     * @param $request
      * @return collect
      */
     public static function search($request)

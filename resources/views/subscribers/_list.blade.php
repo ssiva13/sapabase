@@ -26,7 +26,6 @@
 						<span class="label label-flat bg-{{ $item->verify_result }}">{{ trans('messages.email_verification_result_' . $item->verify_result) }}</span>
 					</div>
 				</td>
-
 				@foreach ($fields as $field)
 					<?php $value = $item->getValueByField($field); ?>
 					<td>

@@ -88,6 +88,342 @@ Route::get('/assets/emails/{uid}/{name?}', [ function ($uid, $name) {
 Route::get('setting/{filename}', 'SettingController@file');
 Route::get('/no-plan', 'AccountSubscriptionController@noPlan');
 
+
+// ADMIN AREA
+Route::group(['namespace' => 'Admin', 'middleware' => ['not_installed', 'auth', 'backend']], function () {
+    Route::get('admin', 'HomeController@index');
+    Route::get('admin/docs/api/v1', 'ApiController@doc');
+
+    // Notification
+    Route::get('admin/notifications/delete', 'NotificationController@delete');
+    Route::get('admin/notifications/listing', 'NotificationController@listing');
+    Route::get('admin/notifications', 'NotificationController@index');
+
+    // User
+    Route::get('admin/users/switch/{uid}', 'UserController@switch_user');
+    Route::get('admin/users/listing/{page?}', 'UserController@listing');
+    Route::get('admin/users/sort', 'UserController@sort');
+    Route::get('admin/users/delete', 'UserController@delete');
+    Route::resource('admin/users', 'UserController');
+
+    // Template
+    Route::match(['get','post'], 'admin/templates/{uid}/update-thumb-url', 'TemplateController@updateThumbUrl');
+    Route::match(['get','post'], 'admin/templates/{uid}/update-thumb', 'TemplateController@updateThumb');
+
+    Route::get('admin/templates/{uid}/builder/change-template/{change_uid}', 'TemplateController@builderChangeTemplate');
+    Route::get('admin/templates/builder/templates', 'TemplateController@builderTemplates');
+    Route::post('admin/templates/builder/create', 'TemplateController@builderCreate');
+    Route::get('admin/templates/builder/create', 'TemplateController@builderCreate');
+    Route::post('admin/templates/{uid}/builder/edit/asset', 'TemplateController@builderAsset');
+    Route::get('admin/templates/{uid}/builder/edit/content', 'TemplateController@builderEditContent');
+    Route::post('admin/templates/{uid}/builder/edit', 'TemplateController@builderEdit');
+    Route::get('admin/templates/{uid}/builder/edit', 'TemplateController@builderEdit');
+
+    Route::post('admin/templates/{uid}/copy', 'TemplateController@copy');
+    Route::get('admin/templates/{uid}/copy', 'TemplateController@copy');
+    Route::get('admin/templates/sort', 'TemplateController@sort');
+    Route::get('admin/templates/{uid}/image', 'TemplateController@image');
+    Route::post('admin/templates/{uid}/saveImage', 'TemplateController@saveImage');
+    Route::get('admin/templates/{uid}/preview', 'TemplateController@preview');
+    Route::get('admin/templates/listing/{page?}', 'TemplateController@listing');
+    Route::get('admin/templates/upload', 'TemplateController@upload');
+    Route::post('admin/templates/upload', 'TemplateController@upload');
+    Route::get('admin/templates/delete', 'TemplateController@delete');
+    Route::get('admin/templates/build/select', 'TemplateController@buildSelect');
+    Route::get('admin/templates/build/{style?}', 'TemplateController@build');
+    Route::get('admin/templates/{uid}/rebuild', 'TemplateController@rebuild');
+    Route::resource('admin/templates', 'TemplateController');
+    Route::get('admin/templates/{uid}/edit', 'TemplateController@edit');
+    Route::patch('admin/templates/{uid}/update', 'TemplateController@update');
+
+    // Layout
+    Route::get('admin/layouts/listing/{page?}', 'LayoutController@listing');
+    Route::get('admin/layouts/sort', 'LayoutController@sort');
+    Route::resource('admin/layouts', 'LayoutController');
+
+    // Sending servers
+    Route::get('admin/sending_servers/{uid}/senders/dropbox', 'SendingServerController@fromDropbox');
+    Route::post('admin/sending_servers/{uid}/remove-domain/{domain}', 'SendingServerController@removeDomain');
+    Route::post('admin/sending_servers/{uid}/add-domain', 'SendingServerController@addDomain');
+    Route::get('admin/sending_servers/{uid}/add-domain', 'SendingServerController@addDomain');
+    Route::get('admin/sending_servers/aws-region-host', 'SendingServerController@awsRegionHost');
+
+    Route::post('admin/sending_servers/{uid}/test-php-mail', 'SendingServerController@testPhpMail');
+    Route::post('admin/sending_servers/{uid}/test-connection', 'SendingServerController@testConnection');
+
+    Route::post('admin/sending_servers/{uid}/config', 'SendingServerController@config');
+    Route::post('admin/sending_servers/sending-limit', 'SendingServerController@sendingLimit');
+    Route::get('admin/sending_servers/sending-limit', 'SendingServerController@sendingLimit');
+
+    Route::get('admin/sending_servers/select2', 'SendingServerController@select2');
+    Route::post('admin/sending_servers/{uid}/test', 'SendingServerController@test');
+    Route::get('admin/sending_servers/{uid}/test', 'SendingServerController@test');
+    Route::get('admin/sending_servers/select', 'SendingServerController@select');
+    Route::get('admin/sending_servers/listing/{page?}', 'SendingServerController@listing');
+    Route::get('admin/sending_servers/sort', 'SendingServerController@sort');
+    Route::get('admin/sending_servers/delete', 'SendingServerController@delete');
+    Route::get('admin/sending_servers/disable', 'SendingServerController@disable');
+    Route::get('admin/sending_servers/enable', 'SendingServerController@enable');
+    Route::resource('admin/sending_servers', 'SendingServerController');
+    Route::get('admin/sending_servers/create/{type}', 'SendingServerController@create');
+    Route::post('admin/sending_servers/create/{type}', 'SendingServerController@store');
+    Route::get('admin/sending_servers/{id}/edit/{type}', 'SendingServerController@edit');
+    Route::patch('admin/sending_servers/{id}/update/{type}', 'SendingServerController@update');
+
+    // Bounce handlers
+    Route::post('admin/bounce_handlers/{uid}/test', 'BounceHandlerController@test');
+    Route::get('admin/bounce_handlers/listing/{page?}', 'BounceHandlerController@listing');
+    Route::get('admin/bounce_handlers/sort', 'BounceHandlerController@sort');
+    Route::get('admin/bounce_handlers/delete', 'BounceHandlerController@delete');
+    Route::resource('admin/bounce_handlers', 'BounceHandlerController');
+
+    // Feedback Loop handlers
+    Route::post('admin/feedback_loop_handlers/{uid}/test', 'FeedbackLoopHandlerController@test');
+    Route::get('admin/feedback_loop_handlers/listing/{page?}', 'FeedbackLoopHandlerController@listing');
+    Route::get('admin/feedback_loop_handlers/sort', 'FeedbackLoopHandlerController@sort');
+    Route::get('admin/feedback_loop_handlers/delete', 'FeedbackLoopHandlerController@delete');
+    Route::resource('admin/feedback_loop_handlers', 'FeedbackLoopHandlerController');
+
+    // Sending domain
+    Route::post('admin/sending_domains/{id}/updateVerificationTxtName', 'SendingDomainController@updateVerificationTxtName');
+    Route::post('admin/sending_domains/{id}/updateDkimSelector', 'SendingDomainController@updateDkimSelector');
+    Route::get('admin/sending_domains/{id}/records', 'SendingDomainController@records');
+    Route::post('admin/sending_domains/{id}/verify', 'SendingDomainController@verify');
+    Route::get('admin/sending_domains/listing/{page?}', 'SendingDomainController@listing');
+    Route::get('admin/sending_domains/sort', 'SendingDomainController@sort');
+    Route::get('admin/sending_domains/delete', 'SendingDomainController@delete');
+    Route::resource('admin/sending_domains', 'SendingDomainController');
+
+    // Language
+    Route::get('admin/languages/delete/confirm', 'LanguageController@deleteConfirm');
+    Route::get('admin/languages/listing/{page?}', 'LanguageController@listing');
+    Route::get('admin/languages/delete', 'LanguageController@delete');
+    Route::get('admin/languages/{id}/translate/{file}', 'LanguageController@translate');
+    Route::post('admin/languages/{id}/translate/{file}', 'LanguageController@translate');
+    Route::get('admin/languages/disable', 'LanguageController@disable');
+    Route::get('admin/languages/enable', 'LanguageController@enable');
+    Route::get('admin/languages/{id}/download', 'LanguageController@download');
+    Route::get('admin/languages/{id}/upload', 'LanguageController@upload');
+    Route::post('admin/languages/{id}/upload', 'LanguageController@upload');
+    Route::resource('admin/languages', 'LanguageController');
+
+    // Settings
+    Route::post('admin/settings/payment', 'SettingController@payment');
+    Route::post('admin/settings/advanced/{name}/update', 'SettingController@advancedUpdate');
+    Route::get('admin/settings/advanced/{name}/update', 'SettingController@advancedUpdate');
+    Route::get('admin/settings/advanced', 'SettingController@advanced');
+    Route::post('admin/settings/upgrade/cancel', 'SettingController@cancelUpgrade');
+    Route::post('admin/settings/upgrade', 'SettingController@doUpgrade');
+    Route::post('admin/settings/upgrade/upload', 'SettingController@uploadApplicationPatch');
+    Route::get('admin/settings/upgrade', 'SettingController@upgrade');
+    Route::post('admin/settings/license', 'SettingController@license');
+    Route::get('admin/settings/license', 'SettingController@license');
+    Route::get('admin/settings/mailer', 'SettingController@mailer');
+    Route::post('admin/settings/mailer', 'SettingController@mailer');
+    Route::get('admin/settings/cronjob', 'SettingController@cronjob');
+    Route::post('admin/settings/cronjob', 'SettingController@cronjob');
+    Route::get('admin/settings/urls', 'SettingController@urls');
+    Route::get('admin/settings/sending', 'SettingController@sending');
+    Route::post('admin/settings/sending', 'SettingController@sending');
+    Route::get('admin/settings/general', 'SettingController@general');
+    Route::post('admin/settings/general', 'SettingController@general');
+    Route::get('admin/settings/logs', 'SettingController@logs');
+    Route::get('log', 'SettingController@download_log');
+    Route::get('admin/settings/{tab?}', 'SettingController@index');
+    Route::post('admin/settings', 'SettingController@index');
+    Route::get('admin/update-urls', 'SettingController@updateUrls');
+
+
+    // Tracking log
+    Route::get('admin/tracking_log', 'TrackingLogController@index');
+    Route::get('admin/tracking_log/listing', 'TrackingLogController@listing');
+
+    // Feedback log
+    Route::get('admin/bounce_log', 'BounceLogController@index');
+    Route::get('admin/bounce_log/listing', 'BounceLogController@listing');
+
+    // Open log
+    Route::get('admin/open_log', 'OpenLogController@index');
+    Route::get('admin/open_log/listing', 'OpenLogController@listing');
+
+    // Click log
+    Route::get('admin/click_log', 'ClickLogController@index');
+    Route::get('admin/click_log/listing', 'ClickLogController@listing');
+
+    // Feedback log
+    Route::get('admin/feedback_log', 'FeedbackLogController@index');
+    Route::get('admin/feedback_log/listing', 'FeedbackLogController@listing');
+
+    // Unsubscribe log
+    Route::get('admin/unsubscribe_log', 'UnsubscribeLogController@index');
+    Route::get('admin/unsubscribe_log/listing', 'UnsubscribeLogController@listing');
+
+    // Blacklist
+    Route::post('admin/blacklists/job/{system_job_id}/cancel', 'BlacklistController@cancel');
+    Route::get('admin/blacklists/import/process', 'BlacklistController@importProcess');
+    Route::post('admin/blacklists/import', 'BlacklistController@import');
+    Route::get('admin/blacklists/import', 'BlacklistController@import');
+    Route::get('admin/blacklist', 'BlacklistController@index');
+    Route::get('admin/blacklist/listing', 'BlacklistController@listing');
+    Route::get('admin/blacklist/delete', 'BlacklistController@delete');
+
+    // Customer Group
+    Route::get('admin/customer_groups/listing/{page?}', 'CustomerGroupController@listing');
+    Route::get('admin/customer_groups/sort', 'CustomerGroupController@sort');
+    Route::get('admin/customer_groups/delete', 'CustomerGroupController@delete');
+    Route::resource('admin/customer_groups', 'CustomerGroupController');
+
+    // Customer
+    Route::match(['get', 'post'], 'admin/customers/{uid}/assign-plan', 'CustomerController@assignPlan');
+    Route::get('admin/customers/{uid}/su-account', 'CustomerController@subAccount');
+    Route::post('admin/customers/{uid}/contact', 'CustomerController@contact');
+    Route::get('admin/customers/{id}/contact', 'CustomerController@contact');
+    Route::get('admin/customers/growthChart', 'CustomerController@growthChart');
+    Route::get('admin/customers/{id}/subscriptions', 'CustomerController@subscriptions');
+    Route::get('admin/customers/select2', 'CustomerController@select2');
+    Route::get('admin/customers/login-as/{uid}', 'CustomerController@loginAs');
+    Route::get('admin/customers/listing/{page?}', 'CustomerController@listing');
+    Route::get('admin/customers/sort', 'CustomerController@sort');
+    Route::get('admin/customers/delete', 'CustomerController@delete');
+    Route::get('admin/customers/disable', 'CustomerController@disable');
+    Route::get('admin/customers/enable', 'CustomerController@enable');
+    Route::resource('admin/customers', 'CustomerController');
+
+    // Admin Group
+    Route::get('admin/admin_groups/listing/{page?}', 'AdminGroupController@listing');
+    Route::get('admin/admin_groups/sort', 'AdminGroupController@sort');
+    Route::get('admin/admin_groups/delete', 'AdminGroupController@delete');
+    Route::resource('admin/admin_groups', 'AdminGroupController');
+
+    // Admin
+    Route::get('admin/admins/login-as/{uid}', 'AdminController@loginAs');
+    Route::get('admin/admins/listing/{page?}', 'AdminController@listing');
+    Route::get('admin/admins/sort', 'AdminController@sort');
+    Route::get('admin/admins/delete', 'AdminController@delete');
+    Route::get('admin/admins/disable', 'AdminController@disable');
+    Route::get('admin/admins/enable', 'AdminController@enable');
+    Route::get('admin/admins/login-back', 'AdminController@loginBack');
+    Route::resource('admin/admins', 'AdminController');
+
+
+    // Account
+    Route::get('admin/account/api/renew', 'AccountController@renewToken');
+    Route::get('admin/account/api', 'AccountController@api');
+    Route::get('admin/account/profile', 'AccountController@profile');
+    Route::post('admin/account/profile', 'AccountController@profile');
+    Route::get('admin/account/contact', 'AccountController@contact');
+    Route::post('admin/account/contact', 'AccountController@contact');
+
+    // Plan
+    Route::post('admin/plans/{uid}/visible/on', 'PlanController@visibleOn');
+    Route::post('admin/plans/{uid}/visible/off', 'PlanController@visibleOff');
+
+    Route::match(['get', 'post'], 'admin/plans/{uid}/sending-server/subaccount', 'PlanController@sendingServerSubaccount');
+    Route::match(['get', 'post'], 'admin/plans/{uid}/sending-server/own', 'PlanController@sendingServerOwn');
+    Route::match(['get', 'post'], 'admin/plans/{uid}/sending-server/option', 'PlanController@sendingServerOption');
+    Route::match(['get', 'post'], 'admin/plans/{uid}/wizard/sending-server', 'PlanController@wizardSendingServer');
+    Route::match(['get', 'post'], 'admin/plans/wizard', 'PlanController@wizard');
+    Route::get('admin/plans/{uid}/sending-server', 'PlanController@sendingServer');
+    Route::match(['get', 'post'], 'admin/plans/{uid}/billing-cycle', 'PlanController@billingCycle');
+    Route::match(['get', 'post'], 'admin/plans/{uid}/sending-limit', 'PlanController@sendingLimit');
+    Route::get('admin/plans/{uid}/email-verification', 'PlanController@emailVerification');
+    Route::get('admin/plans/{uid}/general', 'PlanController@general');
+    Route::get('admin/plans/{uid}/quota', 'PlanController@quota');
+    Route::get('admin/plans/{uid}/security', 'PlanController@security');
+    Route::get('admin/plans/{uid}/email-footer', 'PlanController@emailFooter');
+    Route::get('admin/plans/{uid}/payment', 'PlanController@payment');
+    Route::get('admin/plans/{uid}/billing-history', 'PlanController@billingHistory');
+    Route::get('admin/plans/{uid}/general', 'PlanController@general');
+    Route::post('admin/plans/{uid}/save', 'PlanController@save');
+
+    Route::post('admin/plans/{id}/sending_servers/{sending_server_uid}/set-primary', 'PlanController@setPrimarySendingServer');
+    Route::match(['get', 'post'], 'admin/plans/{id}/sending_servers/fitness', 'PlanController@fitness');
+    Route::post('admin/plans/{id}/sending_servers/{sending_server_uid}/remove', 'PlanController@removeSendingServer');
+    Route::post('admin/plans/{id}/sending_servers/add', 'PlanController@addSendingServer');
+    Route::get('admin/plans/{id}/sending_servers/add', 'PlanController@addSendingServer');
+    Route::get('admin/plans/{id}/sending_servers', 'PlanController@sendingServers');
+    Route::get('admin/plans/pieChart', 'PlanController@pieChart');
+    Route::get('admin/plans/delete/confirm', 'PlanController@deleteConfirm');
+    Route::get('admin/plans/select2', 'PlanController@select2');
+    Route::get('admin/plans/listing/{page?}', 'PlanController@listing');
+    Route::get('admin/plans/sort', 'PlanController@sort');
+    Route::get('admin/plans/delete', 'PlanController@delete');
+    Route::get('admin/plans/disable', 'PlanController@disable');
+    Route::post('admin/plans/enable', 'PlanController@enable');
+    Route::post('admin/plans/copy', 'PlanController@copy');
+    Route::resource('admin/plans', 'PlanController');
+
+    // Currency
+    Route::get('admin/currencies/select2', 'CurrencyController@select2');
+    Route::get('admin/currencies/listing/{page?}', 'CurrencyController@listing');
+    Route::get('admin/currencies/sort', 'CurrencyController@sort');
+    Route::get('admin/currencies/delete', 'CurrencyController@delete');
+    Route::get('admin/currencies/disable', 'CurrencyController@disable');
+    Route::get('admin/currencies/enable', 'CurrencyController@enable');
+    Route::resource('admin/currencies', 'CurrencyController');
+
+    // Subscription
+    Route::match(['get','post'], 'admin/subscriptions/create', 'SubscriptionController@create');
+    Route::post('admin/subscriptions/{id}/approve-pending', 'SubscriptionController@approvePending');
+    Route::post('admin/subscriptions/{id}/renew', 'SubscriptionController@renew');
+    Route::match(['get','post'], 'admin/subscriptions/{id}/reject-pending', 'SubscriptionController@rejectPending');
+    Route::post('admin/subscriptions/{id}/set-active', 'SubscriptionController@setActive');
+    Route::get('admin/subscriptions/{id}/invoices', 'SubscriptionController@invoices');
+    Route::post('admin/subscriptions/{id}/change-plan', 'SubscriptionController@changePlan');
+    Route::get('admin/subscriptions/{id}/change-plan', 'SubscriptionController@changePlan');
+    Route::post('admin/subscriptions/{id}/cancel-now', 'SubscriptionController@cancelNow');
+    Route::post('admin/subscriptions/{id}/resume', 'SubscriptionController@resume');
+    Route::post('admin/subscriptions/{id}/cancel', 'SubscriptionController@cancel');
+
+    Route::patch('admin/subscriptions/unpaid', 'SubscriptionController@unpaid');
+    Route::patch('admin/subscriptions/paid', 'SubscriptionController@paid');
+    Route::get('admin/subscriptions/{uid}/payments', 'SubscriptionController@payments');
+    Route::patch('admin/subscriptions/enable', 'SubscriptionController@enable');
+    Route::patch('admin/subscriptions/disable', 'SubscriptionController@disable');
+    Route::get('admin/subscriptions/preview', 'SubscriptionController@preview');
+    Route::get('admin/subscriptions/listing/{page?}', 'SubscriptionController@listing');
+    Route::get('admin/subscriptions/sort', 'SubscriptionController@sort');
+    Route::delete('admin/subscriptions/delete', 'SubscriptionController@delete');
+    Route::resource('admin/subscriptions', 'SubscriptionController');
+
+    // Payment method
+    Route::get('admin/payment_methods/braintree/merchant-accounts/select/{uid?}', 'PaymentMethodController@braintreeMerchantAccountSelect');
+    Route::get('admin/payment_methods/options/{uid?}', 'PaymentMethodController@options');
+    Route::get('admin/payment_methods/select2', 'PaymentMethodController@select2');
+    Route::get('admin/payment_methods/listing/{page?}', 'PaymentMethodController@listing');
+    Route::get('admin/payment_methods/sort', 'PaymentMethodController@sort');
+    Route::get('admin/payment_methods/delete', 'PaymentMethodController@delete');
+    Route::get('admin/payment_methods/disable', 'PaymentMethodController@disable');
+    Route::get('admin/payment_methods/enable', 'PaymentMethodController@enable');
+    Route::resource('admin/payment_methods', 'PaymentMethodController');
+
+    // Email verification servers
+    Route::get('admin/email_verification_servers/options', 'EmailVerificationServerController@options');
+    Route::get('admin/email_verification_servers/listing/{page?}', 'EmailVerificationServerController@listing');
+    Route::get('admin/email_verification_servers/sort', 'EmailVerificationServerController@sort');
+    Route::get('admin/email_verification_servers/delete', 'EmailVerificationServerController@delete');
+    Route::get('admin/email_verification_servers/disable', 'EmailVerificationServerController@disable');
+    Route::get('admin/email_verification_servers/enable', 'EmailVerificationServerController@enable');
+    Route::resource('admin/email_verification_servers', 'EmailVerificationServerController');
+
+    // Sub account
+    Route::get('admin/sub_accounts/{uid}/delete/confirm', 'SubAccountController@deleteConfirm');
+    Route::delete('admin/sub_accounts/{uid}/delete', 'SubAccountController@delete');
+    Route::get('admin/sub_accounts/listing/{page?}', 'SubAccountController@listing');
+    Route::resource('admin/sub_accounts', 'SubAccountController');
+
+    // Payment gateways
+    Route::post('admin/payment/gateways/paypal-subscription/{plan_uid}/disconnect-plan', 'PaymentController@paypalSubscriptionDisconnectPlan');
+    Route::post('admin/payment/gateways/paypal-subscription/{plan_uid}/connect-plan', 'PaymentController@paypalSubscriptionConnectPlan');
+    Route::post('admin/payment/gateways/paypal-subscription/disconnect', 'PaymentController@paypalSubscriptionDisconnect');
+    Route::post('admin/payment/gateways/paypal-subscription/connect', 'PaymentController@paypalSubscriptionConnect');
+    Route::post('admin/payment/gateways/{name}/set-primary', 'PaymentController@setPrimary');
+    Route::post('admin/payment/gateways/update/{name}', 'PaymentController@update');
+    Route::get('admin/payment/gateways/edit/{name}', 'PaymentController@edit');
+    Route::get('admin/payment/gateways/index', 'PaymentController@index');
+});
+
+
 // For visitor with Web UI, loading the right app language
 Route::group(['middleware' => ['not_installed', 'not_logged_in']], function () {
     // Helper method to generate other routes for authentication
@@ -598,346 +934,20 @@ Route::group(['middleware' => ['not_installed', 'auth', 'frontend', 'subscriptio
     Route::get('email/preview/{uid}/{subscriber_uid}', 'EmailController@preview');
 });
 
-// ADMIN AREA
-Route::group(['namespace' => 'Admin', 'middleware' => ['not_installed', 'auth', 'backend']], function () {
-    Route::get('admin', 'HomeController@index');
-    Route::get('admin/docs/api/v1', 'ApiController@doc');
-
-    // Notification
-    Route::get('admin/notifications/delete', 'NotificationController@delete');
-    Route::get('admin/notifications/listing', 'NotificationController@listing');
-    Route::get('admin/notifications', 'NotificationController@index');
-
-    // User
-    Route::get('admin/users/switch/{uid}', 'UserController@switch_user');
-    Route::get('admin/users/listing/{page?}', 'UserController@listing');
-    Route::get('admin/users/sort', 'UserController@sort');
-    Route::get('admin/users/delete', 'UserController@delete');
-    Route::resource('admin/users', 'UserController');
-
-    // Template
-    Route::match(['get','post'], 'admin/templates/{uid}/update-thumb-url', 'TemplateController@updateThumbUrl');
-    Route::match(['get','post'], 'admin/templates/{uid}/update-thumb', 'TemplateController@updateThumb');
-
-    Route::get('admin/templates/{uid}/builder/change-template/{change_uid}', 'TemplateController@builderChangeTemplate');
-    Route::get('admin/templates/builder/templates', 'TemplateController@builderTemplates');
-    Route::post('admin/templates/builder/create', 'TemplateController@builderCreate');
-    Route::get('admin/templates/builder/create', 'TemplateController@builderCreate');
-    Route::post('admin/templates/{uid}/builder/edit/asset', 'TemplateController@builderAsset');
-    Route::get('admin/templates/{uid}/builder/edit/content', 'TemplateController@builderEditContent');
-    Route::post('admin/templates/{uid}/builder/edit', 'TemplateController@builderEdit');
-    Route::get('admin/templates/{uid}/builder/edit', 'TemplateController@builderEdit');
-
-    Route::post('admin/templates/{uid}/copy', 'TemplateController@copy');
-    Route::get('admin/templates/{uid}/copy', 'TemplateController@copy');
-    Route::get('admin/templates/sort', 'TemplateController@sort');
-    Route::get('admin/templates/{uid}/image', 'TemplateController@image');
-    Route::post('admin/templates/{uid}/saveImage', 'TemplateController@saveImage');
-    Route::get('admin/templates/{uid}/preview', 'TemplateController@preview');
-    Route::get('admin/templates/listing/{page?}', 'TemplateController@listing');
-    Route::get('admin/templates/upload', 'TemplateController@upload');
-    Route::post('admin/templates/upload', 'TemplateController@upload');
-    Route::get('admin/templates/delete', 'TemplateController@delete');
-    Route::get('admin/templates/build/select', 'TemplateController@buildSelect');
-    Route::get('admin/templates/build/{style?}', 'TemplateController@build');
-    Route::get('admin/templates/{uid}/rebuild', 'TemplateController@rebuild');
-    Route::resource('admin/templates', 'TemplateController');
-    Route::get('admin/templates/{uid}/edit', 'TemplateController@edit');
-    Route::patch('admin/templates/{uid}/update', 'TemplateController@update');
-
-    // Layout
-    Route::get('admin/layouts/listing/{page?}', 'LayoutController@listing');
-    Route::get('admin/layouts/sort', 'LayoutController@sort');
-    Route::resource('admin/layouts', 'LayoutController');
-
-    // Sending servers
-    Route::get('admin/sending_servers/{uid}/senders/dropbox', 'SendingServerController@fromDropbox');
-    Route::post('admin/sending_servers/{uid}/remove-domain/{domain}', 'SendingServerController@removeDomain');
-    Route::post('admin/sending_servers/{uid}/add-domain', 'SendingServerController@addDomain');
-    Route::get('admin/sending_servers/{uid}/add-domain', 'SendingServerController@addDomain');
-    Route::get('admin/sending_servers/aws-region-host', 'SendingServerController@awsRegionHost');
-
-    Route::post('admin/sending_servers/{uid}/test-php-mail', 'SendingServerController@testPhpMail');
-    Route::post('admin/sending_servers/{uid}/test-connection', 'SendingServerController@testConnection');
-
-    Route::post('admin/sending_servers/{uid}/config', 'SendingServerController@config');
-    Route::post('admin/sending_servers/sending-limit', 'SendingServerController@sendingLimit');
-    Route::get('admin/sending_servers/sending-limit', 'SendingServerController@sendingLimit');
-
-    Route::get('admin/sending_servers/select2', 'SendingServerController@select2');
-    Route::post('admin/sending_servers/{uid}/test', 'SendingServerController@test');
-    Route::get('admin/sending_servers/{uid}/test', 'SendingServerController@test');
-    Route::get('admin/sending_servers/select', 'SendingServerController@select');
-    Route::get('admin/sending_servers/listing/{page?}', 'SendingServerController@listing');
-    Route::get('admin/sending_servers/sort', 'SendingServerController@sort');
-    Route::get('admin/sending_servers/delete', 'SendingServerController@delete');
-    Route::get('admin/sending_servers/disable', 'SendingServerController@disable');
-    Route::get('admin/sending_servers/enable', 'SendingServerController@enable');
-    Route::resource('admin/sending_servers', 'SendingServerController');
-    Route::get('admin/sending_servers/create/{type}', 'SendingServerController@create');
-    Route::post('admin/sending_servers/create/{type}', 'SendingServerController@store');
-    Route::get('admin/sending_servers/{id}/edit/{type}', 'SendingServerController@edit');
-    Route::patch('admin/sending_servers/{id}/update/{type}', 'SendingServerController@update');
-
-    // Bounce handlers
-    Route::post('admin/bounce_handlers/{uid}/test', 'BounceHandlerController@test');
-    Route::get('admin/bounce_handlers/listing/{page?}', 'BounceHandlerController@listing');
-    Route::get('admin/bounce_handlers/sort', 'BounceHandlerController@sort');
-    Route::get('admin/bounce_handlers/delete', 'BounceHandlerController@delete');
-    Route::resource('admin/bounce_handlers', 'BounceHandlerController');
-
-    // Feedback Loop handlers
-    Route::post('admin/feedback_loop_handlers/{uid}/test', 'FeedbackLoopHandlerController@test');
-    Route::get('admin/feedback_loop_handlers/listing/{page?}', 'FeedbackLoopHandlerController@listing');
-    Route::get('admin/feedback_loop_handlers/sort', 'FeedbackLoopHandlerController@sort');
-    Route::get('admin/feedback_loop_handlers/delete', 'FeedbackLoopHandlerController@delete');
-    Route::resource('admin/feedback_loop_handlers', 'FeedbackLoopHandlerController');
-
-    // Sending domain
-    Route::post('admin/sending_domains/{id}/updateVerificationTxtName', 'SendingDomainController@updateVerificationTxtName');
-    Route::post('admin/sending_domains/{id}/updateDkimSelector', 'SendingDomainController@updateDkimSelector');
-    Route::get('admin/sending_domains/{id}/records', 'SendingDomainController@records');
-    Route::post('admin/sending_domains/{id}/verify', 'SendingDomainController@verify');
-    Route::get('admin/sending_domains/listing/{page?}', 'SendingDomainController@listing');
-    Route::get('admin/sending_domains/sort', 'SendingDomainController@sort');
-    Route::get('admin/sending_domains/delete', 'SendingDomainController@delete');
-    Route::resource('admin/sending_domains', 'SendingDomainController');
-
-    // Language
-    Route::get('admin/languages/delete/confirm', 'LanguageController@deleteConfirm');
-    Route::get('admin/languages/listing/{page?}', 'LanguageController@listing');
-    Route::get('admin/languages/delete', 'LanguageController@delete');
-    Route::get('admin/languages/{id}/translate/{file}', 'LanguageController@translate');
-    Route::post('admin/languages/{id}/translate/{file}', 'LanguageController@translate');
-    Route::get('admin/languages/disable', 'LanguageController@disable');
-    Route::get('admin/languages/enable', 'LanguageController@enable');
-    Route::get('admin/languages/{id}/download', 'LanguageController@download');
-    Route::get('admin/languages/{id}/upload', 'LanguageController@upload');
-    Route::post('admin/languages/{id}/upload', 'LanguageController@upload');
-    Route::resource('admin/languages', 'LanguageController');
-
-    // Settings
-    Route::post('admin/settings/payment', 'SettingController@payment');
-    Route::post('admin/settings/advanced/{name}/update', 'SettingController@advancedUpdate');
-    Route::get('admin/settings/advanced/{name}/update', 'SettingController@advancedUpdate');
-    Route::get('admin/settings/advanced', 'SettingController@advanced');
-    Route::post('admin/settings/upgrade/cancel', 'SettingController@cancelUpgrade');
-    Route::post('admin/settings/upgrade', 'SettingController@doUpgrade');
-    Route::post('admin/settings/upgrade/upload', 'SettingController@uploadApplicationPatch');
-    Route::get('admin/settings/upgrade', 'SettingController@upgrade');
-    Route::post('admin/settings/license', 'SettingController@license');
-    Route::get('admin/settings/license', 'SettingController@license');
-    Route::get('admin/settings/mailer', 'SettingController@mailer');
-    Route::post('admin/settings/mailer', 'SettingController@mailer');
-    Route::get('admin/settings/cronjob', 'SettingController@cronjob');
-    Route::post('admin/settings/cronjob', 'SettingController@cronjob');
-    Route::get('admin/settings/urls', 'SettingController@urls');
-    Route::get('admin/settings/sending', 'SettingController@sending');
-    Route::post('admin/settings/sending', 'SettingController@sending');
-    Route::get('admin/settings/general', 'SettingController@general');
-    Route::post('admin/settings/general', 'SettingController@general');
-    Route::get('admin/settings/logs', 'SettingController@logs');
-    Route::get('log', 'SettingController@download_log');
-    Route::get('admin/settings/{tab?}', 'SettingController@index');
-    Route::post('admin/settings', 'SettingController@index');
-    Route::get('admin/update-urls', 'SettingController@updateUrls');
-
-
-    // Tracking log
-    Route::get('admin/tracking_log', 'TrackingLogController@index');
-    Route::get('admin/tracking_log/listing', 'TrackingLogController@listing');
-
-    // Feedback log
-    Route::get('admin/bounce_log', 'BounceLogController@index');
-    Route::get('admin/bounce_log/listing', 'BounceLogController@listing');
-
-    // Open log
-    Route::get('admin/open_log', 'OpenLogController@index');
-    Route::get('admin/open_log/listing', 'OpenLogController@listing');
-
-    // Click log
-    Route::get('admin/click_log', 'ClickLogController@index');
-    Route::get('admin/click_log/listing', 'ClickLogController@listing');
-
-    // Feedback log
-    Route::get('admin/feedback_log', 'FeedbackLogController@index');
-    Route::get('admin/feedback_log/listing', 'FeedbackLogController@listing');
-
-    // Unsubscribe log
-    Route::get('admin/unsubscribe_log', 'UnsubscribeLogController@index');
-    Route::get('admin/unsubscribe_log/listing', 'UnsubscribeLogController@listing');
-
-    // Blacklist
-    Route::post('admin/blacklists/job/{system_job_id}/cancel', 'BlacklistController@cancel');
-    Route::get('admin/blacklists/import/process', 'BlacklistController@importProcess');
-    Route::post('admin/blacklists/import', 'BlacklistController@import');
-    Route::get('admin/blacklists/import', 'BlacklistController@import');
-    Route::get('admin/blacklist', 'BlacklistController@index');
-    Route::get('admin/blacklist/listing', 'BlacklistController@listing');
-    Route::get('admin/blacklist/delete', 'BlacklistController@delete');
-
-    // Customer Group
-    Route::get('admin/customer_groups/listing/{page?}', 'CustomerGroupController@listing');
-    Route::get('admin/customer_groups/sort', 'CustomerGroupController@sort');
-    Route::get('admin/customer_groups/delete', 'CustomerGroupController@delete');
-    Route::resource('admin/customer_groups', 'CustomerGroupController');
-
-    // Customer
-    Route::match(['get', 'post'], 'admin/customers/{uid}/assign-plan', 'CustomerController@assignPlan');
-    Route::get('admin/customers/{uid}/su-account', 'CustomerController@subAccount');
-    Route::post('admin/customers/{uid}/contact', 'CustomerController@contact');
-    Route::get('admin/customers/{id}/contact', 'CustomerController@contact');
-    Route::get('admin/customers/growthChart', 'CustomerController@growthChart');
-    Route::get('admin/customers/{id}/subscriptions', 'CustomerController@subscriptions');
-    Route::get('admin/customers/select2', 'CustomerController@select2');
-    Route::get('admin/customers/login-as/{uid}', 'CustomerController@loginAs');
-    Route::get('admin/customers/listing/{page?}', 'CustomerController@listing');
-    Route::get('admin/customers/sort', 'CustomerController@sort');
-    Route::get('admin/customers/delete', 'CustomerController@delete');
-    Route::get('admin/customers/disable', 'CustomerController@disable');
-    Route::get('admin/customers/enable', 'CustomerController@enable');
-    Route::resource('admin/customers', 'CustomerController');
-
-    // Admin Group
-    Route::get('admin/admin_groups/listing/{page?}', 'AdminGroupController@listing');
-    Route::get('admin/admin_groups/sort', 'AdminGroupController@sort');
-    Route::get('admin/admin_groups/delete', 'AdminGroupController@delete');
-    Route::resource('admin/admin_groups', 'AdminGroupController');
-
-    // Admin
-    Route::get('admin/admins/login-as/{uid}', 'AdminController@loginAs');
-    Route::get('admin/admins/listing/{page?}', 'AdminController@listing');
-    Route::get('admin/admins/sort', 'AdminController@sort');
-    Route::get('admin/admins/delete', 'AdminController@delete');
-    Route::get('admin/admins/disable', 'AdminController@disable');
-    Route::get('admin/admins/enable', 'AdminController@enable');
-    Route::get('admin/admins/login-back', 'AdminController@loginBack');
-    Route::resource('admin/admins', 'AdminController');
-
-
-    // Account
-    Route::get('admin/account/api/renew', 'AccountController@renewToken');
-    Route::get('admin/account/api', 'AccountController@api');
-    Route::get('admin/account/profile', 'AccountController@profile');
-    Route::post('admin/account/profile', 'AccountController@profile');
-    Route::get('admin/account/contact', 'AccountController@contact');
-    Route::post('admin/account/contact', 'AccountController@contact');
-
-    // Plan
-    Route::post('admin/plans/{uid}/visible/on', 'PlanController@visibleOn');
-    Route::post('admin/plans/{uid}/visible/off', 'PlanController@visibleOff');
-
-    Route::match(['get', 'post'], 'admin/plans/{uid}/sending-server/subaccount', 'PlanController@sendingServerSubaccount');
-    Route::match(['get', 'post'], 'admin/plans/{uid}/sending-server/own', 'PlanController@sendingServerOwn');
-    Route::match(['get', 'post'], 'admin/plans/{uid}/sending-server/option', 'PlanController@sendingServerOption');
-    Route::match(['get', 'post'], 'admin/plans/{uid}/wizard/sending-server', 'PlanController@wizardSendingServer');
-    Route::match(['get', 'post'], 'admin/plans/wizard', 'PlanController@wizard');
-    Route::get('admin/plans/{uid}/sending-server', 'PlanController@sendingServer');
-    Route::match(['get', 'post'], 'admin/plans/{uid}/billing-cycle', 'PlanController@billingCycle');
-    Route::match(['get', 'post'], 'admin/plans/{uid}/sending-limit', 'PlanController@sendingLimit');
-    Route::get('admin/plans/{uid}/email-verification', 'PlanController@emailVerification');
-    Route::get('admin/plans/{uid}/general', 'PlanController@general');
-    Route::get('admin/plans/{uid}/quota', 'PlanController@quota');
-    Route::get('admin/plans/{uid}/security', 'PlanController@security');
-    Route::get('admin/plans/{uid}/email-footer', 'PlanController@emailFooter');
-    Route::get('admin/plans/{uid}/payment', 'PlanController@payment');
-    Route::get('admin/plans/{uid}/billing-history', 'PlanController@billingHistory');
-    Route::get('admin/plans/{uid}/general', 'PlanController@general');
-    Route::post('admin/plans/{uid}/save', 'PlanController@save');
-
-    Route::post('admin/plans/{id}/sending_servers/{sending_server_uid}/set-primary', 'PlanController@setPrimarySendingServer');
-    Route::match(['get', 'post'], 'admin/plans/{id}/sending_servers/fitness', 'PlanController@fitness');
-    Route::post('admin/plans/{id}/sending_servers/{sending_server_uid}/remove', 'PlanController@removeSendingServer');
-    Route::post('admin/plans/{id}/sending_servers/add', 'PlanController@addSendingServer');
-    Route::get('admin/plans/{id}/sending_servers/add', 'PlanController@addSendingServer');
-    Route::get('admin/plans/{id}/sending_servers', 'PlanController@sendingServers');
-    Route::get('admin/plans/pieChart', 'PlanController@pieChart');
-    Route::get('admin/plans/delete/confirm', 'PlanController@deleteConfirm');
-    Route::get('admin/plans/select2', 'PlanController@select2');
-    Route::get('admin/plans/listing/{page?}', 'PlanController@listing');
-    Route::get('admin/plans/sort', 'PlanController@sort');
-    Route::get('admin/plans/delete', 'PlanController@delete');
-    Route::get('admin/plans/disable', 'PlanController@disable');
-    Route::post('admin/plans/enable', 'PlanController@enable');
-    Route::post('admin/plans/copy', 'PlanController@copy');
-    Route::resource('admin/plans', 'PlanController');
-
-    // Currency
-    Route::get('admin/currencies/select2', 'CurrencyController@select2');
-    Route::get('admin/currencies/listing/{page?}', 'CurrencyController@listing');
-    Route::get('admin/currencies/sort', 'CurrencyController@sort');
-    Route::get('admin/currencies/delete', 'CurrencyController@delete');
-    Route::get('admin/currencies/disable', 'CurrencyController@disable');
-    Route::get('admin/currencies/enable', 'CurrencyController@enable');
-    Route::resource('admin/currencies', 'CurrencyController');
-
-    // Subscription
-    Route::match(['get','post'], 'admin/subscriptions/create', 'SubscriptionController@create');
-    Route::post('admin/subscriptions/{id}/approve-pending', 'SubscriptionController@approvePending');
-    Route::post('admin/subscriptions/{id}/renew', 'SubscriptionController@renew');
-    Route::match(['get','post'], 'admin/subscriptions/{id}/reject-pending', 'SubscriptionController@rejectPending');
-    Route::post('admin/subscriptions/{id}/set-active', 'SubscriptionController@setActive');
-    Route::get('admin/subscriptions/{id}/invoices', 'SubscriptionController@invoices');
-    Route::post('admin/subscriptions/{id}/change-plan', 'SubscriptionController@changePlan');
-    Route::get('admin/subscriptions/{id}/change-plan', 'SubscriptionController@changePlan');
-    Route::post('admin/subscriptions/{id}/cancel-now', 'SubscriptionController@cancelNow');
-    Route::post('admin/subscriptions/{id}/resume', 'SubscriptionController@resume');
-    Route::post('admin/subscriptions/{id}/cancel', 'SubscriptionController@cancel');
-
-    Route::patch('admin/subscriptions/unpaid', 'SubscriptionController@unpaid');
-    Route::patch('admin/subscriptions/paid', 'SubscriptionController@paid');
-    Route::get('admin/subscriptions/{uid}/payments', 'SubscriptionController@payments');
-    Route::patch('admin/subscriptions/enable', 'SubscriptionController@enable');
-    Route::patch('admin/subscriptions/disable', 'SubscriptionController@disable');
-    Route::get('admin/subscriptions/preview', 'SubscriptionController@preview');
-    Route::get('admin/subscriptions/listing/{page?}', 'SubscriptionController@listing');
-    Route::get('admin/subscriptions/sort', 'SubscriptionController@sort');
-    Route::delete('admin/subscriptions/delete', 'SubscriptionController@delete');
-    Route::resource('admin/subscriptions', 'SubscriptionController');
-
-    // Payment method
-    Route::get('admin/payment_methods/braintree/merchant-accounts/select/{uid?}', 'PaymentMethodController@braintreeMerchantAccountSelect');
-    Route::get('admin/payment_methods/options/{uid?}', 'PaymentMethodController@options');
-    Route::get('admin/payment_methods/select2', 'PaymentMethodController@select2');
-    Route::get('admin/payment_methods/listing/{page?}', 'PaymentMethodController@listing');
-    Route::get('admin/payment_methods/sort', 'PaymentMethodController@sort');
-    Route::get('admin/payment_methods/delete', 'PaymentMethodController@delete');
-    Route::get('admin/payment_methods/disable', 'PaymentMethodController@disable');
-    Route::get('admin/payment_methods/enable', 'PaymentMethodController@enable');
-    Route::resource('admin/payment_methods', 'PaymentMethodController');
-
-    // Email verification servers
-    Route::get('admin/email_verification_servers/options', 'EmailVerificationServerController@options');
-    Route::get('admin/email_verification_servers/listing/{page?}', 'EmailVerificationServerController@listing');
-    Route::get('admin/email_verification_servers/sort', 'EmailVerificationServerController@sort');
-    Route::get('admin/email_verification_servers/delete', 'EmailVerificationServerController@delete');
-    Route::get('admin/email_verification_servers/disable', 'EmailVerificationServerController@disable');
-    Route::get('admin/email_verification_servers/enable', 'EmailVerificationServerController@enable');
-    Route::resource('admin/email_verification_servers', 'EmailVerificationServerController');
-
-    // Sub account
-    Route::get('admin/sub_accounts/{uid}/delete/confirm', 'SubAccountController@deleteConfirm');
-    Route::delete('admin/sub_accounts/{uid}/delete', 'SubAccountController@delete');
-    Route::get('admin/sub_accounts/listing/{page?}', 'SubAccountController@listing');
-    Route::resource('admin/sub_accounts', 'SubAccountController');
-
-    // Payment gateways
-    Route::post('admin/payment/gateways/paypal-subscription/{plan_uid}/disconnect-plan', 'PaymentController@paypalSubscriptionDisconnectPlan');
-    Route::post('admin/payment/gateways/paypal-subscription/{plan_uid}/connect-plan', 'PaymentController@paypalSubscriptionConnectPlan');
-    Route::post('admin/payment/gateways/paypal-subscription/disconnect', 'PaymentController@paypalSubscriptionDisconnect');
-    Route::post('admin/payment/gateways/paypal-subscription/connect', 'PaymentController@paypalSubscriptionConnect');
-    Route::post('admin/payment/gateways/{name}/set-primary', 'PaymentController@setPrimary');
-    Route::post('admin/payment/gateways/update/{name}', 'PaymentController@update');
-    Route::get('admin/payment/gateways/edit/{name}', 'PaymentController@edit');
-    Route::get('admin/payment/gateways/index', 'PaymentController@index');
-});
 
 Route::group(['middleware' => ['not_installed', 'auth', 'frontend', 'subscription']], function () {
-    Route::resource('voice', 'TwilioController', [ 'only'=> [
-        'index','create','store','update','delete','edit'
-    ]]);
+    Route::resource('voice', 'TwilioController',
+        [
+            'except'=> [
+                'show'
+            ]
+        ]
+    );
     Route::get('voice/statitics', 'TwilioController@updateTwilioCost');
     Route::get('voice/sms', 'TwilioController@sendMessage');
+    Route::get('voice/{phone}/process', 'TwilioController@processRequest');
+    Route::get('voice/processed', 'TwilioController@processedRequest');
+    Route::get('voice/{phone}/create', 'TwilioController@createRequest');
     Route::get('voice/enable', 'TwilioController@enable');
     Route::get('voice/{uid}/statitics', 'TwilioController@fetchCallLog');
     Route::get('voice/listing/{page?}', 'TwilioController@listing'); //
@@ -952,5 +962,40 @@ Route::group(['middleware' => ['not_installed', 'auth', 'frontend', 'subscriptio
 
 
     Route::get('voice/auto-answer', 'TwilioController@autoAnswerCall');
+
+    Route::resource('call_logs', 'CallLogsController',
+        [
+            'except' => [
+                'show'
+            ]
+        ]
+    );
+    Route::get('call_logs/refresh', 'CallLogsController@refresh');
+    Route::get('call_logs/sort', 'CallLogsController@sort');
+    Route::get('call_logs/{phone}/log', 'CallLogsController@log');
+    Route::get('call_logs/listing/{page?}', 'CallLogsController@listing');
+    //
+    Route::resource('sms_logs', 'SmsLogsController',
+        [
+            'except' => [
+                'show'
+            ]
+        ]
+    );
+    Route::get('sms_logs/refresh', 'SmsLogsController@refresh');
+    Route::get('sms_logs/sort', 'SmsLogsController@sort');
+    Route::get('sms_logs/{phone}/log', 'SmsLogsController@log');
+    Route::get('sms_logs/listing/{page?}', 'SmsLogsController@listing');
+
+
+    Route::resource('leads', 'LeadController',
+        [
+            'except' => [
+                'show'
+            ]
+        ]
+    );
+    Route::get('leads/sort', 'LeadController@sort');
+    Route::get('leads/listing/{page?}', 'LeadController@listing');
 
 });

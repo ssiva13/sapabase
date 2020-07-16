@@ -22,6 +22,8 @@
 
 namespace Acelle\Library;
 
+use Illuminate\Support\Carbon;
+
 class Tool
 {
     /**
@@ -147,6 +149,16 @@ class Tool
         $result = self::dateTime($datetime)->format(trans('messages.datetime_format'));
 
         return $result;
+    }
+
+    /**
+     * Format display datetime.
+     *
+     * @var string
+     */
+    public static function formatTwilioDateTime($datetime)
+    {
+        return Carbon::parse($datetime);
     }
 
     /**

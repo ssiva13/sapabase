@@ -1522,7 +1522,10 @@ class Customer extends Model implements BillableUserInterface
         // If customer dont have permission creating sending servers
         } else {
             // Get server from the plan
-            return  $this->activeSubscription()->plan->getEmailVerificaionServers();
+            if($this->activeSubscription()){
+                return  $this->activeSubscription()->plan->getEmailVerificaionServers();
+            }
+
         }
     }
 
@@ -1620,6 +1623,22 @@ class Customer extends Model implements BillableUserInterface
     }
 
     /**
+     * Get the list of available phone numbers, used for populating select box.
+     * @param $customer
+     * @return array
+     */
+    public function getPhoneNumberSelectOptions($customer)
+    {
+        $query = TwilioNumber::where('user_id', $customer);
+
+        $result = $query->get()->map(function ($item) {
+            return ['number' => $item->number, 'value' => $item->number, 'text' => $item->number];
+        });
+
+        return $result;
+    }
+
+    /**
      * Get email verification servers select options.
      *
      * @return array
@@ -1628,8 +1647,10 @@ class Customer extends Model implements BillableUserInterface
     {
         $servers = $this->getEmailVerificaionServers();
         $options = [];
-        foreach ($servers as $server) {
-            $options[] = ['text' => $server->name, 'value' => $server->uid];
+        if(!empty($servers)){
+            foreach ($servers as $server) {
+                $options[] = ['text' => $server->name, 'value' => $server->uid];
+            }
         }
 
         return $options;

@@ -55,7 +55,7 @@
 							<option value="number">{{ trans('messages.number') }}</option>
 							<option value="created_at">{{ trans('messages.created_at') }}</option>
 						</select>
-						<button class="btn btn-xs sort-direction" rel="asc" data-popup="tooltip" title="{{ trans('messages.change_sort_direction') }}" type="button" class="btn btn-xs">
+						<button class="btn btn-xs sort-direction" rel="asc" data-popup="tooltip" title="{{ trans('messages.change_sort_direction') }}" type="button">
 							<i class="icon-sort-amount-asc"></i>
 						</button>
 					</span>

@@ -41,32 +41,32 @@
                                                         <tr>
                                                             <td>
                                                                     <span class="no-margin kq_search">
-                                                                        {{ $call['from'] }}
+                                                                        {{ $call->from }}
                                                                     </span>
                                                             </td>
                                                             <td>
                                                                     <span class="no-margin kq_search">
-                                                                        {{ $call['to'] }}
+                                                                        {{ $call->to }}
                                                                     </span>
                                                             </td>
                                                             <td>
                                                                     <span class="no-margin kq_search">
-                                                                        {{ ucwords(str_replace('-', ' ', $call['direction'])) }}
+                                                                        {{ ucwords(str_replace('-', ' ', $call->direction )) }}
                                                                     </span>
                                                             </td>
                                                             <td>
                                                                     <span class="no-margin kq_search">
-                                                                        {{ $call['price'] }}
+                                                                        {{ $call->price }}
                                                                     </span>
                                                             </td>
                                                             <td>
                                                                     <span class="no-margin kq_search">
-                                                                        {{ ucwords(str_replace('-', ' ', $call['status'])) }}
+                                                                        {{ ucwords(str_replace('-', ' ', $call->status )) }}
                                                                     </span>
                                                             </td>
                                                             <td>
                                                                     <span class="no-margin kq_search">
-                                                                        {{ $call['duration'] }}
+                                                                        {{ $call->duration }}
                                                                     </span>
                                                             </td>
 
@@ -86,6 +86,7 @@
                                                     <tr>
                                                         <th>{{ trans('messages.from_number') }}</th>
                                                         <th>{{ trans('messages.to_number') }}</th>
+                                                        <th>{{ trans('messages.automation.sms.body') }}</th>
                                                         <th>{{ trans('messages.direction') }}</th>
                                                         <th>{{ trans('messages.price') }}</th>
                                                         <th>{{ trans('messages.status') }}</th>
@@ -94,27 +95,32 @@
                                                         <tr>
                                                             <td>
                                                                     <span class="no-margin kq_search">
-                                                                        {{ $sms['from'] }}
+                                                                        {{ $sms->from }}
                                                                     </span>
                                                             </td>
                                                             <td>
                                                                     <span class="no-margin kq_search">
-                                                                        {{ $sms['to'] }}
+                                                                        {{ $sms->to }}
+                                                                    </span>
+                                                            </td>
+                                                            <td>
+                                                                <span class="text-black-50 text-capitalize">
+                                                                    {{ substr($sms->body, 0, 200) }} ...
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                    <span class="no-margin kq_search">
+                                                                        {{ ucwords(str_replace('-', ' ', $call->direction)) }}
                                                                     </span>
                                                             </td>
                                                             <td>
                                                                     <span class="no-margin kq_search">
-                                                                        {{ ucwords(str_replace('-', ' ', $call['direction'])) }}
+                                                                        {{ $sms->price }}
                                                                     </span>
                                                             </td>
                                                             <td>
                                                                     <span class="no-margin kq_search">
-                                                                        {{ $sms['price'] }}
-                                                                    </span>
-                                                            </td>
-                                                            <td>
-                                                                    <span class="no-margin kq_search">
-                                                                        {{ ucwords(str_replace('-', ' ', $sms['status'])) }}
+                                                                        {{ ucwords(str_replace('-', ' ', $sms->status )) }}
                                                                     </span>
                                                             </td>
                                                         </tr>
