@@ -21,6 +21,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Twilio\Exceptions\ConfigurationException;
 use Twilio\Exceptions\TwilioException;
@@ -31,14 +32,23 @@ use Twilio\TwiML\VoiceResponse;
 
 class TwilioController extends Controller
 {
-    private static array $charges;
-    private Twilio $twilio;
-    private array $call_url;
-    private string $fax_url;
-    private string $twilio_account_sid;
-    private string $twilio_auth_token;
-    private string $twilio_application_sid;
-    private string $purchase_charge;
+//    private static  $charges;
+//    private  $twilio;
+//    private  $call_url;
+//    private  $fax_url;
+//    private  $twilio_account_sid;
+//    private  $twilio_auth_token;
+//    private  $twilio_application_sid;
+//    private  $purchase_charge;
+
+     private static array $charges;
+     private Twilio $twilio;
+     private array $call_url;
+     private string $fax_url;
+     private string $twilio_account_sid;
+     private string $twilio_auth_token;
+     private string $twilio_application_sid;
+     private string $purchase_charge;
 
     /**
      * TwilioIntegrationController constructor.
@@ -131,16 +141,14 @@ class TwilioController extends Controller
                 $twilio_number->admin_id = $customer->admin_id;
                 if ($twilio_number->save()) {
                     $request->session()->flash('alert-success', trans('messages.twilio.purchased'));
-                    return redirect()->action('TwilioController@index');
                 }else{
                     $request->session()->flash('alert-danger', trans('messages.twilio.not_purchased_not_stored'));
-                    return redirect()->action('TwilioController@create');
                 }
             }else{
                 $request->session()->flash('alert-danger', trans('messages.twilio.not_purchased'));
-                return redirect()->action('TwilioController@index');
             }
         }
+        return redirect()->action('TwilioController@index');
     }
 
     /**
@@ -210,7 +218,7 @@ class TwilioController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
+     * @param Request $request
      * @return RedirectResponse|Response
      */
     public function activate(Request $request)
@@ -223,7 +231,6 @@ class TwilioController extends Controller
         }
         return redirect()->action('TwilioController@index');
     }
-
 
     /**
      * Delete confirm message.
@@ -252,7 +259,11 @@ class TwilioController extends Controller
         try {
             if($request->number_type){
                 $number_type = $request->number_type;
-                $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->$number_type->read();
+                if($request->state){
+                    $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->$number_type->read(["inRegion" => $request->state]);
+                }else{
+                    $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->$number_type->read();
+                }
                 $localPhoneNumbers = [];
                 $response = [];
                 foreach ($availablePhoneNumbers as $record) {
@@ -274,8 +285,12 @@ class TwilioController extends Controller
                     }
                 }
 
-            }else{
-                $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->fetch();
+            }else {
+                if ($request->state) {
+                    $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->local->read(["inRegion" => $request->state]);
+                }else{
+                    $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->fetch();
+                }
                 $response = array(
                     'code' => 200,
                     'body' => $availablePhoneNumbers->uri
@@ -375,7 +390,9 @@ class TwilioController extends Controller
                     [
                         'from' => $message->from,
                         'body' => $message->message,
-
+                        'statusCallbackEvent' => 'initiated ringing answered completed',
+                        'statusCallback' => 'https://app.markitbase.com/voice/status',
+                        'statusCallbackMethod' => 'POST',
                     ] );
                 $sid = $response->sid;
                 break;
@@ -385,21 +402,13 @@ class TwilioController extends Controller
                     $recipient->phone,
                     $message->from,
                     [
-                        'url' => $message->message
+                        "twiml" => "<Response><Play> $message->message </Play></Response>",
+                        'statusCallbackEvent' => 'initiated ringing answered completed',
+                        'statusCallback' => 'https://app.markitbase.com/voice/status',
+                        'statusCallbackMethod' => 'GET',
                     ]
                 );
                 $sid = $response->sid;
-                break;
-
-            case 'fax':
-                $response = new VoiceResponse();
-                $response->play(
-                    $message->message,
-                    [
-                        'loop' => 1
-                    ]
-                );
-                $sid = $response;
                 break;
         }
 
@@ -412,31 +421,11 @@ class TwilioController extends Controller
      * @return bool|RedirectResponse|Response
      */
     public function updateTwilioCost(Request $request){
-        $phonenumbers = $request->user()->phoneNumbers;
-        foreach ($phonenumbers as $key => $twilioNumber){
-            $call_cost = 0;
-            $sms_cost = 0;
-            foreach ($this->twilio->account->calls->read() as $keyy => $call) {
-                if($call->from == $twilioNumber->number){
-                    $call_cost += $call->price;
-                }
-            }
-            foreach ($this->twilio->account->messages->read() as $keyy => $sms) {
-                if($sms->from == $twilioNumber->number){
-                    $sms_cost += $sms->price;
-                }
-            }
-            $charges = $sms_cost + $call_cost;
-            self::$charges[$twilioNumber->uid] = $charges;
-        }
-         if($this->setcost()){
-             $request->session()->flash('alert-success', trans('messages.update'));
-             return redirect()->back();
-         }else{
-             $request->session()->flash('alert-danger', trans('messages.failed'));
-             return redirect()->back();
-         }
+        $smsSum = TwilioSmsLogs::smsSum($request->user()->customer->id);
+        $callSum = TwilioCallLogs::callSum($request->user()->customer->id);
+        $phoneNumbers = TwilioNumber::where('status', TwilioNumber::STATUS_ACTIVE)->where('user_id', $request->user()->customer->user_id)->count();
 
+        return  (abs($callSum + $smsSum) + ((int)$this->purchase_charge * $phoneNumbers));
     }
 
     /**
@@ -470,17 +459,12 @@ class TwilioController extends Controller
      * @return string|TwilioException
      */
     public function purchaseNumber($number){
-//        $number = '+15005550006';
-//        $twilio = new Twilio('ACfdf30451329bf8936ee07edeb909d7b0', '3662bd5d9d6fcd58b49e25d4f31550fd');
-//        $purchase_number = $twilio->incomingPhoneNumbers->create(
         $purchase_number = $this->twilio->incomingPhoneNumbers->create(
             [
                 "phoneNumber" => $number,
             ]);
-
         return $purchase_number->sid;
     }
-
 
     /**
      * filter number by capabilities
@@ -490,6 +474,7 @@ class TwilioController extends Controller
      * @param $mms
      * @param $call
      * @param $fax
+     * @return bool
      */
     private function filterNumberCapabilities($number, $capabilities, $sms, $mms, $call,$fax){
         $phoneNumber = ($call && $capabilities['voice']) || ($mms  && $capabilities['MMS']) || ($fax  && $capabilities['fax']) || ($sms && $capabilities['SMS']);
@@ -516,15 +501,68 @@ class TwilioController extends Controller
         ]);
     }
 
-    public function processRequest(Request $request, $phone){
-        return $this->sendMessage($request, $request);
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function processRequest(Request $request){
+        try {
+            return [
+                'message' => $this->sendMessage($request, $request),
+                'type' => $request->type,
+                'code' => 200,
+                'phone' => $request->phone,
+                'from' => $request->from,
+            ];
+        } catch (TwilioException $e) {
+            return [
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'type' => $request->type,
+                'phone' => $request->phone,
+                'from' => $request->from,
+            ];
+        }
     }
 
+    /**
+     * @param Request $request
+     * @return string
+     * @throws TwilioException
+     */
+    public function callStatus(Request $request){
+        $call = $this->twilio->calls($request->message)->fetch();
+        return $call->status;
+    }
+
+    public function callAnswer(Request $request){
+        $city = $_REQUEST['FromCity'] ?? 'New York';
+        $response = new VoiceResponse();
+        $response->say("Hello, {$city}!", array('voice' => 'alice'));
+        $response->play(
+            "https://demo.twilio.com/docs/classic.mp3",
+            [
+                'loop' => 1
+            ]
+        );
+
+        echo $response;
+
+
+    }
+
+    /**
+     * @param Request $request
+     * @return Factory|Application|View
+     */
     public function processedRequest(Request $request){
 
         return view('leads.processing', [
-//            'phone' => $request->phone,
-//            'type' => $request->type,
+            'phone' => $request->phone,
+            'type' => $request->type,
+            'message' => $request->message,
+            'from' => $request->from,
+            'code' => $request->code,
         ]);
     }
 }

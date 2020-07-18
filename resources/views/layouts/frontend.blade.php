@@ -184,7 +184,12 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li rel0="TwilioController">
 					<a href="{{ action('TwilioController@updateTwilioCost') }}" >
-						<i class="icon-reload-alt"></i><span></span>
+						<i class="icon-cash">
+							<span class="text-muted2">
+								<span class="text-muted2" id="cost"></span>
+								USD
+							</span>
+						</i>
 					</a>
 				</li>
 				<!-- <li class="dropdown language-switch">
@@ -214,7 +219,7 @@
 				<li class="dropdown dropdown-user">
 					<a class="dropdown-toggle" data-toggle="dropdown">
 						<img src="{{ action('CustomerController@avatar', Auth::user()->customer->uid) }}" alt="">
-						<span>{{ Auth::user()->customer->displayName() }}</span>
+{{--						<span>{{ Auth::user()->customer->displayName() }}</span>--}}
 						<i class="caret"></i>
 
 						@if (Auth::user()->customer->hasSubscriptionNotice())
@@ -299,6 +304,26 @@
 
 	</div>
 	<!-- /page container -->
+
+	<script>
+		setInterval(updateCost,5000);
+
+		function updateCost() {
+			let uri = '{{ action('TwilioController@updateTwilioCost') }}';
+			$.ajax({
+				url: uri,
+				method: 'GET',
+				statusCode: {
+					// validate error
+					400: function (res) {
+					}
+				},
+				success: function (response) {
+					$('#cost').html(response);
+				}
+			});
+		}
+	</script>
 
 	@include("layouts._modals")
 

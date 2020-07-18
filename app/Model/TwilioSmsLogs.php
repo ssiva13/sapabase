@@ -108,4 +108,8 @@ class TwilioSmsLogs extends Model
         return true;
     }
 
+    public static function smsSum($customer_id){
+        return self::where('customer_id', '=', $customer_id)->sum('price');
+    }
+
 }

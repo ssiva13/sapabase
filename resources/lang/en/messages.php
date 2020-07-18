@@ -2541,6 +2541,8 @@
   'call.send' => 'Make Call',
   'call.on' => 'On Call',
   'sms.on' => 'Message Send',
+  'twilio.api.response' => ':type Response',
+  'twilio.api.response.data' => ':type Response from :from to :to',
   'call.logs.intro' => 'All your payment transactions are logged here. Let check them for details of your invoices / billing history.',
   'subscription.calls.intro' => 'All your phone call logs are displayed here. Check them for history.',
   'subscription.logs.empty' => 'No records found',

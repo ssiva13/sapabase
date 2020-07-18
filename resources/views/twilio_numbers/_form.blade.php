@@ -112,7 +112,7 @@
     </div>
     <div class="row">
 
-        <div class="col-md-6">
+        <div class="col-md-4">
             @include('helpers.form_control', [
                 'type' => 'select',
                 'name' => 'country',
@@ -125,8 +125,21 @@
 
                 ])
         </div>
+        <div class="col-md-4">
+            <label>{{ trans('messages.state_province_region') }}</label>
+            @include('helpers.form_control', [
+                'type' => 'select',
+                'name' => 'state',
+                'value'=> '',
+                'required'=> false,
+                'id'=> 'state_province_region',
+                'options' => \Acelle\Model\Setting::states(),
+                'include_blank' => trans('messages.choose') . ' ' .trans('messages.state_province_region')
 
-        <div class="col-md-6">
+                ])
+        </div>
+
+        <div class="col-md-4">
             @include('helpers.form_control', [
                 'type' => 'select',
                 'name' => 'number',

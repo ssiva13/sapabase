@@ -124,6 +124,15 @@
 			}
 		});
 
+		$('#state_province_region').change(function(e) {
+			e.preventDefault();
+			let formdata = $('#twilio_numbers_form').serialize();
+			console.log(formdata)
+			if($(this).val() != '' || $(this).val() != null || $(this).val() != undefined){
+				LoadPhoneNumbers();
+			}
+		});
+
 
 		$("input[name$='_enabled']").change(function() {
 			let name = $(this).attr("name");

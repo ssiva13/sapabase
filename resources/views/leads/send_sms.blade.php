@@ -69,22 +69,13 @@
                                 // validate error
                                 400: function (res) {
                                     console.log(res)
-                                    // popup.loadHtml(res.responseText);
                                 }
                             },
                             success: function (response) {
-                                let url = '{{ action('TwilioController@processedRequest') }}';
+                                let url = '{{ action('TwilioController@processedRequest') }}' + '?from=' + response.from +'&type=' + response.type + '&phone=' + response.phone + '&message=' + response.message + '&code=' + response.code;
                                 popup.load(url);
                             }
                         });
-
-                        // loadHtml
-                        // popup.load($('#processRequest').submit(), function() {
-                        //     // set back event
-                        //     popup.back = function() {
-                        //         Popup.hide();
-                        //     };
-                        // });
                     });
 
                 </script>

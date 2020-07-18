@@ -104,4 +104,8 @@ class TwilioCallLogs extends Model
         }
         return true;
     }
+
+    public static function callSum($customer_id){
+        return self::where('customer_id', '=', $customer_id)->sum('price');
+    }
 }
