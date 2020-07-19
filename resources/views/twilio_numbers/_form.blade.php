@@ -133,7 +133,7 @@
                 'value'=> '',
                 'required'=> false,
                 'id'=> 'state_province_region',
-                'options' => \Acelle\Model\Setting::states(),
+                'options' => [],
                 'include_blank' => trans('messages.choose') . ' ' .trans('messages.state_province_region')
 
                 ])

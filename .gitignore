@@ -25,3 +25,4 @@ live.env
 .idea/symfony2.xml
 .idea/sapabase.iml
 .idea/php.xml
+.idea/inspectionProfiles/Project_Default.xml

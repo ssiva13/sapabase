@@ -35,10 +35,36 @@
 	<script>
 
 
-		var popup = new Popup(undefined, undefined, {
+		let popup = new Popup(undefined, undefined, {
 			onclose: function() {
 			}
 		});
+		let countries = $(`#countries`);
+
+		function LoadStates(country) {
+			// loading effect
+			popup.loading();
+
+			$.ajax({
+				method: "GET",
+				url: '{{ action('TwilioController@getStates') }}',
+				data: {'country': country},
+			})
+			.done(function (resp) {
+				let state_province_region = $('#state_province_region');
+				state_province_region.empty();
+				state_province_region.append(`<option value=""> {{ trans('messages.choose') . ' ' .trans('messages.state_province_region') }} </option>`);
+				$.each(resp, function( index, state ) {
+					state_province_region.append(`<option value="${state.value}"> ${state.text} </option>`);
+				});
+				state_province_region.select({
+					minimumSelectionLength: 5
+				});
+				state_province_region.select2({
+					minimumSelectionLength: 3
+				});
+			});
+		}
 
 		function LoadPhoneNumbers() {
 			// loading effect
@@ -46,7 +72,6 @@
 
 			let url1 = 'twilio/country';
 			let url2 = 'country/numbers';
-			let url3 = 'country/numbers/list';
 			let twilio_url = 'https://api.twilio.com';
 
 			$.ajax({
@@ -55,6 +80,7 @@
 				data: $('#twilio_numbers_form').serialize(),
 			})
 			.done(function( msg ) {
+				let phone_numbers = $(`#phone_numbers`);
 				if(msg.body !== undefined){
 					let uri = twilio_url + msg.body;
 					$.ajax({
@@ -63,51 +89,52 @@
 						data: {'uri': uri},
 					})
 					.done(function (resp) {
-						$('#phone_numbers').prop('disabled', false)
-						$('#phone_numbers').empty();
-						$('#phone_numbers').append(`<option value="">Select</option>`);
+						phone_numbers.prop('disabled', false)
+						phone_numbers.empty();
+						phone_numbers.append(`<option value="">Select</option>`);
 						$.each(resp, function( index, value ) {
 							let data = $.parseJSON(value);
-							let numbers = data.available_phone_numbers;
+							let {available_phone_numbers: numbers} = data;
 							$('#phone_numbers').append(`<optgroup label="${index}"></optgroup>`);
-							$.each(numbers, function( index, value ) {
+							$.each(numbers, function(index, {capabilities, friendly_name, phone_number} ) {
+								const {MMS, SMS, voice, fax} = capabilities;
 								if(
-										($("#sms_enabled").val() == 1 && value.capabilities.SMS) ||
-										($("#call_enabled").val() == 1 && value.capabilities.voice) ||
-										($("#mms_enabled").val() == 1 && value.capabilities.MMS) ||
-										($("#fax_enabled").val() == 1 && value.capabilities.fax)
+										($("#sms_enabled").val() == 1 && SMS) ||
+										($("#call_enabled").val() == 1 && voice) ||
+										($("#mms_enabled").val() == 1 && MMS) ||
+										($("#fax_enabled").val() == 1 && fax)
 								){
-									$('#phone_numbers').append(`<option value="${value.phone_number}"> ${value.friendly_name} </option>`);
+									$('#phone_numbers').append(`<option value="${phone_number}"> ${friendly_name} </option>`);
 								}
 
 							})
 						});
-						$('#phone_numbers').select({
+						phone_numbers.select({
 							minimumSelectionLength: 5
 						});
-						$('#phone_numbers').select2({
+						phone_numbers.select2({
 							minimumSelectionLength: 3
 						});
 					});
 				}
 				else if(msg != 20404){
-					$('#phone_numbers').empty();
-					$('#phone_numbers').prop('disabled', false)
-					$('#phone_numbers').append(`<option value="">Select</option>`);
+					phone_numbers.empty();
+					phone_numbers.prop('disabled', false)
+					phone_numbers.append(`<option value="">Select</option>`);
 					$.each(msg, function( index, value ) {
-						$('#phone_numbers').append(`<option value="${value}"> ${index} </option>`);
+						phone_numbers.append(`<option value="${value}"> ${index} </option>`);
 					})
-					$('#phone_numbers').select({
+					phone_numbers.select({
 						minimumSelectionLength: 5
 					});
-					$('#phone_numbers').select2({
+					phone_numbers.select2({
 						minimumSelectionLength: 3
 					});
 				}
 				else if(msg == 20404){
-					$('#phone_numbers').empty();
-					$('#phone_numbers').prop('disabled', false)
-					$('#phone_numbers').append(`<option value="">No Numbers Found</option>`);
+					phone_numbers.empty();
+					phone_numbers.prop('disabled', false)
+					phone_numbers.append(`<option value="">No Numbers Found</option>`);
 				}
 			}).fail(function( err ) {
 				console.log(err)
@@ -115,11 +142,12 @@
 		}
 
 
-		$('#countries').change(function(e) {
+		countries.change(function(e) {
 			e.preventDefault();
 			let formdata = $('#twilio_numbers_form').serialize();
 			console.log(formdata)
 			if($(this).val() != '' || $(this).val() != null || $(this).val() != undefined){
+				LoadStates($(this).val());
 				LoadPhoneNumbers();
 			}
 		});
@@ -133,7 +161,6 @@
 			}
 		});
 
-
 		$("input[name$='_enabled']").change(function() {
 			let name = $(this).attr("name");
 			if(this.checked) {
@@ -142,13 +169,13 @@
 				$(`#${name}`).val(0)
 			}
 			
-			if($('#countries').val() != '' || $('#countries').val() != null || $('#countries').val() != undefined){
+			if(countries.val() != '' || countries.val() != null || countries.val() != undefined){
 				LoadPhoneNumbers();
 			}
 		})
 		
 		$("input[name='number_type']").change(function() {
-		    if($('#countries').val() != '' || $('#countries').val() != null || $('#countries').val() != undefined){
+		    if(countries.val() != '' || countries.val() != null || countries.val() != undefined){
 				LoadPhoneNumbers();
 			}
 		})

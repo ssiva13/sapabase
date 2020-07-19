@@ -947,7 +947,7 @@ Route::group(['middleware' => ['not_installed', 'auth', 'frontend', 'subscriptio
     Route::get('voice/process', 'TwilioController@processRequest');
     Route::get('voice/processed', 'TwilioController@processedRequest');
     Route::get('voice/status', 'TwilioController@callStatus');
-//    Route::get('voice/answer', 'TwilioController@callAnswer');
+    Route::get('get-states', 'TwilioController@getStates');
     Route::get('voice/{phone}/create', 'TwilioController@createRequest');
     Route::get('voice/enable', 'TwilioController@enable');
     Route::get('voice/{uid}/statitics', 'TwilioController@fetchCallLog');

@@ -567,4 +567,15 @@ class TwilioController extends Controller
             'code' => $request->code,
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function getStates(Request $request){
+        if (isset($request->country)) {
+            return Setting::states($request->country);
+        }
+        return Setting::states('US');
+    }
 }

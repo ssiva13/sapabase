@@ -737,11 +737,13 @@ class Setting extends Model
             self::set($setting, $value);
         }
     }
-    public static function states(){
-        $states_json = file_get_contents(storage_path('app/states/states_titlecase.json'));
+    public static function states($country){
+        $states_json = file_get_contents(storage_path('app/states/states.json'));
         $states = [];
         foreach (json_decode($states_json, true) as $key => $state){
-            $states[$key + 1] = ['value' => $state['abbreviation'], 'text' => $state['name']];
+            if($state['country_code'] === $country){
+                $states[] = ['value' => $state['state_code'], 'text' => $state['name']];
+            }
         }
 
         return $states;
