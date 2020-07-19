@@ -392,7 +392,7 @@ class TwilioController extends Controller
                         'body' => $message->message,
                         'statusCallbackEvent' => 'initiated ringing answered completed',
                         'statusCallback' => 'https://app.markitbase.com/voice/status',
-                        'statusCallbackMethod' => 'POST',
+                        'statusCallbackMethod' => 'GET',
                     ] );
                 $sid = $response->sid;
                 break;
@@ -536,11 +536,13 @@ class TwilioController extends Controller
     }
 
     public function callAnswer(Request $request){
+
+        $template = SmsTemplate::getDefault($request->user()->customer->id);
         $city = $_REQUEST['FromCity'] ?? 'New York';
         $response = new VoiceResponse();
         $response->say("Hello, {$city}!", array('voice' => 'alice'));
         $response->play(
-            "https://demo.twilio.com/docs/classic.mp3",
+            $template->content,
             [
                 'loop' => 1
             ]

@@ -19,6 +19,16 @@
                             <span class="text-muted text-nowrap">{{ trans('messages.name') }}</span>
                         </div>
                     </td>
+                    <td width="10%" class="ml-2">
+                        <div class="single-stat-box pull-left">
+                            @if($template->custom_order == 100)
+                                <span class="no-margin stat-num">
+                                    <span class="label label-flat bg-active">Default Autorespond</span>
+                                </span>
+                            @endif
+                            <br>
+                        </div>
+                    </td>
                     <td>
                         <div class="single-stat-box pull-left">
                             <span class="text-black-50 text-capitalize">{{ substr($template->content, 0, 100) }} ... </span>

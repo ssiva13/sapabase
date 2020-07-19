@@ -28,4 +28,17 @@
             'rules' => ['content' => 'required']]
         )
     </div>
-</div><?php
+    <div class="col-md-12">
+        <div class="checkbox-box-group" >
+            @include('helpers.form_control', [
+                'type' => 'checkbox2',
+                'name' => 'extras',
+                'id' => 'extras',
+                'label' => 'Set As AutoRespond Audio',
+                'value' => false,
+                'options' => [false, true],
+                'help_class' => '',
+            ])
+        </div>
+    </div>
+</div>

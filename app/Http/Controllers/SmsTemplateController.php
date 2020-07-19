@@ -141,6 +141,10 @@ class SmsTemplateController extends Controller
                 $template->content = \URL::asset($path);
                 $template->type = 'call';
             }
+            if($request->auto_respond){
+                SmsTemplate::setDefault($customer->id);
+                $template->custom_order = 100;
+            }
 
             $template->save();
 

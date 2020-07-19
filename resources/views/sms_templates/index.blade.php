@@ -26,33 +26,16 @@
 				<form class="listing-form"
 					sort-url="{{ action('SmsTemplateController@sort') }}"
 					data-url="{{ action('SmsTemplateController@listing',$type ) }}"
-					per-page="{{ Acelle\Model\Template::$itemsPerPage }}"					
+					per-page="{{ Acelle\Model\SmsTemplate::$itemsPerPage }}"
 				>				
 					<div class="row top-list-controls">
 						<div class="col-md-9">
 							@if ($templates->count() >= 0)					
 								<div class="filter-box">
-									<div class="btn-group list_actions hide">
-										<button type="button" class="btn btn-xs btn-grey-600 dropdown-toggle" data-toggle="dropdown">
-											{{ trans('messages.actions') }} <span class="caret"></span>
-										</button>
-										<ul class="dropdown-menu">
-											<li>
-												<a delete-confirm="{{ trans('messages.delete_templates_confirm') }}" href="{{ action('SmsTemplateController@delete') }}">
-													<i class="icon-trash"></i> {{ trans('messages.delete') }}
-												</a>
-											</li>
-										</ul>
-									</div>
-									<div class="checkbox inline check_all_list">
-										<label>
-											<input type="checkbox" class="styled check_all">
-										</label>
-									</div>
 									<span class="filter-group">
 										<span class="title text-semibold text-muted">{{ trans('messages.sort_by') }}</span>
 										<select class="select" name="sort-order">
-											<option value="custom_order" class="active">{{ trans('messages.custom_order') }}</option>
+											<option value="content" class="active">{{ trans('messages.automation.sms.body') }}</option>
 											<option value="name">{{ trans('messages.name') }}</option>
 											<option value="created_at">{{ trans('messages.created_at') }}</option>
 										</select>										

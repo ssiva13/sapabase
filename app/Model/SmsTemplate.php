@@ -209,4 +209,21 @@ class SmsTemplate extends Model
         return is_object($this->admin) ? $this->admin->displayName() : (is_object($this->customer) ? $this->customer->displayName() : '');
     }
 
+    public static function setDefault($customer_id){
+        $query = self::where('custom_order', 100)->where('customer_id', $customer_id)->where('type', 'call');
+        if($query->count() > 0){
+            $query->update(['custom_order' => 0]);
+            return true;
+        }
+        return false;
+    }
+
+    public static function getDefault($customer_id){
+        $query = self::where('custom_order', 100)->where('customer_id', $customer_id)->where('type', 'call');
+        if(! $query->count() > 0) {
+            return;
+        }
+        return $query->first();
+    }
+
 }
