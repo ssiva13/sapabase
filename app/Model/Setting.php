@@ -748,4 +748,15 @@ class Setting extends Model
 
         return $states;
     }
+
+    public static function cities($country, $state){
+        $cities_json = file_get_contents(storage_path('app/states/cities.json'));
+        $cities = [];
+        foreach (json_decode($cities_json, true) as $key => $city){
+            if($city['country_code'] === $country && $city['state_code'] === $state){
+                $cities[] = ['value' => $city['latitude'].','.$city['longitude'], 'text' => $city['name']];
+            }
+        }
+        return $cities;
+    }
 }

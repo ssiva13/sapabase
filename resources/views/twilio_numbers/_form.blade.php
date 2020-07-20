@@ -54,7 +54,7 @@
         </div>
     </div>
     <div class="row" id="advanced">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="col-md-4">
                     @include('helpers.form_control', [
                         'type' => 'radio',
@@ -101,12 +101,24 @@
                             'label' => $numberCapability,
                             'value' => true,
                             'options' => [false, true],
-                            'help_class' => '',
+                            'help_class' => ''
                         ])
                     </div>
                 </div>
             @endforeach
 
+        </div>
+
+        <div class="col-md-2">
+            @include('helpers.form_control',[
+                'required' => true,
+                'placeholder' => trans('messages.type_to_search'),
+                'type' => 'text',
+                'label' => trans('messages.type_to_search'),
+                'name' => 'contains',
+                'id' => 'contains',
+                'value' => '',
+            ])
         </div>
 
     </div>
@@ -126,10 +138,9 @@
                 ])
         </div>
         <div class="col-md-4">
-            <label>{{ trans('messages.state_province_region') }}</label>
             @include('helpers.form_control', [
                 'type' => 'select',
-                'name' => 'state',
+                'name' => 'state_province_region',
                 'value'=> '',
                 'required'=> false,
                 'id'=> 'state_province_region',
@@ -138,6 +149,23 @@
 
                 ])
         </div>
+
+
+        <div class="col-md-4">
+            @include('helpers.form_control', [
+                'type' => 'select',
+                'name' => 'city',
+                'value'=> '',
+                'required'=> false,
+                'id'=> 'cities',
+                'options' => [],
+                'include_blank' => trans('messages.choose') . ' ' .trans('messages.city')
+
+                ])
+        </div>
+
+    </div>
+    <div class="row">
 
         <div class="col-md-4">
             @include('helpers.form_control', [
@@ -154,11 +182,7 @@
 
         </div>
 
-
-    </div>
-    <div class="row">
-
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label for="outbound_recording">
                 {{ trans('messages.twilio.outbound') }}
             </label>
@@ -169,7 +193,7 @@
             </select>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label for="inbound_recording">
                 {{ trans('messages.twilio.inbound') }}
             </label>

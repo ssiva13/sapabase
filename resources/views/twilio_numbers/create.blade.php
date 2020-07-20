@@ -41,6 +41,8 @@
 		});
 		let countries = $(`#countries`);
 		let state_province_region = $(`#state_province_region`);
+		let cities = $(`#cities`);
+		let contains = $(`#contains`);
 
 		function LoadStates(country) {
 			// loading effect
@@ -66,6 +68,39 @@
 			});
 		}
 
+		function LoadCities(state, country = 'US') {
+			// loading effect
+			popup.loading();
+
+			$.ajax({
+				method: "GET",
+				url: '{{ action('TwilioController@getCities') }}',
+				data: {
+						'state_province_region': state,
+						'country': country,
+					},
+			})
+			.done(function (resp) {
+				cities.empty();
+				if(resp.length == 0){
+					cities.append(`<option value="">No {{ trans('messages.city') }}</option>`);
+				}
+				else{
+					cities.append(`<option value=""> {{ trans('messages.choose') . ' ' .trans('messages.city') }} </option>`);
+					$.each(resp, function (index, state) {
+						cities.append(`<option value="${state.value}"> ${state.text} </option>`);
+					});
+				}
+				cities.select({
+					minimumSelectionLength: 5
+				});
+				cities.select2({
+					minimumSelectionLength: 3
+				});
+			});
+
+		}
+
 		function LoadPhoneNumbers() {
 			// loading effect
 			popup.loading();
@@ -77,14 +112,19 @@
 			let country = $( "#countries option:selected" ).text();
 			let state = '';
 			if(state_province_region.val().length != 0){
-				let state = $( "#state_province_region option:selected" ).text();
+				state = $( "#state_province_region option:selected" ).text();
+			}
+			let city = '';
+			if(cities.val().length != 0){
+				city = $( "#cities option:selected" ).text();
 			}
 			let cap_count = 0;
-
+			let formdata = $('#twilio_numbers_form').serialize();
+			console.log(formdata)
 			$.ajax({
 				method: "GET",
 				url: url1,
-				data: $('#twilio_numbers_form').serialize(),
+				data: formdata,
 			})
 					.done(function( msg ) {
 						if(msg.body !== undefined){
@@ -134,7 +174,7 @@
 							phone_numbers.empty();
 							phone_numbers.prop('disabled', false)
 							if((msg.length) > 0 || (Object.entries(msg).length > 0)){
-								phone_numbers.append(`<option value="">Select ${country} - ${state} Numbers</option>`);
+								phone_numbers.append(`<option value="">Select ${country}  ${state} - ${city} Numbers</option>`);
 								$.each(msg, function( index, value ) {
 									phone_numbers.append(`<option value="${value}"> ${index} </option>`);
 								})
@@ -171,18 +211,32 @@
 		countries.change(function(e) {
 			e.preventDefault();
 			state_province_region.val('')
-			let formdata = $('#twilio_numbers_form').serialize();
-			console.log(formdata)
 			if($(this).val().length != 0){
 				LoadStates($(this).val());
 				LoadPhoneNumbers();
 			}
 		});
 
+
 		state_province_region.change(function(e) {
 			e.preventDefault();
-			let formdata = $('#twilio_numbers_form').serialize();
-			console.log(formdata)
+			cities.val('')
+			if(countries.val().length != 0){
+				LoadCities(state_province_region.val(), countries.val());
+				LoadPhoneNumbers();
+			}
+		});
+
+
+		cities.change(function(e) {
+			e.preventDefault();
+			if(countries.val().length != 0){
+				LoadPhoneNumbers();
+			}
+		});
+
+		contains.blur(function(e) {
+			e.preventDefault();
 			if(countries.val().length != 0){
 				LoadPhoneNumbers();
 			}

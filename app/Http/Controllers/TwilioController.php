@@ -259,16 +259,16 @@ class TwilioController extends Controller
         try {
             if($request->number_type){
                 $number_type = $request->number_type;
-                if($request->state){
-                    $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->$number_type->read(["inRegion" => $request->state]);
+                if($request->state_province_region){
+                    $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->$number_type->read(["inRegion" => $request->state_province_region]);
                 }else{
                     $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->$number_type->read();
                 }
                 $response = $this->loopNumbers($availablePhoneNumbers, $request);
 
             }else {
-                if ($request->state) {
-                    $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->local->read(["inRegion" => $request->state]);
+                if ($request->state_province_region || $request->city || $request->contains ) {
+                    $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->local->read($this->filterArray($request));
                     $response = [];
                     foreach ($availablePhoneNumbers as $record) {
                         $response[$record->friendlyName] = ($record->phoneNumber);
@@ -452,6 +452,17 @@ class TwilioController extends Controller
         return $purchase_number->sid;
     }
 
+    public function filterArray($options){
+        $optionsArray = [];
+        $optionsArray['inRegion'] = $options->state_province_region ? $options->state_province_region : null ;
+        $optionsArray['nearLatLong'] = $options->city ? $options->city : null ;
+        $optionsArray['contains'] = $options->contains ? $options->contains : null ;
+        if(!$optionsArray['inRegion']){unset($optionsArray['inRegion']);}
+        if(!$optionsArray['nearLatLong']){unset($optionsArray['nearLatLong']);}
+        if(!$optionsArray['contains']){unset($optionsArray['contains']);}
+
+        return $optionsArray;
+    }
     public function loopNumbers($availablePhoneNumbers, $request){
         $localPhoneNumbers = [];
         $response = [];
@@ -584,7 +595,7 @@ class TwilioController extends Controller
         if (isset($request->country)) {
             return Setting::states($request->country);
         }
-        return Setting::states('US');
+        return [];
     }
 
     /**
@@ -592,9 +603,9 @@ class TwilioController extends Controller
      * @return array
      */
     public function getCities(Request $request){
-        if (isset($request->country)) {
-            return Setting::states($request->country);
+        if (isset($request->country) && isset($request->state_province_region)) {
+            return Setting::cities($request->country, $request->state_province_region);
         }
-        return Setting::states('US');
+        return [];
     }
 }
