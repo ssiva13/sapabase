@@ -264,37 +264,23 @@ class TwilioController extends Controller
                 }else{
                     $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->$number_type->read();
                 }
-                $localPhoneNumbers = [];
-                $response = [];
-                foreach ($availablePhoneNumbers as $record) {
-
-                    $localPhoneNumbers[$record->friendlyName] = array(
-                        'number' => $record->phoneNumber,
-                        'capabilities' => $record->capabilities
-                    );
-                    $capabality = $this->filterNumberCapabilities(
-                        $localPhoneNumbers[$record->friendlyName]['number'],
-                        $localPhoneNumbers[$record->friendlyName]['capabilities'],
-                        $request->sms_enabled,
-                        $request->mms_enabled,
-                        $request->call_enabled,
-                        $request->fax_enabled
-                    );
-                    if($capabality){
-                        $response[$record->friendlyName] = ($record->phoneNumber);
-                    }
-                }
+                $response = $this->loopNumbers($availablePhoneNumbers, $request);
 
             }else {
                 if ($request->state) {
                     $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->local->read(["inRegion" => $request->state]);
+                    $response = [];
+                    foreach ($availablePhoneNumbers as $record) {
+                        $response[$record->friendlyName] = ($record->phoneNumber);
+                    }
                 }else{
                     $availablePhoneNumbers = $this->twilio->availablePhoneNumbers($country)->fetch();
+
+                    $response = array(
+                        'code' => 200,
+                        'body' => $availablePhoneNumbers->uri
+                    );
                 }
-                $response = array(
-                    'code' => 200,
-                    'body' => $availablePhoneNumbers->uri
-                );
             }
 
             return $response;
@@ -466,6 +452,28 @@ class TwilioController extends Controller
         return $purchase_number->sid;
     }
 
+    public function loopNumbers($availablePhoneNumbers, $request){
+        $localPhoneNumbers = [];
+        $response = [];
+        foreach ($availablePhoneNumbers as $record) {
+            $localPhoneNumbers[$record->friendlyName] = array(
+                'number' => $record->phoneNumber,
+                'capabilities' => $record->capabilities
+            );
+            $capabality = $this->filterNumberCapabilities(
+                $localPhoneNumbers[$record->friendlyName]['number'],
+                $localPhoneNumbers[$record->friendlyName]['capabilities'],
+                $request->sms_enabled,
+                $request->mms_enabled,
+                $request->call_enabled,
+                $request->fax_enabled
+            );
+            if($capabality){
+                $response[$record->friendlyName] = ($record->phoneNumber);
+            }
+        }
+        return $response;
+    }
     /**
      * filter number by capabilities
      * @param $number
@@ -573,6 +581,17 @@ class TwilioController extends Controller
      * @return array
      */
     public function getStates(Request $request){
+        if (isset($request->country)) {
+            return Setting::states($request->country);
+        }
+        return Setting::states('US');
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function getCities(Request $request){
         if (isset($request->country)) {
             return Setting::states($request->country);
         }
