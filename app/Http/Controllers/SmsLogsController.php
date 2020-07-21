@@ -27,7 +27,7 @@ class SmsLogsController extends Controller
      */
     public function index(Request $request)
     {
-
+        $updatesms = TwilioSmsLogs::smsRefresh($request->user()->customer->id, $request->user()->customer->user_id);
         $request->merge(array("customer_id" => $request->user()->customer->id));
         $sms_logs = TwilioSmsLogs::search($request);
 
@@ -76,30 +76,9 @@ class SmsLogsController extends Controller
      * @return RedirectResponse
      */
     public function refresh(Request $request){
-        $twilio = new TwilioController();
         $customer_id = $request->user()->customer->id;
-        $new_sms = 0;
-        $sms_log = array();
-        foreach ($twilio->connectTwilio()->account->messages->read() as $key => $sms) {
-            if(TwilioSmsLogs::findBySid($sms->sid) === false){
-                $twiliosms = new TwilioSmsLogs();
-                $twiliosms->customer_id = $customer_id;
-                $twiliosms->sid = $sms->sid;
-                $twiliosms->from = $sms->from;
-                $twiliosms->to = $sms->to;
-                $twiliosms->price = ($sms->price) ? $sms->price : 0;
-                $twiliosms->price_unit = $sms->priceUnit;
-                $twiliosms->body = $sms->body;
-                $twiliosms->direction = $sms->direction;
-                $twiliosms->date_sent = $sms->dateSent->format("Y-m-d H:i:s");
-                $twiliosms->status = $sms->status;
-                $twiliosms->save();
-                ++ $new_sms;
-
-                $sms_log[$key] = $twiliosms;
-            }
-        }
-
+        $user_id = $request->user()->customer->user_id;
+        $new_sms = TwilioSmsLogs::smsRefresh($customer_id, $user_id);
         if($new_sms > 0){
             $request->session()->flash('alert-success', trans('messages.list.updated'));
         }else{

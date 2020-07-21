@@ -36,14 +36,14 @@
 						<span class="title text-semibold text-muted">{{ trans('messages.sort_by') }}</span>
                         <label for="sort_twilio"></label>
 						<select id="sort_twilio" class="select" name="sort-order">
+                            <option value="created_at">{{ trans('messages.created_at') }}</option>
 							<option value="from">{{ trans('messages.from_number') }}</option>
                             <option value="status">{{ trans('messages.status') }}</option>
                             <option value="direction">{{ trans('messages.direction') }}</option>
-							<option value="created_at">{{ trans('messages.created_at') }}</option>
 						</select>
 						<button class="btn btn-xs sort-direction" data-popup="tooltip"
                                 rel="asc" title="{{ trans('messages.change_sort_direction') }}" type="button">
-							<i class="icon-sort-amount-asc"></i>
+							<i class="icon-sort-amount-desc"></i>
 						</button>
 					</span>
                     <span class="text-nowrap">

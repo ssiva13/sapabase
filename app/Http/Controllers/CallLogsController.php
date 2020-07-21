@@ -27,7 +27,7 @@ class CallLogsController extends Controller
      */
     public function index(Request $request)
     {
-
+        TwilioCallLogs::callRefresh($request->user()->customer->id, $request->user()->customer->user_id);
         $request->merge(array("customer_id" => $request->user()->customer->id));
         $call_logs = TwilioCallLogs::search($request);
 
@@ -76,28 +76,9 @@ class CallLogsController extends Controller
      * @return RedirectResponse
      */
     public function refresh(Request $request){
-        $twilio = new TwilioController();
         $customer_id = $request->user()->customer->id;
-        $new_calls = 0;
-        foreach ($twilio->connectTwilio()->account->calls->read() as $key => $call) {
-            if(TwilioCallLogs::findBySid($call->sid) === false){
-                $twiliocall = new TwilioCallLogs();
-                $twiliocall->customer_id = $customer_id;
-                $twiliocall->sid = $call->sid;
-                $twiliocall->from = $call->from;
-                $twiliocall->to = $call->to;
-                $twiliocall->price = ($call->price) ? $call->price : 0;
-                $twiliocall->price_unit = $call->priceUnit;
-                $twiliocall->duration = $call->duration;
-                $twiliocall->direction = $call->direction;
-                $twiliocall->start_time = $call->startTime->format("Y-m-d H:i:s");
-                $twiliocall->end_time = $call->endTime->format("Y-m-d H:i:s");
-                $twiliocall->status = $call->status;
-                $twiliocall->save();
-                ++ $new_calls;
-            }
-        }
-        
+        $user_id = $request->user()->customer->user_id;
+        $new_calls = TwilioCallLogs::callRefresh($customer_id, $user_id);
         if($new_calls > 0){
             $request->session()->flash('alert-success', trans('messages.list.updated'));
         }else{

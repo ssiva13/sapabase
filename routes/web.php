@@ -505,6 +505,7 @@ Route::group(['middleware' => ['not_installed']], function () {
     Route::get('logout', 'Auth\LoginController@logout')->name('logout');   // use GET for logout, keep compatible with 5.2
 
     Route::get('voice/answer', 'TwilioController@callAnswer');
+    Route::get('sms/answer', 'TwilioController@smsAnswer');
 });
 
 Route::group(['middleware' => ['not_installed', 'auth', 'frontend']], function () {

@@ -183,7 +183,7 @@
 
 			<ul class="nav navbar-nav navbar-right">
 				<li rel0="TwilioController">
-					<a href="{{ action('TwilioController@updateTwilioCost') }}" >
+					<a href="#">
 						<i class="icon-cash">
 							<span class="text-muted2">
 								<span class="text-muted2" id="cost"></span>

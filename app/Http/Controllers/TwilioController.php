@@ -555,21 +555,26 @@ class TwilioController extends Controller
     }
 
     public function callAnswer(Request $request){
-
-        $template = SmsTemplate::getDefault($request->user()->customer->id);
+//        $template = SmsTemplate::getDefault($request->user()->customer->id);
         $city = $_REQUEST['FromCity'] ?? 'New York';
         $response = new VoiceResponse();
         $response->say("Hello, {$city}!", array('voice' => 'alice'));
         $response->play(
-            $template->content,
+//            $template->content,
+            "https://demo.twilio.com/docs/classic.mp3",
             [
                 'loop' => 1
             ]
         );
-
         echo $response;
+//        TwilioCallLogs::callRefresh(null);
+    }
 
-
+    public function smsAnswer(Request $request){
+        $response = new MessagingResponse();
+        $response->message("The Robots are coming! Head for the hills!");
+        print $response;
+//        TwilioSmsLogs::smsRefresh(null);
     }
 
     /**

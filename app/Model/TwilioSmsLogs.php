@@ -2,6 +2,7 @@
 
 namespace Acelle\Model;
 
+use Acelle\Http\Controllers\TwilioController;
 use Illuminate\Database\Eloquent\Model;
 
 class TwilioSmsLogs extends Model
@@ -105,11 +106,44 @@ class TwilioSmsLogs extends Model
         if (self::where('sid', '=', $sid)->first() === null) {
             return false;
         }
-        return true;
+        return self::where('sid', '=', $sid)->first();
     }
 
     public static function smsSum($customer_id){
         return self::where('customer_id', '=', $customer_id)->sum('price');
     }
 
+    public static function smsRefresh($customer_id, $user_id = null){
+        $new_sms = 0;
+        $sms_log = array();
+        $twilio = new TwilioController();
+        foreach ($twilio->connectTwilio()->account->messages->read() as $key => $sms) {
+            $sms_record = self::findBySid($sms->sid);
+            if($sms_record === false){
+                $twiliosms = new TwilioSmsLogs();
+                $twiliosms->customer_id = $customer_id;
+                $twiliosms->sid = $sms->sid;
+                $twiliosms->from = $sms->from;
+                $twiliosms->to = $sms->to;
+                $twiliosms->price = ($sms->price) ? $sms->price : 0;
+                $twiliosms->price_unit = $sms->priceUnit;
+                $twiliosms->body = $sms->body;
+                $twiliosms->direction = $sms->direction;
+                $twiliosms->date_sent = $sms->dateSent->format("Y-m-d H:i:s");
+                $twiliosms->status = $sms->status;
+                $twiliosms->save();
+                ++ $new_sms;
+
+                $sms_log[$key] = $twiliosms;
+            }elseif($customer_id != null && $sms_record->customer_id === null){
+                $number = TwilioNumber::where('number', '=' ,$sms_record->from)->orWhere('number', '=' ,$sms_record->to)->first();
+                if($user_id == $number->user_id){
+                    $sms_record->customer_id = $customer_id;
+                    $sms_record->save();
+                    ++ $new_sms;
+                }
+            }
+        }
+        return $new_sms;
+    }
 }

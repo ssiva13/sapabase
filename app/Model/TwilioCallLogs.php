@@ -2,6 +2,7 @@
 
 namespace Acelle\Model;
 
+use Acelle\Http\Controllers\TwilioController;
 use Illuminate\Database\Eloquent\Model;
 
 class TwilioCallLogs extends Model
@@ -102,10 +103,42 @@ class TwilioCallLogs extends Model
         if (self::where('sid', '=', $sid)->first() === null) {
             return false;
         }
-        return true;
+        return self::where('sid', '=', $sid)->first();
     }
 
     public static function callSum($customer_id){
         return self::where('customer_id', '=', $customer_id)->sum('price');
+    }
+
+    public static function callRefresh($customer_id, $user_id = null){
+        $new_calls = 0;
+        $twilio = new TwilioController();
+        foreach ($twilio->connectTwilio()->account->calls->read() as $key => $call) {
+            $call_record = self::findBySid($call->sid);
+            if($call_record === false){
+                $twiliocall = new TwilioCallLogs();
+                $twiliocall->customer_id = $customer_id;
+                $twiliocall->sid = $call->sid;
+                $twiliocall->from = $call->from;
+                $twiliocall->to = $call->to;
+                $twiliocall->price = ($call->price) ? $call->price : 0;
+                $twiliocall->price_unit = $call->priceUnit;
+                $twiliocall->duration = $call->duration;
+                $twiliocall->direction = $call->direction;
+                $twiliocall->start_time = $call->startTime->format("Y-m-d H:i:s");
+                $twiliocall->end_time = $call->endTime->format("Y-m-d H:i:s");
+                $twiliocall->status = $call->status;
+                $twiliocall->save();
+                ++ $new_calls;
+            }elseif($customer_id != null && $call_record->customer_id === null){
+                $number = TwilioNumber::where('number', '=' ,$call_record->from)->orWhere('number', '=' ,$call_record->to)->first();
+                if($user_id == $number->user_id){
+                    $call_record->customer_id = $customer_id;
+                    $call_record->save();
+                    ++ $new_calls;
+                }
+            }
+        }
+        return $new_calls;
     }
 }
