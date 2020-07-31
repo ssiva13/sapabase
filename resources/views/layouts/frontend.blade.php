@@ -155,6 +155,9 @@
 					<a class="dropdown-toggle" data-toggle="dropdown">
 						<i class="icon-phone"></i> {{ trans('messages.phone') }}
 						<span class="caret"></span>
+						@if(Auth::user()->customer->hasTwilioSmsNotification(Auth::user()->customer->user_id) || Auth::user()->customer->hasTwilioCallNotification(Auth::user()->customer->user_id))
+							<i class="material-icons customer-warning-icon text-danger">info</i>
+						@endif
 					</a>
 					<ul class="dropdown-menu">
 						<li>
@@ -170,11 +173,17 @@
 						<li>
 							<a href="{{ action('CallLogsController@index') }}">
 								<i class="icon-phone-wave"></i> {{ trans('messages.call_campaigns') }}
+								@if(Auth::user()->customer->hasTwilioCallNotification(Auth::user()->customer->user_id))
+									<i class="material-icons customer-warning-icon text-danger">info</i>
+								@endif
 							</a>
 						</li>
 						<li>
 							<a href="{{ action('SmsLogsController@index') }}">
 								<i class="icon-envelop5"></i> {{ trans('messages.sms_campaigns') }}
+								@if(Auth::user()->customer->hasTwilioSmsNotification(Auth::user()->customer->user_id))
+									<i class="material-icons customer-warning-icon text-danger">info</i>
+								@endif
 							</a>
 						</li>
 					</ul>
@@ -219,7 +228,7 @@
 				<li class="dropdown dropdown-user">
 					<a class="dropdown-toggle" data-toggle="dropdown">
 						<img src="{{ action('CustomerController@avatar', Auth::user()->customer->uid) }}" alt="">
-{{--						<span>{{ Auth::user()->customer->displayName() }}</span>--}}
+						<span>{{ Auth::user()->customer->displayName() }}</span>
 						<i class="caret"></i>
 
 						@if (Auth::user()->customer->hasSubscriptionNotice())

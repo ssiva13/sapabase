@@ -2045,4 +2045,35 @@ class Customer extends Model implements BillableUserInterface
 
         return $subscription->active();
     }
+
+    public function hasTwilioCallNotification($customer){
+        $numbers = TwilioNumber::where('user_id', $customer)->get();
+        foreach ($numbers as $key => $number){
+            $file_path = storage_path('app/calls_'.$number->number.'.json');
+            if(file_exists($file_path)) {
+                $data = file_get_contents($file_path);
+                $to_arr = json_decode($data, TRUE);
+                if (is_array($to_arr) && in_array($number->number, $to_arr)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    public function hasTwilioSmsNotification($customer){
+        $numbers = TwilioNumber::where('user_id', $customer)->get();
+        foreach ($numbers as $key => $number){
+            $file_path = storage_path('app/messages_'.$number->number.'.json');
+            if(file_exists($file_path)) {
+                $data = file_get_contents($file_path);
+                $to_arr = json_decode($data, TRUE);
+                if (is_array($to_arr) && in_array($number->number, $to_arr)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

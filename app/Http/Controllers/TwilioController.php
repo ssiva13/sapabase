@@ -555,27 +555,53 @@ class TwilioController extends Controller
     }
 
     public function callAnswer(Request $request){
-//        $template = SmsTemplate::getDefault($request->user()->customer->id);
-        $city = $_REQUEST['FromCity'] ?? 'New York';
+
+        $to = $_REQUEST['To'];
+        $from = $_REQUEST['From'];
+
+        $file_path = storage_path('app/calls_'.$to.'.json');
+        if(file_exists($file_path)){
+            $data = file_get_contents($file_path);
+            $to_arr= json_decode($data,TRUE);
+            $to_arr[]=$to;
+            file_put_contents($file_path, json_encode($to_arr));
+        }else{
+            $to_arr[] = $to;
+            file_put_contents($file_path, json_encode($to_arr));
+        }
+
+
         $response = new VoiceResponse();
-        $response->say("Hello, {$city}!", array('voice' => 'alice'));
-        $response->play(
-//            $template->content,
-            "https://demo.twilio.com/docs/classic.mp3",
-            [
-                'loop' => 1
-            ]
-        );
+        $response->say("Hello, {$from}, Thank you for calling {$to}! We will get to you shortly. Goodbye!", array('voice' => 'alice'));
+
+
         echo $response;
-//        TwilioCallLogs::callRefresh(null);
+
     }
 
+
     public function smsAnswer(Request $request){
+
+        $to = $_REQUEST['To'];
+        $from = $_REQUEST['From'];
+
+        $file_path = storage_path('app/messages_'.$to.'.json');
+        if(file_exists($file_path)){
+            $data = file_get_contents($file_path);
+            $to_arr= json_decode($data,TRUE);
+            $to_arr[]=$to;
+            file_put_contents($file_path, json_encode($to_arr));
+        }else{
+            $to_arr[] = $to;
+            file_put_contents($file_path, json_encode($to_arr));
+        }
+
         $response = new MessagingResponse();
-        $response->message("The Robots are coming! Head for the hills!");
+        $response->message("Thank You. Our Support Team will contact you shortly!");
         print $response;
-//        TwilioSmsLogs::smsRefresh(null);
+
     }
+
 
     /**
      * @param Request $request

@@ -143,7 +143,21 @@ class TwilioSmsLogs extends Model
                     ++ $new_sms;
                 }
             }
-        }
+            $to_file = storage_path('app/messages_'.$sms->to.'.json');
+            $from_file = storage_path('app/messages_'.$sms->from.'.json');
+
+            if(file_exists($to_file)) {
+                $data = file_get_contents($to_file);
+                $to_arr = json_decode($data, TRUE);
+                $array = array_diff( $to_arr, array($sms->to) );
+                file_put_contents($to_file, json_encode($array));
+            }
+            if(file_exists($from_file)){
+                $data = file_get_contents($from_file);
+                $from_arr = json_decode($data, TRUE);
+                $array = array_diff( $from_arr, array($sms->from) );
+                file_put_contents($from_file, json_encode($array));
+            }   }
         return $new_sms;
     }
 }
